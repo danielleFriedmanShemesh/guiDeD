@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/baseline_person_24"
+        android:title="פרופיל אישי"
+        />
+
+    <item
+        android:id="@+id/add"
+        android:icon="@drawable/baseline_add_24"
+        android:title="הוספה"/>
+
+
+
+
+    <item
+        android:title="מאגר"
+        android:id="@+id/library"
+        android:icon="@drawable/baseline_menu_book_24"/>
+
+
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/baseline_home_24"
+        android:title="בית"
+        />
+</menu>
