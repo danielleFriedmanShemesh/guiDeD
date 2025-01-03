@@ -99,9 +99,6 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
          alartForProfile=findViewById(R.id.alartProfile);
 
 
-
-
-
         arrayList.add("הצופים");
         arrayList.add("המכבי הצעיר");
         arrayList.add("התנועה החדשה");
