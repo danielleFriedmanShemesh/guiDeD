@@ -50,6 +50,18 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
         alartForPassword=findViewById(R.id.alartPassword);
         alartForEmail=findViewById(R.id.alartEmail);
 
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            String userNameStr = extras.getString("userName");
+            String passwordStr = extras.getString("password");
+            String emailStr = extras.getString("email");
+            userName.setText(userNameStr);
+            password.setText(passwordStr);
+            email.setText(emailStr);
+        }
+
+
         continueBtn.setOnClickListener(this);
 
 
@@ -117,7 +129,7 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
                     intent.putExtra("password",  password.getText().toString());
                     intent.putExtra("email",  email.getText().toString());
                     startActivity(intent);
-                    finish();
+                    //finish();
                    /* Intent intent1=new Intent();
                     intent1.putExtra("userName",  userName.getText().toString());
                     intent1.putExtra("password",  password.getText().toString());

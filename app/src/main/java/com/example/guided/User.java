@@ -8,16 +8,15 @@ import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable {
     private String userName;
     private String password;
     private String email;
     private String nickName;
     private Bitmap profileImage;
-    /* private int dayBirth;
-    private int monthBirth;
-    private int yearBirth;*/
+
     private Date birthday;
     private String organization;
 
@@ -28,9 +27,6 @@ public class User {
         this.email=email;
         this.nickName="";
         this.birthday=new Date();
-        /*this.yearBirth=0;
-        this.dayBirth=0;
-        this.monthBirth=0;*/
         this.organization="";
         this.profileImage=null;
 
@@ -61,29 +57,7 @@ public class User {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();}
 
-    /*public int getYearBirth() {
-        return yearBirth;
-    }
 
-    public void setYearBirth(int yearBirth) {
-        this.yearBirth = yearBirth;
-    }
-
-    public int getMonthBirth() {
-        return monthBirth;
-    }
-
-    public void setMonthBirth(int monthBirth) {
-        this.monthBirth = monthBirth;
-    }
-
-    public int getDayBirth() {
-        return dayBirth;
-    }
-
-    public void setDayBirth(int dayBirth) {
-        this.dayBirth = dayBirth;
-    }*/
 
     public Date getBirthday(){
         return this.birthday;

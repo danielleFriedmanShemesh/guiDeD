@@ -93,10 +93,14 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
         saveBTN=findViewById(R.id.save);
         saveBTN.setOnClickListener(this);
 
-        Intent intent=getIntent();
-         userName= intent.getExtras().getString("userName");
-         password= intent.getExtras().getString("password");
-         email= intent.getExtras().getString("email");
+
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            userName = extras.getString("userName");
+            password = extras.getString("password");
+            email = extras.getString("email");
+        }
 
          alartForOrganization=findViewById(R.id.alartOrganization);
          alartForBirthday=findViewById(R.id.alartBirthday);
@@ -306,11 +310,12 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
         if(v == backBTN){
             //אין לי מושג איך חוזרים למסך הראשון ומראים את הנתונים שהמשתמש כבר הכניס
 
-            /*Intent intent=new Intent(this, register_num_one.class);
+            Intent intent=new Intent(this, Register_num_one.class);
             intent.putExtra("userName",  userName);
             intent.putExtra("password",  password);
             intent.putExtra("email",  email);
-            startActivityForResult(intent,3);*/
+            startActivity(intent);
+            //startActivityForResult(intent,3);
 
 
         }
