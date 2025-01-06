@@ -66,7 +66,18 @@
         android:textSize="15dp"
         />
 
-    <TextView
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="הכנס תאריך לידה"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:textSize="20dp"
+        android:id="@+id/birthday"
+        android:inputType="date"
+        />
+
+   <!-- <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -123,7 +134,7 @@
             android:textSize="20dp"
             android:hint="YYYY"
             android:inputType="number"/>
-    </LinearLayout>
+    </LinearLayout>-->
     <TextView
         android:id="@+id/alartBirthday"
         android:layout_width="match_parent"

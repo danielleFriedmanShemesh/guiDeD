@@ -15,9 +15,10 @@ public class User {
     private String email;
     private String nickName;
     private Bitmap profileImage;
-    private int dayBirth;
+    /* private int dayBirth;
     private int monthBirth;
-    private int yearBirth;
+    private int yearBirth;*/
+    private Date birthday;
     private String organization;
 
 
@@ -26,23 +27,26 @@ public class User {
         this.password=password;
         this.email=email;
         this.nickName="";
-        this.yearBirth=0;
+        this.birthday=new Date();
+        /*this.yearBirth=0;
         this.dayBirth=0;
-        this.monthBirth=0;
+        this.monthBirth=0;*/
         this.organization="";
         this.profileImage=null;
 
     }
 
-    public User(String userName, String password, String email, String nickName, String organization, int dayBirth, int monthBirth, int yearBirth, Bitmap image){
+    public User(String userName, String password, String email, String nickName, String organization, Date birthday, Bitmap image){
+        //int dayBirth, int monthBirth, int yearBirth
         this.userName=userName;
         this.password=password;
         this.email=email;
         this.nickName=nickName;
         this.organization=organization;
-        this.yearBirth=yearBirth;
+        /*this.yearBirth=yearBirth;
         this.dayBirth=dayBirth;
-        this.monthBirth=monthBirth;
+        this.monthBirth=monthBirth;*/
+        this.birthday=birthday;
         this.profileImage= image;
 
     }
@@ -57,7 +61,7 @@ public class User {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();}
 
-    public int getYearBirth() {
+    /*public int getYearBirth() {
         return yearBirth;
     }
 
@@ -79,6 +83,14 @@ public class User {
 
     public void setDayBirth(int dayBirth) {
         this.dayBirth = dayBirth;
+    }*/
+
+    public Date getBirthday(){
+        return this.birthday;
+    }
+
+    public void setBirthday(Date birthday){
+        this.birthday=birthday;
     }
 
     public Bitmap getProfileImage(){

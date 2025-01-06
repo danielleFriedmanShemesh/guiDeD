@@ -1,5 +1,6 @@
 package com.example.guided;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -32,13 +34,16 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class Register_num_two extends AppCompatActivity implements View.OnClickListener {
     TextView organization;
-    EditText day;
-    EditText month;
-    EditText year;
+    EditText birthday;
     EditText nickName;
     ImageView profile;
     ArrayList<String> arrayList;
@@ -74,9 +79,9 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
 
         nickName=findViewById(R.id.nickName);
 
-        day= findViewById(R.id.day);
-        month= findViewById( R.id.month);
-        year= findViewById(R.id.year);
+
+        birthday=findViewById(R.id.birthday);
+        birthday.setOnClickListener(this);
 
 
         organization = findViewById(R.id.organization);
@@ -235,7 +240,39 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
             AlertDialog dialog = builder.create();
             dialog.show();
         }
+
+        if (v==birthday){
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(
+                    Register_num_two.this, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                        public void onDateSet(DatePicker view, int year,
+                                              int monthOfYear, int dayOfMonth) {
+                            // on below line we are setting date to our edit text.
+                            birthday.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+
+                        }
+                    }, year, month, day);
+
+            datePickerDialog.show();
+
+        }
+
         if (v == saveBTN) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            Date birthdayDate;
+            //A try-catch block handles invalid input formats, ensuring the app doesn't crash if the user enters an incorrect date.
+            try{
+                // dateFormat.parse(dateString) converts the string into a Date object.
+             birthdayDate = dateFormat.parse(birthday.getText().toString());}
+            catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+
+
             // בדיקות של כינוי
             if (nickName.getText().toString().length() < 2)
                 alartForNickName.setText(" * כינוי קצר מדי נסה שנית. " + '\n' + alartForNickName.getText().toString());
@@ -245,27 +282,17 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
                 alartForNickName.setText("* שדה חובה! הכנס כינוי" + '\n' + alartForNickName.getText().toString());
 
             //בדיקות של יום הולדת
-            if (!checkBirthDay(Integer.parseInt(day.getText().toString()), Integer.parseInt(month.getText().toString()), Integer.parseInt(year.getText().toString()))) {
-                alartForBirthday.setText("* התאריך שגוי! נסה שנית" + '\n' + alartForBirthday.getText().toString());
-            }
-            if (day.getText().toString().isEmpty() || month.getText().toString().isEmpty() || year.getText().toString().isEmpty()) {
-                alartForNickName.setText("* שדה חובה! הכנס תאריך" + '\n' + alartForNickName.getText().toString());
-            }
+
+            if(birthday.getText().toString().isEmpty())
+                alartForBirthday.setText("* שדה חובה! הכנס תאריך לידה" + '\n' + alartForBirthday.getText().toString());
 
             //בדיקות של מסגרת הדרכה
             if (organization.getText().equals(""))
                 alartForOrganization.setText("* שדה חובה! בחר מסגרת הדרכה");
 
             //בדיקות סופיות
-            if (!organization.getText().toString().isEmpty()&&checkBirthDay(Integer.parseInt(day.getText().toString()), Integer.parseInt(month.getText().toString()), Integer.parseInt(year.getText().toString()))&&!nickName.getText().toString().isEmpty()){
-               // Write a message to the database
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("user");
-
-                User newUser=new User(userName,password,email,nickName.getText().toString(),organization.getText().toString(),Integer.parseInt(day.getText().toString()), Integer.parseInt(month.getText().toString()), Integer.parseInt(year.getText().toString()), ((BitmapDrawable)profile.getDrawable()).getBitmap());
-
-                myRef.setValue(newUser);
-                //צריך ליצור דאטא בייס
+            if (!organization.getText().toString().isEmpty()&&(!birthday.getText().toString().isEmpty())&&!nickName.getText().toString().isEmpty()){
+                saveUser();
 
                 Intent intent=new Intent(this, Home_page.class);
                 startActivity(intent);
@@ -335,44 +362,23 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
             }*/
     }
 
-    public static boolean checkBirthDay(int day, int month, int year){
-        if(year>2026||year<=1900||month>12||month<01||day<01)
-            return false;
-        if((month==01)&&(day>0&&day<=31))
-            return true;
-        if ((year%4==0)&&(month==02)&&((day<=29)&&(day>01)))
-            return true;
-        if ((year%4!=0)&&(month==02)&&((day<=28)&&(day>01)))
-            return true;
-        if((month==03)&&(day>0&&day<=31))
-            return true;
-        if((month==04)&&(day>0&&day<=30))
-            return true;
-        if((month==05)&&(day>0&&day<=31))
-            return true;
-        if((month==06)&&(day>0&&day<=30))
-            return true;
-        if((month==07)&&(day>0&&day<=31))
-            return true;
-        if((month==8)&&(day>0&&day<=31))
-            return true;
-        if((month==9)&&(day>0&&day<=30))
-            return true;
-        if((month==10)&&(day>0&&day<=31))
-            return true;
-        if((month==11)&&(day>0&&day<=30))
-            return true;
-        if((month==12)&&(day>0&&day<=31))
-            return true;
-        return false;
-    }
 
-    public void saveUser(View view){
+    public void saveUser(){
         // Write a message to the database
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        Date birthdayDate;
+        //A try-catch block handles invalid input formats, ensuring the app doesn't crash if the user enters an incorrect date.
+        try{
+            // dateFormat.parse(dateString) converts the string into a Date object.
+            birthdayDate = dateFormat.parse(birthday.getText().toString());}
+        catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("user");
 
-        User newUser=new User(userName,password,email,nickName.getText().toString(),organization.getText().toString(),Integer.parseInt(day.getText().toString()), Integer.parseInt(month.getText().toString()), Integer.parseInt(year.getText().toString()), ((BitmapDrawable)profile.getDrawable()).getBitmap());
+        User newUser=new User(userName,password,email,nickName.getText().toString(),organization.getText().toString(), birthdayDate, ((BitmapDrawable)profile.getDrawable()).getBitmap());
+        //Integer.parseInt(day.getText().toString()), Integer.parseInt(month.getText().toString()), Integer.parseInt(year.getText().toString())
 
         myRef.setValue(newUser);
     }
