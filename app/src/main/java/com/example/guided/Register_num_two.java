@@ -300,7 +300,14 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
                 alartForOrganization.setText("* שדה חובה! בחר מסגרת הדרכה");
 
             //בדיקות סופיות
-            if (!organization.getText().toString().isEmpty()&&(!birthday.getText().toString().isEmpty())&&!nickName.getText().toString().isEmpty()){
+            if (!organization.getText().toString().isEmpty() &&
+                !birthday.getText().toString().isEmpty() &&
+                !nickName.getText().toString().isEmpty() &&
+                !BitmapHelper.bitmapToString(
+                        ((BitmapDrawable)profile.getDrawable())
+                                .getBitmap())
+                        .isEmpty())
+            {
                 saveUser();
                 Toast.makeText(this, newUser.toString(), Toast.LENGTH_LONG).show();
 
@@ -330,7 +337,6 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
             Intent intent=new Intent(this, Register_num_one.class);
             intent.putExtra("user",  newUser);
             Toast.makeText(this, newUser.toString(), Toast.LENGTH_LONG).show();
-
             startActivity(intent);
             finish();
 
