@@ -18,7 +18,7 @@ public class User implements Serializable {
     private String password;
     private String email;
     private String nickName;
-    private transient Bitmap profileImage;
+    private String profileImage;
     private Date birthday;
     private String organization;
 
@@ -30,11 +30,11 @@ public class User implements Serializable {
         this.nickName="";
         this.birthday=new Date();
         this.organization="";
-        this.profileImage=null;
+        this.profileImage="";
 
     }
 
-    public User(String userName, String password, String email, String nickName, String organization, Date birthday, Bitmap image){
+    public User(String userName, String password, String email, String nickName, String organization, Date birthday, String image){
         //int dayBirth, int monthBirth, int yearBirth
         this.userName=userName;
         this.password=password;
@@ -56,15 +56,11 @@ public class User implements Serializable {
         this.nickName="";
         this.birthday=new Date();
         this.organization="";
-        this.profileImage=null;
+        this.profileImage="";
 
     }
 
-    public byte[] bitmapToBlob(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        // Compress the bitmap into the byte array (you can specify a format and quality)
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        return byteArrayOutputStream.toByteArray();}
+
 
 
 
@@ -76,11 +72,11 @@ public class User implements Serializable {
         this.birthday=birthday;
     }
 
-    public Bitmap getProfileImage(){
+    public String getProfileImage(){
         return this.profileImage;
     }
 
-    public void setProfileImage(Bitmap profileImage){
+    public void setProfileImage(String profileImage){
         this.profileImage=profileImage;
     }
 

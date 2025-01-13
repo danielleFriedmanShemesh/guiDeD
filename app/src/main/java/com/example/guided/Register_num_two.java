@@ -324,7 +324,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
-            newUser.setProfileImage(((BitmapDrawable)profile.getDrawable()).getBitmap());
+            newUser.setProfileImage(BitmapHelper.bitmapToString(((BitmapDrawable)profile.getDrawable()).getBitmap()));
 
 
             Intent intent=new Intent(this, Register_num_one.class);
@@ -399,7 +399,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
         newUser.setOrganization(organization.getText().toString());
         newUser.setBirthday(birthdayDate);
         newUser.setProfileImage(((BitmapDrawable)profile.getDrawable()).getBitmap());*/
-        User user= new User(newUser.getUserName(), newUser.getPassword(),newUser.getEmail(),nickName.getText().toString(),organization.getText().toString(),birthdayDate,((BitmapDrawable)profile.getDrawable()).getBitmap());
+        User user= new User(newUser.getUserName(), newUser.getPassword(),newUser.getEmail(),nickName.getText().toString(),organization.getText().toString(),birthdayDate,BitmapHelper.bitmapToString(((BitmapDrawable)profile.getDrawable()).getBitmap()));
 
         myRef.setValue(user);
     }
