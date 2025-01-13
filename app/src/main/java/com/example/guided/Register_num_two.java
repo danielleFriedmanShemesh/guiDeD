@@ -58,6 +58,9 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
     TextView alartForBirthday;
     TextView alartForProfile;
 
+    User newUser;
+
+    TextView textView;
 
 
 
@@ -93,14 +96,24 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
         saveBTN=findViewById(R.id.save);
         saveBTN.setOnClickListener(this);
 
+        textView=findViewById(R.id.tv);
+
+
 
         Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            userName = extras.getString("userName");
-            password = extras.getString("password");
-            email = extras.getString("email");
-        }
+        newUser= (User) intent.getSerializableExtra("newUser");
+        textView.setText(newUser.toString());
+
+      /*  if (newUser!=null){
+            userName= newUser.getUserName();
+            password=newUser.getPassword();
+            email=newUser.getEmail();
+            nickName.setText(newUser.getNickName());
+            birthday.setText(newUser.getBirthday().toString());
+            organization.setText(newUser.getOrganization());
+            profile.setImageBitmap(newUser.getProfileImage());
+        }*/
+
 
          alartForOrganization=findViewById(R.id.alartOrganization);
          alartForBirthday=findViewById(R.id.alartBirthday);
@@ -266,15 +279,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
         }
 
         if (v == saveBTN) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-            Date birthdayDate;
-            //A try-catch block handles invalid input formats, ensuring the app doesn't crash if the user enters an incorrect date.
-            try{
-                // dateFormat.parse(dateString) converts the string into a Date object.
-             birthdayDate = dateFormat.parse(birthday.getText().toString());}
-            catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
+
 
 
             // בדיקות של כינוי
@@ -297,6 +302,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
             //בדיקות סופיות
             if (!organization.getText().toString().isEmpty()&&(!birthday.getText().toString().isEmpty())&&!nickName.getText().toString().isEmpty()){
                 saveUser();
+                Toast.makeText(this, newUser.toString(), Toast.LENGTH_LONG).show();
 
                 Intent intent=new Intent(this, Home_page.class);
                 startActivity(intent);
@@ -310,12 +316,23 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
         if(v == backBTN){
             //אין לי מושג איך חוזרים למסך הראשון ומראים את הנתונים שהמשתמש כבר הכניס
 
+            newUser.setNickName(nickName.getText().toString());
+            newUser.setOrganization(organization.getText().toString());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            try {
+                newUser.setBirthday(dateFormat.parse(birthday.getText().toString()));
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+            newUser.setProfileImage(((BitmapDrawable)profile.getDrawable()).getBitmap());
+
+
             Intent intent=new Intent(this, Register_num_one.class);
-            intent.putExtra("userName",  userName);
-            intent.putExtra("password",  password);
-            intent.putExtra("email",  email);
+            intent.putExtra("user",  newUser);
+            Toast.makeText(this, newUser.toString(), Toast.LENGTH_LONG).show();
+
             startActivity(intent);
-            //startActivityForResult(intent,3);
+            finish();
 
 
         }
@@ -357,14 +374,9 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
             }
 
         }
-        /*else if(requestCode==3){
-            if (resultCode == RESULT_OK) {
-                userName= data.getExtras().getString("userName");
-                password= data.getExtras().getString("password");
-                email= data.getExtras().getString("email");
-            }
 
-            }*/
+
+
     }
 
 
@@ -375,17 +387,23 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
         //A try-catch block handles invalid input formats, ensuring the app doesn't crash if the user enters an incorrect date.
         try{
             // dateFormat.parse(dateString) converts the string into a Date object.
-            birthdayDate = dateFormat.parse(birthday.getText().toString());}
-        catch (ParseException e) {
+            birthdayDate = dateFormat.parse(birthday.getText().toString());} catch (
+                ParseException e) {
             throw new RuntimeException(e);
         }
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("user");
 
-        User newUser=new User(userName,password,email,nickName.getText().toString(),organization.getText().toString(), birthdayDate, ((BitmapDrawable)profile.getDrawable()).getBitmap());
-        //Integer.parseInt(day.getText().toString()), Integer.parseInt(month.getText().toString()), Integer.parseInt(year.getText().toString())
+        /*newUser.setNickName(nickName.getText().toString());
+        newUser.setOrganization(organization.getText().toString());
+        newUser.setBirthday(birthdayDate);
+        newUser.setProfileImage(((BitmapDrawable)profile.getDrawable()).getBitmap());*/
+        User user= new User(newUser.getUserName(), newUser.getPassword(),newUser.getEmail(),nickName.getText().toString(),organization.getText().toString(),birthdayDate,((BitmapDrawable)profile.getDrawable()).getBitmap());
 
-        myRef.setValue(newUser);
+        myRef.setValue(user);
     }
+
+
 
 }

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +28,11 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
     TextView alartForUserName;
     TextView alartForPassword;
     TextView alartForEmail;
+    User user;
+
+
+
+    TextView textView;
 
 
 
@@ -41,6 +47,9 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
             return insets;
         });
 
+        textView=findViewById(R.id.tv);
+
+
         continueBtn=findViewById(R.id.continueBTN);
         userName=findViewById(R.id.userName);
         password=findViewById(R.id.password);
@@ -50,7 +59,7 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
         alartForPassword=findViewById(R.id.alartPassword);
         alartForEmail=findViewById(R.id.alartEmail);
 
-        Intent intent = getIntent();
+        /*Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
             String userNameStr = extras.getString("userName");
@@ -59,6 +68,14 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
             userName.setText(userNameStr);
             password.setText(passwordStr);
             email.setText(emailStr);
+        }*/
+
+        user= (User) getIntent().getSerializableExtra("newUser");
+
+            if (user!=null){
+            userName.setText(user.getUserName());
+            password.setText(user.getPassword());
+            email.setText(user.getEmail());
         }
 
 
@@ -91,8 +108,9 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
                 alartForUserName.setText("* שדה חובה! הכנס שם משתמש"+ '\n'+alartForUserName.getText().toString());
             }
             if(!input_Validation(userName.getText().toString())){
-                alartForUserName.setText("* שם המשתמש חייב להכיל ספרות, אותיות באנגלית ותווים מיוחדים."+ '\n'+alartForUserName.getText().toString());
+                alartForUserName.setText("* שם המשתמש חייב להכיל רק ספרות, אותיות באנגלית ותווים מיוחדים."+ '\n'+alartForUserName.getText().toString());
             }
+
             //אחרי שיהיה דאטא בייס אז זאת תהיה בדיקה האם שם המשתמש כבר קיים
 
             //if(checkIfOccupied(userName)){
@@ -123,18 +141,24 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
 //בדיקות סופיות
             if((!password.getText().toString().isEmpty())&&(!userName.getText().toString().isEmpty())&&(!email.getText().toString().isEmpty())){
                 if(checkUserName(userName.getText().toString())&&(checkPassword(password.getText().toString()))&&(checkEmail(email.getText().toString()))){
-                    //User newUser=new User(userName.getText().toString(),password.getText().toString(),email.getText().toString());
+
+                    if(user!=null){
+                    user.setUserName(userName.getText().toString());
+                    user.setPassword(password.getText().toString());
+                    user.setEmail(email.getText().toString());}
+
+                    else {user= new User(userName.getText().toString(),password.getText().toString(),email.getText().toString());}
+
                     Intent intent=new Intent(this, Register_num_two.class);
-                    intent.putExtra("userName",  userName.getText().toString());
-                    intent.putExtra("password",  password.getText().toString());
-                    intent.putExtra("email",  email.getText().toString());
+                    intent.putExtra("newUser", user);
+                    Toast.makeText(this, user.toString(), Toast.LENGTH_LONG).show();
+
+                    textView.setText(user.toString());
+
+
                     startActivity(intent);
-                    //finish();
-                   /* Intent intent1=new Intent();
-                    intent1.putExtra("userName",  userName.getText().toString());
-                    intent1.putExtra("password",  password.getText().toString());
-                    intent1.putExtra("email",  email.getText().toString());
-                    setResult(RESULT_OK,intent1);*/
+                    finish();
+
                 }
             }
 

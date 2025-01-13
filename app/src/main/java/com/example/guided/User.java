@@ -7,16 +7,18 @@ import android.graphics.BitmapFactory;
 import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.io.Serializable;
+import java.util.Locale;
 
 public class User implements Serializable {
     private String userName;
     private String password;
     private String email;
     private String nickName;
-    private Bitmap profileImage;
-
+    private transient Bitmap profileImage;
     private Date birthday;
     private String organization;
 
@@ -48,6 +50,13 @@ public class User implements Serializable {
     }
 
     public User(){
+        this.userName="";
+        this.password="";
+        this.email="";
+        this.nickName="";
+        this.birthday=new Date();
+        this.organization="";
+        this.profileImage=null;
 
     }
 
@@ -116,12 +125,18 @@ public class User implements Serializable {
     }
 
 
-
-
-
-
-
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", profileImage=" + profileImage +
+                ", birthday=" + birthday +
+                ", organization='" + organization + '\'' +
+                '}';
+    }
 
 
 }
