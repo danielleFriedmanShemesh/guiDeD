@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,10 +14,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.guided.databinding.ActivityMainBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class Home_page extends AppCompatActivity {
+public class Home_page extends AppCompatActivity implements View.OnClickListener {
 
     ActivityMainBinding binding;
+    ImageView menuBTN;
+    BottomNavigationView navView;
 
 
 
@@ -29,31 +34,36 @@ public class Home_page extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        binding= ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        /*binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-            switch (item.getItemId()){
-                case R.id.home:
-                    ;
-            }
+
+        menuBTN = findViewById(R.id.option_btn);
+        menuBTN.setOnClickListener(this);
+
+        navView = findViewById(R.id.bottomNavigationView);
+        navView.setOnItemSelectedListener(item -> {
+//            switch (item.getItemId()){
+//                case R.id.home:
+//                    ;
+//            }
             return true;
-        });*/
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_main,menu);
+        getMenuInflater().inflate(R.menu.toolbar_menu,menu);
         return true;
     }
     public boolean onOptionsItemSelected(MenuItem item){
         super.onOptionsItemSelected(item);
         int id= item.getItemId();
+
         /* if ((id == R.id.action_home)){
             Intent intent=new Intent(this, Home_page.class);
             startActivity(intent);
             finish();
         }
-       /* else if (id == R.id.action_library_operations){
+        else if (id == R.id.action_library_operations){
             Intent intent=new Intent(this, Operations_library.class);
             startActivity(intent);
             finish();
@@ -80,5 +90,10 @@ public class Home_page extends AppCompatActivity {
         }*/
 
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }

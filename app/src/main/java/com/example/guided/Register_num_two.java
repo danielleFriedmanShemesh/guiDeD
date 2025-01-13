@@ -101,8 +101,10 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
 
 
         Intent intent = getIntent();
-        newUser= (User) intent.getSerializableExtra("newUser");
-        textView.setText(newUser.toString());
+        if(intent!=null){
+            newUser= (User) intent.getSerializableExtra("newUser");
+            //textView.setText(newUser.toString());
+        }
 
       /*  if (newUser!=null){
             userName= newUser.getUserName();
@@ -279,9 +281,6 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
         }
 
         if (v == saveBTN) {
-
-
-
             // בדיקות של כינוי
             if (nickName.getText().toString().length() < 2)
                 alartForNickName.setText(" * כינוי קצר מדי נסה שנית. " + '\n' + alartForNickName.getText().toString());

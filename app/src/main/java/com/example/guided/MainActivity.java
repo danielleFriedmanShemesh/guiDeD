@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     Button btn1;
     Button btn2;
+    Button btn3;
 
 
     @Override
@@ -32,15 +33,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn1.setOnClickListener(this);
         btn2=findViewById(R.id.button2);
         btn2.setOnClickListener(this);
+        btn3=findViewById(R.id.button3);
+        btn3.setOnClickListener(this);
+
 
     }
 
     @Override
     public void onClick(View v) {
-        if(v==btn1){Intent intent=new Intent(this, Register_num_one.class);
-            startActivity(intent);}
-        if(v==btn2){Intent intent1=new Intent(this, Register_num_two.class);
-            startActivity(intent1);}
+        Intent intent;
+        if(v==btn1) {
+            intent=new Intent(this, Register_num_one.class);
+            startActivity(intent);
+            finish();
+        }
+        else if(v==btn2) {
+            intent=new Intent(this, Register_num_two.class);
+            startActivity(intent);
+            finish();
+        }
+        else if (v==btn3){
+            intent=new Intent(this, Home_page.class);
+            startActivity(intent);
+            finish();
+        }
 
 
     }
