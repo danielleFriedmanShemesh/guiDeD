@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
+
     <item
         android:id="@+id/action_profile"
         android:icon="@drawable/baseline_person_24"
@@ -9,41 +10,24 @@
         />
 
     <item
-        android:id="@+id/action_add"
-        android:icon="@drawable/baseline_add_24"
-        android:title="הוספה">
-        <menu>
-            <item
-                android:id="@+id/action_add_operation"
-                android:title="הוספת פעולה חדשה"
-                />
-            <item
-                android:id="@+id/action_add_trip"
-                android:title="הוספת טיול חדש"
-                />
-
-        </menu>
-
-    </item>
+        android:id="@+id/action_add_operation"
+        android:title="הוספת פעולה חדשה"
+        />
 
     <item
-        android:title="מאגר"
-        android:id="@+id/action_library"
-        android:icon="@drawable/baseline_menu_book_24">
+        android:id="@+id/action_add_trip"
+        android:title="הוספת טיול חדש"
+        />
 
-        <menu>
-            <item
-                android:id="@+id/action_library_operations"
-                android:title="מאגר פעולות"
-                />
-            <item
-                android:id="@+id/action_library_trips"
-                android:title="מאגר טיולים"
-                />
+    <item
+        android:id="@+id/action_library_operations"
+        android:title="מאגר פעולות"
+        />
 
-        </menu>
-
-    </item>
+    <item
+        android:id="@+id/action_library_trips"
+        android:title="מאגר טיולים"
+        />
 
     <item
         android:id="@+id/action_home"
