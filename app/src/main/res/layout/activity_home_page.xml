@@ -30,22 +30,23 @@
          />-->
 
 
-    <ImageView
+    <ImageButton
+
         android:id="@+id/option_btn"
-        android:layout_width="38dp"
-        android:layout_height="38dp"
+        android:layout_width="49dp"
+        android:layout_height="45dp"
         android:src="@drawable/baseline_menu_24"
         app:layout_constraintBottom_toTopOf="@+id/frameLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/logo"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:menu="@menu/menu_main" />
+        app:layout_constraintVertical_bias="0.038"
+        android:backgroundTint="@color/white"
+        />
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="312dp"
+        android:layout_width="346dp"
         android:layout_height="92dp"
         android:layout_gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/frameLayout"
@@ -54,7 +55,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5"
         app:srcCompat="@android:drawable/editbox_background" />
-<FrameLayout
+
+    <FrameLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/frameLayout"

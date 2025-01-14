@@ -39,7 +39,7 @@ public class LibraryOperationsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v= inflater.inflate(R.layout.fragment_library_operations, container, false);
+        v = inflater.inflate(R.layout.fragment_library_operations, container, false);
         return v;
     }
 }
