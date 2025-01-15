@@ -34,6 +34,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,6 +60,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
     TextView alartForProfile;
 
     User newUser;
+
 
     TextView textView;
 
@@ -100,11 +102,18 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
 
 
 
-        Intent intent = getIntent();
-        if(intent!=null){
-            newUser= (User) intent.getSerializableExtra("newUser");
-            //textView.setText(newUser.toString());
+
+        Serializable user= getIntent().getSerializableExtra("newUser");
+        if (user instanceof User){
+            newUser= (User) user;
+            organization.setText(newUser.getOrganization());
+            birthday.setText(DateConverter.convertFullFormatToDate(newUser.getBirthday().toString()));
+            profile.setImageBitmap(BitmapHelper.stringToBitmap(newUser.getProfileImage()));
+            nickName.setText(newUser.getNickName());
+
         }
+            //textView.setText(newUser.toString());
+
 
       /*  if (newUser!=null){
             userName= newUser.getUserName();
@@ -255,7 +264,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
             builder.setMessage("do you want to take a picture or to add a picture from your galery?");
             builder.setCancelable(true);
             builder.setPositiveButton("CAMERA", new HandleAlartDialogLostener());
-            builder.setNegativeButton("galery", new HandleAlartDialogLostener());
+            builder.setNegativeButton("GALERY", new HandleAlartDialogLostener());
             AlertDialog dialog = builder.create();
             dialog.show();
         }
@@ -334,7 +343,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
 
 
             Intent intent=new Intent(this, Register_num_one.class);
-            intent.putExtra("user",  newUser);
+            intent.putExtra("newUser",  newUser);
             Toast.makeText(this, newUser.toString(), Toast.LENGTH_LONG).show();
             startActivity(intent);
             finish();

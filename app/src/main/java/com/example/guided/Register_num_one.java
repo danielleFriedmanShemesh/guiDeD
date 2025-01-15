@@ -17,6 +17,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Serializable;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,7 +30,7 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
     TextView alartForUserName;
     TextView alartForPassword;
     TextView alartForEmail;
-    User user;
+    User newUser=new User();
 
 
 
@@ -70,12 +72,13 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
             email.setText(emailStr);
         }*/
 
-        user= (User) getIntent().getSerializableExtra("newUser");
+        Serializable user=  getIntent().getSerializableExtra("newUser");
 
-            if (user!=null){
-            userName.setText(user.getUserName());
-            password.setText(user.getPassword());
-            email.setText(user.getEmail());
+            if (user instanceof User){
+                newUser= (User) user;
+                userName.setText(newUser.getUserName());
+                password.setText(newUser.getPassword());
+                email.setText(newUser.getEmail());
         }
 
 
@@ -142,18 +145,16 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
             if((!password.getText().toString().isEmpty())&&(!userName.getText().toString().isEmpty())&&(!email.getText().toString().isEmpty())){
                 if(checkUserName(userName.getText().toString())&&(checkPassword(password.getText().toString()))&&(checkEmail(email.getText().toString()))){
 
-                    if(user!=null){
-                    user.setUserName(userName.getText().toString());
-                    user.setPassword(password.getText().toString());
-                    user.setEmail(email.getText().toString());}
+                        newUser.setUserName(userName.getText().toString());
+                        newUser.setPassword(password.getText().toString());
+                        newUser.setEmail(email.getText().toString());
 
-                    else {user= new User(userName.getText().toString(),password.getText().toString(),email.getText().toString());}
 
                     Intent intent=new Intent(this, Register_num_two.class);
-                    intent.putExtra("newUser", user);
-                    Toast.makeText(this, user.toString(), Toast.LENGTH_LONG).show();
+                    intent.putExtra("newUser", newUser);
+                    Toast.makeText(this, newUser.toString(), Toast.LENGTH_LONG).show();
 
-                    textView.setText(user.toString());
+                    textView.setText(newUser.toString());
 
 
                     startActivity(intent);
