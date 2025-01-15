@@ -51,20 +51,11 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
     Dialog dialog;
     Button backBTN;
     Button saveBTN;
-    String userName;
-    String password;
-    String email;
     TextView alartForNickName;
     TextView alartForOrganization;
     TextView alartForBirthday;
     TextView alartForProfile;
-
     User newUser;
-
-
-    TextView textView;
-
-
 
 
     @Override
@@ -79,58 +70,43 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
         });
 
 
-        profile=findViewById(R.id.profile);
+        profile = findViewById(R.id.profile);
         profile.setOnClickListener(this);
 
-        nickName=findViewById(R.id.nickName);
+        nickName = findViewById(R.id.nickName);
 
-
-        birthday=findViewById(R.id.birthday);
+        birthday = findViewById(R.id.birthday);
         birthday.setOnClickListener(this);
 
-
-        organization = findViewById(R.id.organization);
-        arrayList = new ArrayList<>();
-
-        backBTN= findViewById(R.id.back);
+        backBTN = findViewById(R.id.back);
         backBTN.setOnClickListener(this);
 
-        saveBTN=findViewById(R.id.save);
+        saveBTN = findViewById(R.id.save);
         saveBTN.setOnClickListener(this);
 
-        textView=findViewById(R.id.tv);
-
-
-
-
-        Serializable user= getIntent().getSerializableExtra("newUser");
+        //set fields with data from User object that returned from the first register activity as an extra
+        Serializable user = getIntent().getSerializableExtra("newUser");
         if (user instanceof User){
-            newUser= (User) user;
+            newUser = (User) user;
             organization.setText(newUser.getOrganization());
-            birthday.setText(DateConverter.convertFullFormatToDate(newUser.getBirthday().toString()));
-            profile.setImageBitmap(BitmapHelper.stringToBitmap(newUser.getProfileImage()));
+            birthday.setText(
+                    DateConverter.convertFullFormatToDate(
+                            newUser.getBirthday().
+                                    toString()));
+            profile.setImageBitmap(
+                    BitmapHelper.stringToBitmap(
+                            newUser.getProfileImage()));
             nickName.setText(newUser.getNickName());
-
         }
-            //textView.setText(newUser.toString());
 
+        alartForOrganization = findViewById(R.id.alartOrganization);
+        alartForBirthday = findViewById(R.id.alartBirthday);
+        alartForNickName = findViewById(R.id.alartNickName);
+        alartForProfile = findViewById(R.id.alartProfile);
 
-      /*  if (newUser!=null){
-            userName= newUser.getUserName();
-            password=newUser.getPassword();
-            email=newUser.getEmail();
-            nickName.setText(newUser.getNickName());
-            birthday.setText(newUser.getBirthday().toString());
-            organization.setText(newUser.getOrganization());
-            profile.setImageBitmap(newUser.getProfileImage());
-        }*/
-
-
-         alartForOrganization=findViewById(R.id.alartOrganization);
-         alartForBirthday=findViewById(R.id.alartBirthday);
-         alartForNickName=findViewById(R.id.alartNickName);
-         alartForProfile=findViewById(R.id.alartProfile);
-
+        organization = findViewById(R.id.organization);
+        //crating a list of youth organizations in israel
+        arrayList = new ArrayList<>();
 
         arrayList.add("הצופים");
         arrayList.add("המכבי הצעיר");
@@ -196,12 +172,12 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
         organization.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog =new Dialog(Register_num_two.this);
+                dialog = new Dialog(Register_num_two.this);
 
                 // set custom dialog
                 dialog.setContentView(R.layout.dialog_searchable_spinner);
 
-                // set custom height and width\
+                // set custom height and width
                 dialog.getWindow().setLayout(650,800);
 
                 // set transparent background
@@ -211,30 +187,26 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
                 dialog.show();
 
                 // Initialize and assign variable
-                EditText editText=dialog.findViewById(R.id.edit_text);
-                ListView listView=dialog.findViewById(R.id.list_view);
+                EditText editText = dialog.findViewById(R.id.edit_text);
+                ListView listView = dialog.findViewById(R.id.list_view);
 
                 // Initialize array adapter
-                ArrayAdapter<String> adapter=new ArrayAdapter<>(Register_num_two.this, android.R.layout.simple_list_item_1,arrayList);
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(Register_num_two.this,
+                        android.R.layout.simple_list_item_1,arrayList);
 
                 // set adapter
                 listView.setAdapter(adapter);
                 editText.addTextChangedListener(new TextWatcher() {
                     @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    }
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         adapter.getFilter().filter(s);
-
                     }
 
                     @Override
-                    public void afterTextChanged(Editable s) {
-
-                    }
+                    public void afterTextChanged(Editable s) {}
                 });
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -249,7 +221,6 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
                 });
             }
         });
-
     }
 
     @Override
@@ -258,25 +229,32 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
         alartForOrganization.setText("");
         alartForBirthday.setText("");
 
+        // if user click on the profile image view
         if (v == profile) {
+
+            //creating a dialog for adding a profile picture from gallery or for taking a picture at the camera
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("select one option");
-            builder.setMessage("do you want to take a picture or to add a picture from your galery?");
+            builder.setMessage("do you want to take a picture or to add a picture from your gallery?");
             builder.setCancelable(true);
             builder.setPositiveButton("CAMERA", new HandleAlartDialogLostener());
-            builder.setNegativeButton("GALERY", new HandleAlartDialogLostener());
+            builder.setNegativeButton("GALLERY", new HandleAlartDialogLostener());
             AlertDialog dialog = builder.create();
             dialog.show();
         }
 
-        if (v==birthday){
+        //if user click on the birthday edit text
+        if (v == birthday){
             final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
+
+            //open a Date Picker Dialog
             DatePickerDialog datePickerDialog = new DatePickerDialog(
                     Register_num_two.this, new DatePickerDialog.OnDateSetListener() {
-                @Override
+                        @Override
+                        //show the date that the user chose at the birthday edit text
                         public void onDateSet(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth) {
                             // on below line we are setting date to our edit text.
@@ -286,28 +264,35 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
                     }, year, month, day);
 
             datePickerDialog.show();
-
         }
 
+        // if you click on the 'finish' button
         if (v == saveBTN) {
             // בדיקות של כינוי
             if (nickName.getText().toString().length() < 2)
-                alartForNickName.setText(" * כינוי קצר מדי נסה שנית. " + '\n' + alartForNickName.getText().toString());
+                alartForNickName.setText(" * כינוי קצר מדי נסה שנית. "
+                        + '\n'
+                        + alartForNickName.getText().toString());
             else if (nickName.getText().toString().length() > 15)
-                alartForNickName.setText("* כינוי ארוך מדי נסה שנית." + '\n' + alartForNickName.getText().toString());
+                alartForNickName.setText("* כינוי ארוך מדי נסה שנית."
+                        + '\n'
+                        + alartForNickName.getText().toString());
             if (nickName.getText().toString().isEmpty())
-                alartForNickName.setText("* שדה חובה! הכנס כינוי" + '\n' + alartForNickName.getText().toString());
+                alartForNickName.setText("* שדה חובה! הכנס כינוי"
+                        + '\n'
+                        + alartForNickName.getText().toString());
 
             //בדיקות של יום הולדת
-
             if(birthday.getText().toString().isEmpty())
-                alartForBirthday.setText("* שדה חובה! הכנס תאריך לידה" + '\n' + alartForBirthday.getText().toString());
+                alartForBirthday.setText("* שדה חובה! הכנס תאריך לידה"
+                        + '\n'
+                        + alartForBirthday.getText().toString());
 
             //בדיקות של מסגרת הדרכה
             if (organization.getText().equals(""))
                 alartForOrganization.setText("* שדה חובה! בחר מסגרת הדרכה");
 
-            //בדיקות סופיות
+            //final checks of creating a new user at the database
             if (!organization.getText().toString().isEmpty() &&
                 !birthday.getText().toString().isEmpty() &&
                 !nickName.getText().toString().isEmpty() &&
@@ -317,107 +302,108 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
                         .isEmpty())
             {
                 saveUser();
-                Toast.makeText(this, newUser.toString(), Toast.LENGTH_LONG).show();
 
-                Intent intent=new Intent(this, Home_page.class);
+                //open the home page after the user had been saved in the database
+                Intent intent = new Intent(this, Home_page.class);
                 startActivity(intent);
                 finish();
-
             }
         }
 
-
-
+        // if you click on the 'back' button
         if(v == backBTN){
-            //אין לי מושג איך חוזרים למסך הראשון ומראים את הנתונים שהמשתמש כבר הכניס
 
+            //saving the inputs that the user entered at an User object
             newUser.setNickName(nickName.getText().toString());
             newUser.setOrganization(organization.getText().toString());
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            SimpleDateFormat dateFormat = new SimpleDateFormat(
+                    "dd/MM/yyyy", Locale.getDefault());
             try {
-                newUser.setBirthday(dateFormat.parse(birthday.getText().toString()));
+                newUser.setBirthday(
+                        dateFormat.parse(
+                                birthday.getText().toString()));
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
-            newUser.setProfileImage(BitmapHelper.bitmapToString(((BitmapDrawable)profile.getDrawable()).getBitmap()));
+            newUser.setProfileImage(
+                    BitmapHelper.bitmapToString(
+                            ((BitmapDrawable)profile.getDrawable())
+                                    .getBitmap()));
 
-
-            Intent intent=new Intent(this, Register_num_one.class);
+            //returns to the first register activity and transport the User object as an extra
+            Intent intent = new Intent(this, Register_num_one.class);
             intent.putExtra("newUser",  newUser);
-            Toast.makeText(this, newUser.toString(), Toast.LENGTH_LONG).show();
             startActivity(intent);
             finish();
-
-
         }
     }
 
     private class HandleAlartDialogLostener implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int which) {
-            Toast.makeText(Register_num_two.this, "YOU SELECTED" + which, Toast.LENGTH_SHORT).show();
             //camera
             if (which == -1) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, 0);
 
-            } else if (which == -2) {
+            }
+            //gallery
+            else if (which == -2) {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "picture"), 1);
+                startActivityForResult(
+                        Intent.createChooser(intent, "picture"),
+                        1);
             }
-
         }
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
-        if(requestCode==0) {//coming from camera
-            if (resultCode == RESULT_OK) {
-
-                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                profile.setImageBitmap(bitmap);
-
-            }
-        }
-        else if(requestCode==1) {
+        //get image from camera
+        if(requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 profile.setImageBitmap(bitmap);
             }
-
         }
-
-
-
+        //get image from gallery
+        else if(requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                profile.setImageBitmap(bitmap);
+            }
+        }
     }
 
-
-    public void saveUser(){
+    //save user in data base
+    public void saveUser() {
         // Write a message to the database
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "dd/MM/yyyy", Locale.getDefault());
         Date birthdayDate;
         //A try-catch block handles invalid input formats, ensuring the app doesn't crash if the user enters an incorrect date.
         try{
             // dateFormat.parse(dateString) converts the string into a Date object.
-            birthdayDate = dateFormat.parse(birthday.getText().toString());} catch (
-                ParseException e) {
+            birthdayDate = dateFormat.parse(birthday.getText().toString());}
+        catch (ParseException e) {
             throw new RuntimeException(e);
         }
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("user");
 
-        /*newUser.setNickName(nickName.getText().toString());
-        newUser.setOrganization(organization.getText().toString());
-        newUser.setBirthday(birthdayDate);
-        newUser.setProfileImage(((BitmapDrawable)profile.getDrawable()).getBitmap());*/
-        User user= new User(newUser.getUserName(), newUser.getPassword(),newUser.getEmail(),nickName.getText().toString(),organization.getText().toString(),birthdayDate,BitmapHelper.bitmapToString(((BitmapDrawable)profile.getDrawable()).getBitmap()));
+        User user = new User(newUser.getUserName(),
+                newUser.getPassword(),
+                newUser.getEmail(),
+                nickName.getText().toString(),
+                organization.getText().toString(),
+                birthdayDate,
+                BitmapHelper.bitmapToString(
+                        ((BitmapDrawable)profile.getDrawable())
+                                .getBitmap()));
 
         myRef.setValue(user);
     }
-
-
-
 }

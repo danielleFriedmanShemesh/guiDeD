@@ -32,12 +32,6 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
     TextView alartForEmail;
     User newUser=new User();
 
-
-
-    TextView textView;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,9 +43,6 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
             return insets;
         });
 
-        textView=findViewById(R.id.tv);
-
-
         continueBtn=findViewById(R.id.continueBTN);
         userName=findViewById(R.id.userName);
         password=findViewById(R.id.password);
@@ -61,30 +52,16 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
         alartForPassword=findViewById(R.id.alartPassword);
         alartForEmail=findViewById(R.id.alartEmail);
 
-        /*Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            String userNameStr = extras.getString("userName");
-            String passwordStr = extras.getString("password");
-            String emailStr = extras.getString("email");
-            userName.setText(userNameStr);
-            password.setText(passwordStr);
-            email.setText(emailStr);
-        }*/
-
+        //set fields with data from User object that returned from the second register activity as an extra
         Serializable user=  getIntent().getSerializableExtra("newUser");
-
-            if (user instanceof User){
-                newUser= (User) user;
-                userName.setText(newUser.getUserName());
-                password.setText(newUser.getPassword());
-                email.setText(newUser.getEmail());
+        if (user instanceof User){
+            newUser= (User) user;
+            userName.setText(newUser.getUserName());
+            password.setText(newUser.getPassword());
+            email.setText(newUser.getEmail());
         }
 
-
         continueBtn.setOnClickListener(this);
-
-
     }
 
     @Override
@@ -94,24 +71,32 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
         alartForPassword.setText("");
         alartForEmail.setText("");
 
-        //לבדוק האם כל השדות מלאים ואם לא הודעת שגיאה
-
-
+        // if you click on the 'next' button
         if(v==continueBtn){
-//בדיקות של שם משתמש
-            if(userName.getText().toString().length()!=8){
-                if(userName.getText().toString().length()<8){
-                    alartForUserName.setText(" * שם משתמש קצר מדי נסה שנית. "+'\n'+ alartForUserName.getText().toString());
+            //בדיקות של שם משתמש
+            if(userName.getText().toString().length() != 8){
+                if(userName.getText().toString().length() < 8){
+                    alartForUserName.setText(" * שם משתמש קצר מדי נסה שנית. " +
+                            '\n' +
+                            alartForUserName.getText().toString());
                 }
-                else if(userName.getText().toString().length()>8){
-                    alartForUserName.setText("* שם משתמש ארוך מדי נסה שנית."+ '\n'+alartForUserName.getText().toString());
+                else if(userName.getText().toString().length() > 8){
+                    alartForUserName.setText("* שם משתמש ארוך מדי נסה שנית." +
+                            '\n' +
+                            alartForUserName.getText().toString());
                 }
             }
-            if(userName.getText().toString().isEmpty()){
-                alartForUserName.setText("* שדה חובה! הכנס שם משתמש"+ '\n'+alartForUserName.getText().toString());
+            if(userName.getText().toString().isEmpty())
+            {
+                alartForUserName.setText("* שדה חובה! הכנס שם משתמש" +
+                        '\n' +
+                        alartForUserName.getText().toString());
             }
-            if(!input_Validation(userName.getText().toString())){
-                alartForUserName.setText("* שם המשתמש חייב להכיל רק ספרות, אותיות באנגלית ותווים מיוחדים."+ '\n'+alartForUserName.getText().toString());
+            if(!input_Validation(userName.getText().toString()))
+            {
+                alartForUserName.setText("* שם המשתמש חייב להכיל רק ספרות, אותיות באנגלית ותווים מיוחדים." +
+                        '\n' +
+                        alartForUserName.getText().toString());
             }
 
             //אחרי שיהיה דאטא בייס אז זאת תהיה בדיקה האם שם המשתמש כבר קיים
@@ -119,79 +104,89 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
             //if(checkIfOccupied(userName)){
             //alartForUserName.setText("שם המשתמש תפוס, הכנס שם אחר ונסה שוב."+ '\n'+alartForUserName.getText().toString());}
 
-//בדיקות של סיסמה
-            if(password.getText().toString().length()<6){
-                alartForPassword.setText("* סיסמה קצרה מדי נסה שנית"+'\n'+ alartForPassword.getText().toString());
+            //בדיקות של סיסמה
+            if(password.getText().toString().length() < 6){
+                alartForPassword.setText("* סיסמה קצרה מדי נסה שנית" +
+                        '\n' +
+                        alartForPassword.getText().toString());
             }
-            if(password.getText().toString().isEmpty()){
-                alartForPassword.setText("* שדה חובה! הכנס סיסמה"+ '\n'+alartForPassword.getText().toString());
+            if(password.getText().toString().isEmpty())
+            {
+                alartForPassword.setText("* שדה חובה! הכנס סיסמה" +
+                        '\n' +
+                        alartForPassword.getText().toString());
+            }
+            else if(password.getText().toString().length() > 10){
+                alartForPassword.setText("* סיסמה ארוכה מדי נסה שנית" +
+                        '\n' +
+                        alartForPassword.getText().toString());
+            }
 
-            }
-            else if(password.getText().toString().length()>10){
-                alartForPassword.setText("* סיסמה ארוכה מדי נסה שנית"+'\n'+ alartForPassword.getText().toString());
-            }
-
-//בדיקות של אימייל
+            //בדיקות של אימייל
             String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-            if(email.getText().toString().isEmpty()){
-                alartForUserName.setText("* שדה חובה! הכנס מייל"+ '\n'+alartForEmail.getText().toString());
-
+            if(email.getText().toString().isEmpty())
+            {
+                alartForUserName.setText("* שדה חובה! הכנס מייל" +
+                        '\n' +
+                        alartForEmail.getText().toString());
             }
-            if(!email.getText().toString().matches(emailPattern)){
-                alartForEmail.setText("* המייל שהכנסת אינו תקין, נסה שנית"+'\n'+ alartForEmail.getText().toString());
+            if(!email.getText().toString().matches(emailPattern))
+            {
+                alartForEmail.setText("* המייל שהכנסת אינו תקין, נסה שנית" +
+                        '\n' +
+                        alartForEmail.getText().toString());
             }
 
-//בדיקות סופיות
-            if((!password.getText().toString().isEmpty())&&(!userName.getText().toString().isEmpty())&&(!email.getText().toString().isEmpty())){
-                if(checkUserName(userName.getText().toString())&&(checkPassword(password.getText().toString()))&&(checkEmail(email.getText().toString()))){
+            //final checks before moving to the second activity
+            if((!password.getText().toString().isEmpty()) &&
+                    (!userName.getText().toString().isEmpty()) &&
+                    (!email.getText().toString().isEmpty()))
+            {
+                if(checkUserName(userName.getText().toString()) &&
+                        (checkPassword(password.getText().toString())) &&
+                        (checkEmail(email.getText().toString())))
+                {
+                    newUser.setUserName(userName.getText().toString());
+                    newUser.setPassword(password.getText().toString());
+                    newUser.setEmail(email.getText().toString());
 
-                        newUser.setUserName(userName.getText().toString());
-                        newUser.setPassword(password.getText().toString());
-                        newUser.setEmail(email.getText().toString());
-
-
+                    //go to the second register activity and transport the User object as an extra
                     Intent intent=new Intent(this, Register_num_two.class);
                     intent.putExtra("newUser", newUser);
-                    Toast.makeText(this, newUser.toString(), Toast.LENGTH_LONG).show();
-
-                    textView.setText(newUser.toString());
-
-
                     startActivity(intent);
                     finish();
-
                 }
             }
-
-
         }
     }
 
+    //checks if input has letters and digits and special characters
     public static boolean input_Validation(String input)
     {
-            Pattern letter = Pattern.compile("[a-zA-Z]");
-            Pattern digit = Pattern.compile("[0-9]");
-            Pattern special = Pattern.compile ("[^A-Za-z0-9]");
+        Pattern letter = Pattern.compile("[a-zA-Z]");
+        Pattern digit = Pattern.compile("[0-9]");
+        Pattern special = Pattern.compile ("[^A-Za-z0-9]");
 
-            Matcher hasLetter = letter.matcher(input);
-            Matcher hasDigit = digit.matcher(input);
-            Matcher hasSpecial = special.matcher(input);
+        Matcher hasLetter = letter.matcher(input);
+        Matcher hasDigit = digit.matcher(input);
+        Matcher hasSpecial = special.matcher(input);
 
-            return hasLetter.find() && hasDigit.find() && hasSpecial.find();
+        return hasLetter.find() && hasDigit.find() && hasSpecial.find();
     }
+
+    //checks if username is stand at all the terms
     public static boolean checkUserName(String userName){
-        return ((userName.length()==8)&&(input_Validation(userName))/*&&checkIfOccupied(userName)==false*/);
+        return ((userName.length() == 8) && (input_Validation(userName))/*&&checkIfOccupied(userName)==false*/);
     }
 
+    //checks if password is stand at all the terms
     public static boolean checkPassword(String password){
-        return ((password.length()>=6)&&(password.length()<=10));
+        return ((password.length() >= 6) && (password.length() <= 10));
     }
+
+    //checks if email is stand at all the terms
     public static boolean checkEmail(String email){
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         return (email.matches(emailPattern));
     }
-
-
-
-
 }
