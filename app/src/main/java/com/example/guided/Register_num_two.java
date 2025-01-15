@@ -84,8 +84,11 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
         saveBTN = findViewById(R.id.save);
         saveBTN.setOnClickListener(this);
 
+        organization = findViewById(R.id.organization);
+
         //set fields with data from User object that returned from the first register activity as an extra
-        Serializable user = getIntent().getSerializableExtra("newUser");
+        Intent intent=getIntent();
+        Serializable user = intent.getSerializableExtra("newUser");
         if (user instanceof User){
             newUser = (User) user;
             organization.setText(newUser.getOrganization());

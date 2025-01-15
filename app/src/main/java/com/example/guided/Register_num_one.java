@@ -80,7 +80,7 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
                             '\n' +
                             alartForUserName.getText().toString());
                 }
-                else if(userName.getText().toString().length() > 8){
+                else if(userName.getText().toString().length() > 15){
                     alartForUserName.setText("* שם משתמש ארוך מדי נסה שנית." +
                             '\n' +
                             alartForUserName.getText().toString());
@@ -176,7 +176,7 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
 
     //checks if username is stand at all the terms
     public static boolean checkUserName(String userName){
-        return ((userName.length() == 8) && (input_Validation(userName))/*&&checkIfOccupied(userName)==false*/);
+        return ((userName.length() >= 8) && (userName.length() <= 15) && (input_Validation(userName))/*&&checkIfOccupied(userName)==false*/);
     }
 
     //checks if password is stand at all the terms
