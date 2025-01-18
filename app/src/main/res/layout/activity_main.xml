@@ -8,22 +8,45 @@
     tools:context=".MainActivity"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ברוכה הבאה ל guiDeD!"
+        android:textSize="50dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
+        android:id="@+id/signUp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="לחץ ליצירת משתמש חדש"
+        android:textSize="25dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"/>
+    <Button
+        android:id="@+id/signIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="לחץ להתחברות למשתמש קיים"
+        android:textSize="25dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"/>
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Button" />
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="home" />
+
+
+    <!-- <Button
+         android:id="@+id/button2"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="Button" />
+     <Button
+         android:id="@+id/button3"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="home" />-->
 
 </LinearLayout>

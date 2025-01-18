@@ -15,7 +15,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     Button btn1;
     Button btn2;
-    Button btn3;
+//    Button btn3;n1;
+//
 
 
     @Override
@@ -29,12 +30,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return insets;
         });
 
-        btn1=findViewById(R.id.button);
+        btn1=findViewById(R.id.signUp);
         btn1.setOnClickListener(this);
-        btn2=findViewById(R.id.button2);
+        btn2=findViewById(R.id.signIn);
         btn2.setOnClickListener(this);
-        btn3=findViewById(R.id.button3);
-        btn3.setOnClickListener(this);
+//        btn3=findViewById(R.id.button3);
+//        btn3.setOnClickListener(this);
 
 
     }
@@ -52,12 +53,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
             finish();
         }
-        else if (v==btn3){
-            intent=new Intent(this, Home_page.class);
-            startActivity(intent);
-            finish();
-        }
-
+//        else if (v==btn3){
+//            intent=new Intent(this, Home_page.class);
+//            startActivity(intent);
+//            finish();
+//        }
+//
 
     }
 }

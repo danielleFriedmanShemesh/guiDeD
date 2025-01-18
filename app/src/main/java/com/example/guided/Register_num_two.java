@@ -21,16 +21,22 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -56,6 +62,14 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
     TextView alartForBirthday;
     TextView alartForProfile;
     User newUser;
+    String userName;
+    String password;
+    String email;
+
+
+    private FirebaseAuth mAuth;
+    ProgressBar progressBar;
+
 
 
     @Override
@@ -68,6 +82,9 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        mAuth = FirebaseAuth.getInstance();
+        progressBar = findViewById(R.id.progressBar);
 
 
         profile = findViewById(R.id.profile);
@@ -100,6 +117,9 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
                     BitmapHelper.stringToBitmap(
                             newUser.getProfileImage()));
             nickName.setText(newUser.getNickName());
+            userName = newUser.getUserName();
+            password = newUser.getPassword();
+            email = newUser.getEmail();
         }
 
         alartForOrganization = findViewById(R.id.alartOrganization);
@@ -304,6 +324,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
                                 .getBitmap())
                         .isEmpty())
             {
+                progressBar.setVisibility(View.VISIBLE);
                 saveUser();
 
                 //open the home page after the user had been saved in the database
@@ -394,19 +415,37 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
             throw new RuntimeException(e);
         }
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("user");
+        mAuth.createUserWithEmailAndPassword(email,password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            User user = new User(newUser.getUserName(),
+                                    newUser.getPassword(),
+                                    newUser.getEmail(),
+                                    nickName.getText().toString(),
+                                    organization.getText().toString(),
+                                    birthdayDate,
+                                    BitmapHelper.bitmapToString(
+                                            ((BitmapDrawable)profile.getDrawable())
+                                                    .getBitmap()));
 
-        User user = new User(newUser.getUserName(),
-                newUser.getPassword(),
-                newUser.getEmail(),
-                nickName.getText().toString(),
-                organization.getText().toString(),
-                birthdayDate,
-                BitmapHelper.bitmapToString(
-                        ((BitmapDrawable)profile.getDrawable())
-                                .getBitmap()));
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference myRef = database.getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            myRef.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        Toast.makeText(Register_num_two.this, "User Registered", Toast.LENGTH_LONG).show();
+                                        progressBar.setVisibility(View.GONE);
 
-        myRef.setValue(user);
+                                    }
+                                }
+                            });
+                        }
+
+                    }
+                });
+
     }
 }
