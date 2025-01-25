@@ -7,4 +7,20 @@
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="age_adjustment">
+        <item>לכל גיל</item>
+        <item>כיתה א\'</item>
+        <item>כיתה ב\'</item>
+        <item>כיתה ג\'</item>
+        <item>כיתה ד\'</item>
+        <item>כיתה ה\'</item>
+        <item>כיתה ו\'</item>
+        <item>כיתה ז\'</item>
+        <item>כיתה ח\'</item>
+        <item>כיתה ט\'</item>
+        <item>כיתה י\'</item>
+        <item>כיתה י\"א</item>
+        <item>כיתה י\"ב</item>
+        <item>אחר</item>
+    </string-array>
 </resources>

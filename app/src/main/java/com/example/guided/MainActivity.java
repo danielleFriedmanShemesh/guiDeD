@@ -15,8 +15,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     Button btn1;
     Button btn2;
-//    Button btn3;n1;
-//
+    Button btn3;
+
 
 
     @Override
@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn1.setOnClickListener(this);
         btn2=findViewById(R.id.signIn);
         btn2.setOnClickListener(this);
-//        btn3=findViewById(R.id.button3);
-//        btn3.setOnClickListener(this);
+        btn3=findViewById(R.id.add_operation);
+        btn3.setOnClickListener(this);
 
 
     }
@@ -58,7 +58,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            startActivity(intent);
 //            finish();
 //        }
-//
+        else if (v==btn3) {
+            intent=new Intent(this, Add_operation.class);
+            startActivity(intent);
+            finish();
+        }
 
     }
 }

@@ -36,6 +36,11 @@
         android:layout_gravity="center"
         android:layout_marginTop="50dp"/>
 
+    <Button
+        android:id="@+id/add_operation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="הוספת פעולה" />
 
 
     <!-- <Button
