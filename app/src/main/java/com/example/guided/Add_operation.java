@@ -35,16 +35,15 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
 
     TextView length;
 
-    ArrayList<Metoda> metodot;
-    ListView lvMetodot;
-
-
     Button addMetodaBTN;
-
+    EditText metodaLength;
+    EditText title;
+    EditText description;
+    EditText equipment;
     LinearLayout metodaLayout;
-
-
-
+    ArrayList<Metoda> metodotArr = new ArrayList<>();
+    Metoda tempMetoda;
+    int i=0;
 
 
 
@@ -68,9 +67,14 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
         length = findViewById(R.id.length);
 
         metodaLayout = findViewById(R.id.llMetoda);
+
         addMetodaBTN= findViewById(R.id.addMetoda);
         addMetodaBTN.setOnClickListener(this);
 
+        title = findViewById(R.id.title);
+        metodaLength = findViewById(R.id.lengthInMinutes);
+        description = findViewById(R.id.description);
+        equipment = findViewById(R.id.equipment);
 
 
         ageAdjustments = findViewById(R.id.age);
@@ -210,6 +214,14 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
         linearLayout.addView(metodaDescription);
         linearLayout.addView(metodaEquipment);
         linearLayout.addView(addNewMetodaBTN);
+
+//        tempMetoda = new Metoda(
+//                metodaTitle.getText().toString(),
+//                Integer.parseInt(
+//                        metodaLengthInMinutes.getText().toString()),
+//                metodaDescription.getText().toString(),
+//                metodaEquipment.getText().toString());
+//        metodotArr.add(tempMetoda);
 
         metodaLayout.addView(linearLayout);
     }

@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Home_page"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
 
     <!--  <TextView
@@ -87,7 +88,9 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:text="פעולות"
-            android:textSize="30dp" />
+            android:textSize="30dp"
+
+            />
 
         <HorizontalScrollView
             android:layout_width="match_parent"
@@ -133,7 +136,9 @@
                     android:layout_height="150dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:text="ראה עוד" />
+                    android:text="ראה עוד"
+
+                />
 
 
             </LinearLayout>

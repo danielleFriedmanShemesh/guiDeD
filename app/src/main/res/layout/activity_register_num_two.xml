@@ -19,7 +19,9 @@
         android:layout_marginTop="35dp"
         android:gravity="center"
         android:text="עוד כמה שאלות וסיימנו…."
-        android:textSize="30dp" />
+        android:textSize="30dp"
+        android:fontFamily="@font/yardenBoldAlefalefalef"
+        />
 
     <TextView
         android:layout_width="match_parent"
@@ -30,6 +32,8 @@
         android:text="הכנס תמונת פרופיל:"
         android:textSize="20dp"
         android:gravity="center"
+        android:fontFamily="@font/yardenBoldAlefalefalef"
+
         />
 
     <ImageView

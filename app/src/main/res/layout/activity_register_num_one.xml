@@ -29,14 +29,18 @@
         android:layout_height="wrap_content"
         android:text="הרשמה לאתר"
         android:layout_gravity="center"
-        android:textSize="45dp"/>
+        android:textSize="45dp"
+        android:fontFamily="@font/yardenBoldAlefalefalef"
+        />
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:hint="שם משתמש"
         android:textSize="30dp"
-        android:id="@+id/userName"/>
+        android:id="@+id/userName"
+        android:fontFamily="@font/yardenBoldAlefalefalef"
+        />
 
     <TextView
         android:id="@+id/alartUserName"
@@ -44,7 +48,7 @@
         android:layout_height="wrap_content"
         android:textColor="#FF0000"
         android:textSize="15dp"
-
+        android:fontFamily="@font/yardenBoldAlefalefalef"
         android:text="" />
 
     <EditText
@@ -53,7 +57,9 @@
         android:layout_gravity="center"
         android:hint="סיסמה"
         android:textSize="30dp"
-        android:id="@+id/password"/>
+        android:id="@+id/password"
+        android:fontFamily="@font/yardenBoldAlefalefalef"
+        />
 
     <TextView
         android:id="@+id/alartPassword"
@@ -62,7 +68,7 @@
         android:text=""
         android:textColor="#FF0000"
         android:textSize="15dp"
-
+        android:fontFamily="@font/yardenBoldAlefalefalef"
         />
 
 
@@ -74,7 +80,7 @@
         android:hint="אימייל"
         android:textSize="30dp"
         android:id="@+id/email"
-
+        android:fontFamily="@font/yardenBoldAlefalefalef"
         />
 
     <TextView
@@ -84,6 +90,8 @@
         android:text=""
         android:textColor="#FF0000"
         android:textSize="15dp"
+        android:fontFamily="@font/yardenBoldAlefalefalef"
+
         />
 
     <TextView
@@ -110,7 +118,10 @@
             android:layout_gravity="center"
             android:layout_marginStart="0dp"
             android:layout_marginBottom="0dp"
-            android:text="המשך" />
+            android:text="המשך"
+            android:textSize="20dp"
+            android:fontFamily="@font/yardenBoldAlefalefalef"
+            />
     </RelativeLayout>
 
 </LinearLayout>

@@ -5,12 +5,14 @@ public class Metoda {
     private int length;
     private String description;
     private String equipment;
+    private int id;
 
-    public Metoda(String title , int length , String description , String equipment){
+    public Metoda(String title , int length , String description , String equipment, int id){
         this.title = title;
         this.length = length;
         this.description = description;
         this.equipment = equipment;
+        this.id = id;
     }
 
     public String getTitle() {
@@ -43,5 +45,12 @@ public class Metoda {
 
     public void setEquipment(String equipment) {
         this.equipment = equipment;
+    }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
