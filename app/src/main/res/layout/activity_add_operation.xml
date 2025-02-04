@@ -1,50 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Add_operation">
+    tools:context=".Add_operation"
+    android:orientation="vertical"
+    >
 
 
 
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="30dp"
+    android:layoutDirection="rtl"
+    >
     <EditText
         android:id="@+id/topic"
-        android:layout_width="0dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
+        android:textSize="25dp"
         android:hint="שם הפעולה"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/exit"
-        app:layout_constraintTop_toTopOf="parent" />
+         />
 
     <ImageButton
         android:id="@+id/exit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
         android:backgroundTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/topic"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="75dp"
         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+</LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="30dp"
+    android:layout_marginEnd="30dp"
+    android:layout_marginTop="15dp">
 
-    <TextView
-        android:id="@+id/age"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
+            android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
+            android:gravity="center_vertical"
+            android:hint="גיל החניכים"
+            android:padding="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/length"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="אורך הפעולה"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/age"
+            app:layout_constraintStart_toEndOf="@+id/switch3"
+            app:layout_constraintTop_toTopOf="@+id/age" />
+
+        <Switch
+            android:id="@+id/switch3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff="פרטי"
+            android:textOn="ציבורי"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/age" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        >
+
+    <LinearLayout
+        android:id="@+id/llMetoda"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
-        android:background="@android:drawable/editbox_background"
-        android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
-        android:gravity="center_vertical"
-        android:hint="גיל החניכים"
-        android:padding="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topic" />
+        android:orientation="vertical"
+        android:layoutDirection="rtl"
+        android:textDirection="rtl">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:id="@+id/title"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="30dp"
+            android:hint="כותרת"
+            android:textSize="25dp"
+
+            />
+
+        <EditText
+            android:id="@+id/lengthInMinutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="זמן(בדקות)"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="30dp"
+            />
+
+        <EditText
+            android:id="@+id/description"
+            android:layout_width="350dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="15dp"
+            android:hint="תיאור"
+            android:textSize="25dp"
+            android:layout_marginStart="30dp"
+            />
+
+        <EditText
+            android:id="@+id/equipment"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:hint="הוספת ציוד"
+            android:textSize="25dp"
+            android:layout_marginStart="30dp"
+            />
+
+        <Button
+            android:id="@+id/addMetoda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/white"
+            android:text="+ הוספת מתודה"
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            />
+
+    </LinearLayout>
+    </ScrollView>
+    <!--<ListView
+        android:id="@+id/lvMetodot"
+        android:layout_width="match_parent"
+        android:layout_height="560dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/age"
+        app:layout_constraintVertical_bias="0.0">
+    </ListView>
+        <Button
+            android:id="@+id/addMetoda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layoutDirection="rtl"
+            android:background="@color/white"
+            android:text="הוספת מתודה"
+            app:icon="@drawable/baseline_add_24" />-->
+
+
+</LinearLayout>
