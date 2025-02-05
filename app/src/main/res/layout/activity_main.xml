@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <TextView
         android:id="@+id/textView3"
@@ -17,6 +18,8 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
+        android:fontFamily="@font/yardenboldalefalefalef"
+
         />
 
     <Button
@@ -26,7 +29,9 @@
         android:text="לחץ ליצירת משתמש חדש"
         android:textSize="25dp"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/yardenboldalefalefalef"
+        />
     <Button
         android:id="@+id/signIn"
         android:layout_width="wrap_content"
@@ -34,13 +39,18 @@
         android:text="לחץ להתחברות למשתמש קיים"
         android:textSize="25dp"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/yardenboldalefalefalef"
+        />
 
     <Button
         android:id="@+id/add_operation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="הוספת פעולה" />
+        android:text="הוספת פעולה"
+        android:textSize="25dp"
+        android:fontFamily="@font/yardenboldalefalefalef"
+        />
 
 
     <!-- <Button

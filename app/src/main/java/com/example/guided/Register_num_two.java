@@ -212,6 +212,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
                 // Initialize and assign variable
                 EditText editText = dialog.findViewById(R.id.edit_text);
                 ListView listView = dialog.findViewById(R.id.list_view);
+                listView.setTextDirection(View.TEXT_DIRECTION_RTL);
 
                 // Initialize array adapter
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(Register_num_two.this,
