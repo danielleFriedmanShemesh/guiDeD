@@ -58,14 +58,25 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/length"
+            android:id="@+id/lengthName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="אורך הפעולה"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="15dp"
             app:layout_constraintEnd_toStartOf="@+id/age"
             app:layout_constraintStart_toEndOf="@+id/switch3"
-            app:layout_constraintTop_toTopOf="@+id/age" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/length"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 דקות"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/lengthName"
+            app:layout_constraintStart_toStartOf="@+id/lengthName"
+            app:layout_constraintTop_toBottomOf="@+id/lengthName" />
 
         <Switch
             android:id="@+id/switch3"
@@ -79,13 +90,18 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
+ <!-->oid:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="15dp"
+        android:id="@+id/recyclerView"
         >
 
-    <LinearLayout
+
+    </androidx.recyclerview.widget.RecyclerView>-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+         <LinearLayout
         android:id="@+id/llMetoda"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -140,33 +156,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:backgroundTint="@color/white"
-            android:text="+ הוספת מתודה"
+            android:text="+ הוספת מתודה חדשה"
             android:textColor="@color/black"
             android:textSize="25dp"
             />
-
     </LinearLayout>
     </ScrollView>
-    <!--<ListView
-        android:id="@+id/lvMetodot"
-        android:layout_width="match_parent"
-        android:layout_height="560dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/age"
-        app:layout_constraintVertical_bias="0.0">
-    </ListView>
-        <Button
-            android:id="@+id/addMetoda"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layoutDirection="rtl"
-            android:background="@color/white"
-            android:text="הוספת מתודה"
-            app:icon="@drawable/baseline_add_24" />-->
 
 
 </LinearLayout>

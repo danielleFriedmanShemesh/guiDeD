@@ -23,6 +23,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
@@ -43,7 +44,10 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
     LinearLayout metodaLayout;
     ArrayList<Metoda> metodotArr = new ArrayList<>();
     Metoda tempMetoda;
-    int i=0;
+
+    int counter=0;
+
+    //RecyclerView recyclerView;
 
 
 
@@ -70,11 +74,23 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
 
         addMetodaBTN= findViewById(R.id.addMetoda);
         addMetodaBTN.setOnClickListener(this);
+//
+//        title = findViewById(R.id.title);
+//        metodaLength = findViewById(R.id.lengthInMinutes);
+//        description = findViewById(R.id.description);
+//        equipment = findViewById(R.id.equipment);
 
-        title = findViewById(R.id.title);
-        metodaLength = findViewById(R.id.lengthInMinutes);
-        description = findViewById(R.id.description);
-        equipment = findViewById(R.id.equipment);
+//        tempMetoda = new Metoda(
+//                title.getText().toString(),
+//                Integer.parseInt(
+//                        metodaLength.getText().toString()),
+//                description.getText().toString(),
+//                equipment.getText().toString(),0);
+//        counter++;
+//        metodotArr.add(tempMetoda);
+
+//        recyclerView = findViewById(R.id.recyclerView);
+
 
 
         ageAdjustments = findViewById(R.id.age);
@@ -132,6 +148,7 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
         }
 
     }
+    //מקבל את הID של המתודה שאחרייה רוצים לשים את המטודה החדשה
     private void addMetoda(){
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
@@ -177,7 +194,7 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
 
         EditText metodaEquipment = new EditText(this);
         metodaEquipment.setId(View.generateViewId());
-        metodaEquipment.setHint("הוספת עזרים");
+        metodaEquipment.setHint("הוספת ציוד");
         metodaEquipment.setTextSize(25);
         LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(
                 300, LinearLayout.LayoutParams.WRAP_CONTENT );
@@ -189,7 +206,7 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
         // Create a Button dynamically
         Button addNewMetodaBTN = new Button(this);
         addNewMetodaBTN.setId(ViewCompat.generateViewId());
-        addNewMetodaBTN.setText("+ הוספת מתודה");
+        addNewMetodaBTN.setText("+ הוספת מתודה חדשה");
         addNewMetodaBTN.setBackgroundColor(-1);
         addNewMetodaBTN.setTextColor(BLACK);
         addNewMetodaBTN.setTextSize(25);
@@ -208,7 +225,7 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        // Add views to the dynamically created ConstraintLayout
+        // Add views to the dynamically created LinearLayout
         linearLayout.addView(metodaTitle);
         linearLayout.addView(metodaLengthInMinutes);
         linearLayout.addView(metodaDescription);
@@ -220,11 +237,13 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
 //                Integer.parseInt(
 //                        metodaLengthInMinutes.getText().toString()),
 //                metodaDescription.getText().toString(),
-//                metodaEquipment.getText().toString());
+//                metodaEquipment.getText().toString(),counter);
+//        counter++;
 //        metodotArr.add(tempMetoda);
 
         metodaLayout.addView(linearLayout);
     }
+    public void saveMetoda(){}
 
 
 }

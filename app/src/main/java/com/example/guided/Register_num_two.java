@@ -109,13 +109,24 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
         if (user instanceof User){
             newUser = (User) user;
             organization.setText(newUser.getOrganization());
-            birthday.setText(
-                    DateConverter.convertFullFormatToDate(
-                            newUser.getBirthday().
-                                    toString()));
-            profile.setImageBitmap(
-                    BitmapHelper.stringToBitmap(
-                            newUser.getProfileImage()));
+            Date currentDate = new Date();
+            Date thisDate = newUser.getBirthday();
+            if((thisDate.getDate() == currentDate.getDate()) &&
+                    (thisDate.getMonth() == currentDate.getMonth()) &&
+                    (thisDate.getYear() == currentDate.getYear())) {
+                birthday.setText("");
+            }
+            else {
+                birthday.setText(
+                        DateConverter.convertFullFormatToDate(
+                                newUser.getBirthday().
+                                        toString()));
+            }
+            String profileImageStr = newUser.getProfileImage();
+            if(!profileImageStr.isEmpty()){
+                profile.setImageBitmap(
+                    BitmapHelper.stringToBitmap(profileImageStr));
+            }
             nickName.setText(newUser.getNickName());
             userName = newUser.getUserName();
             password = newUser.getPassword();
@@ -200,23 +211,18 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
                 // set custom dialog
                 dialog.setContentView(R.layout.dialog_searchable_spinner);
 
-                // set custom height and width
-                dialog.getWindow().setLayout(650,800);
-
-                // set transparent background
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-
                 // show dialog
                 dialog.show();
 
                 // Initialize and assign variable
                 EditText editText = dialog.findViewById(R.id.edit_text);
                 ListView listView = dialog.findViewById(R.id.list_view);
-                listView.setTextDirection(View.TEXT_DIRECTION_RTL);
 
                 // Initialize array adapter
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(Register_num_two.this,
-                        android.R.layout.simple_list_item_1,arrayList);
+                        R.layout.list_item,
+                        arrayList);
+
 
                 // set adapter
                 listView.setAdapter(adapter);

@@ -41,8 +41,8 @@
         android:layout_width="match_parent"
         android:layout_height="159dp"
         android:layout_marginTop="20dp"
-
-        tools:srcCompat="@drawable/images" />
+        android:src="@drawable/images"
+        />
 
     <ProgressBar
         android:id="@+id/progressBar"
