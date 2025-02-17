@@ -23,10 +23,12 @@
         android:layout_height="wrap_content"
         android:textSize="25dp"
         android:hint="שם הפעולה"
-         />
+        android:fontFamily="@font/yardenboldalefalefalef"
+        />
 
     <ImageButton
         android:id="@+id/exit"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
@@ -55,7 +57,9 @@
             android:padding="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:fontFamily="@font/yardenboldalefalefalef"
+            />
 
         <TextView
             android:id="@+id/lengthName"
@@ -65,7 +69,9 @@
             android:textSize="15dp"
             app:layout_constraintEnd_toStartOf="@+id/age"
             app:layout_constraintStart_toEndOf="@+id/switch3"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:fontFamily="@font/yardenboldalefalefalef"
+            />
 
         <TextView
             android:id="@+id/length"
@@ -76,7 +82,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/lengthName"
             app:layout_constraintStart_toStartOf="@+id/lengthName"
-            app:layout_constraintTop_toBottomOf="@+id/lengthName" />
+            app:layout_constraintTop_toBottomOf="@+id/lengthName"
+            android:fontFamily="@font/yardenboldalefalefalef"
+            />
 
         <Switch
             android:id="@+id/switch3"
@@ -86,19 +94,35 @@
             android:textOn="ציבורי"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/age" />
+            app:layout_constraintTop_toTopOf="@+id/age"
+            android:fontFamily="@font/yardenboldalefalefalef"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
 
- <!-->oid:layout_width="match_parent"
+    <Button
+        android:id="@+id/addMetoda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="#FFFFFF"
+        android:layout_gravity="right"
+        android:text="+ הוספת מתודה חדשה"
+        android:textColor="@color/black"
+        android:textSize="25dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="15dp"
         android:id="@+id/recyclerView"
-        >
+       android:fontFamily="@font/yardenboldalefalefalef"
+
+       >
 
 
-    </androidx.recyclerview.widget.RecyclerView>-->
-    <ScrollView
+    </androidx.recyclerview.widget.RecyclerView>
+    <!--<ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
          <LinearLayout
@@ -161,7 +185,7 @@
             android:textSize="25dp"
             />
     </LinearLayout>
-    </ScrollView>
+    </ScrollView>-->
 
 
 </LinearLayout>

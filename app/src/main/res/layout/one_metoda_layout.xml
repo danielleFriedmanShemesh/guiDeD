@@ -2,88 +2,69 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    >
+    android:id="@+id/oneMetodaLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <EditText
+    <TextView
         android:id="@+id/title"
         android:layout_width="124dp"
         android:layout_height="55dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="30dp"
+        android:fontFamily="@font/yardenboldalefalefalef"
+        android:gravity="center_vertical"
         android:hint="כותרת"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:fontFamily="@font/yardenboldalefalefalef"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
+    <TextView
         android:id="@+id/lengthInMinutes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
+        android:fontFamily="@font/yardenregularalefalefalef"
         android:hint="זמן(בדקות)"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/title"
         app:layout_constraintEnd_toStartOf="@+id/title"
-        app:layout_constraintTop_toTopOf="@+id/title"
-        android:fontFamily="@font/yardenregularalefalefalef"
-        />
+        app:layout_constraintTop_toTopOf="@+id/title" />
 
-    <EditText
+    <TextView
         android:id="@+id/description"
         android:layout_width="345dp"
         android:layout_height="183dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/yardenregularalefalefalef"
-        android:layout_marginStart="30dp"
+        android:gravity="center_vertical"
         android:hint="תיאור"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="@+id/title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
-    <EditText
+    <TextView
         android:id="@+id/equipment"
         android:layout_width="298dp"
         android:layout_height="47dp"
         android:layout_marginTop="16dp"
-        android:hint="הוספת ציוד"
-        android:textSize="25dp"
-        app:layout_constraintEnd_toEndOf="@+id/description"
-        app:layout_constraintTop_toBottomOf="@+id/description"
         android:fontFamily="@font/yardenregularalefalefalef"
-        />
-
-    <Button
-        android:id="@+id/saveMetoda"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:backgroundTint="@color/white"
-        android:fontFamily="@font/yardenboldalefalefalef"
-        android:text="שמור"
-        android:textColor="@color/black"
+        android:gravity="center_vertical"
+        android:hint="ציוד"
         android:textSize="25dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/description"
+        app:layout_constraintTop_toBottomOf="@+id/description" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="11dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/equipment" />
-
-
-    <!-- <Button
-         android:id="@+id/addMetoda"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginTop="15dp"
-         android:backgroundTint="@color/white"
-         android:text="+ הוספת מתודה"
-         android:textColor="@color/black"
-         android:textSize="25dp"
-         android:fontFamily="@font/yardenboldalefalefalef"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintTop_toBottomOf="@+id/equipment" />
- -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,9 +2,15 @@ package com.example.guided;
 
 import static android.graphics.Color.BLACK;
 import static android.graphics.Color.WHITE;
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
+import static androidx.constraintlayout.widget.ConstraintSet.WRAP_CONTENT;
+
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +29,11 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Add_operation extends AppCompatActivity implements View.OnClickListener {
     EditText topic;
@@ -42,17 +50,21 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
     EditText description;
     EditText equipment;
     LinearLayout metodaLayout;
-    ArrayList<Metoda> metodotArr = new ArrayList<>();
-    Metoda tempMetoda;
 
-    int counter=0;
+    MyApplication myApplication = (MyApplication) this.getApplication();
+    ArrayList<Metoda> metodotArr;
 
-    //RecyclerView recyclerView;
+    RecyclerView recyclerView;
+    RecyclerAdapter recyclerAdapter;
+    RecyclerView.LayoutManager layoutManager;
+    Dialog addNewMetodaDialog;
+    Button saveMetoda;
 
 
 
     ImageButton exitBTN;
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,26 +82,26 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
 
         length = findViewById(R.id.length);
 
-        metodaLayout = findViewById(R.id.llMetoda);
 
         addMetodaBTN= findViewById(R.id.addMetoda);
         addMetodaBTN.setOnClickListener(this);
-//
-//        title = findViewById(R.id.title);
-//        metodaLength = findViewById(R.id.lengthInMinutes);
-//        description = findViewById(R.id.description);
-//        equipment = findViewById(R.id.equipment);
 
-//        tempMetoda = new Metoda(
-//                title.getText().toString(),
-//                Integer.parseInt(
-//                        metodaLength.getText().toString()),
-//                description.getText().toString(),
-//                equipment.getText().toString(),0);
-//        counter++;
-//        metodotArr.add(tempMetoda);
 
-//        recyclerView = findViewById(R.id.recyclerView);
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        metodotArr = myApplication.getMetodot();
+
+//        Metoda m = new Metoda("sdfghjk", 5, "hjhjhjhjh", "hjhjhjj", id);
+//        id++;
+//        metodotArr.add(m);
+
+        recyclerAdapter = new RecyclerAdapter(metodotArr, Add_operation.this);
+        recyclerView.setAdapter(recyclerAdapter);
 
 
 
@@ -146,104 +158,44 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
         if(v == addMetodaBTN){
             addMetoda();
         }
+        else if (v ==saveMetoda) {
+            saveMetoda();
+        }
 
     }
     //מקבל את הID של המתודה שאחרייה רוצים לשים את המטודה החדשה
     private void addMetoda(){
-        LinearLayout linearLayout = new LinearLayout(this);
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        int dynamicLayoutId = ViewCompat.generateViewId();
-        linearLayout.setId(dynamicLayoutId);
-        linearLayout.setLayoutParams( new LinearLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.MATCH_PARENT,
-                ConstraintLayout.LayoutParams.MATCH_PARENT));
 
-        // Create 4 EditTexts dynamically
-        EditText metodaTitle = new EditText(this);
-        metodaTitle.setId(View.generateViewId());
-        metodaTitle.setHint("כותרת");
-        metodaTitle.setTextSize(25);
-        LinearLayout.LayoutParams params4 = new LinearLayout.LayoutParams(
-                150, LinearLayout.LayoutParams.WRAP_CONTENT );
-        params4.setMarginStart(30);
-        params4.setMargins(0,15,0,0);
-        metodaTitle.setLayoutParams(params4);
+        addNewMetodaDialog = new Dialog(Add_operation.this);
+        addNewMetodaDialog.setContentView(R.layout.metoda_layout);
+        addNewMetodaDialog.setCancelable(true);
 
+        title = addNewMetodaDialog.findViewById(R.id.title);
+        metodaLength = addNewMetodaDialog.findViewById(R.id.lengthInMinutes);
+        description = addNewMetodaDialog.findViewById(R.id.description);
+        equipment = addNewMetodaDialog.findViewById(R.id.equipment);
 
+        saveMetoda = addNewMetodaDialog.findViewById(R.id.saveMetoda);
+        saveMetoda.setOnClickListener(this);
 
-        EditText metodaLengthInMinutes = new EditText(this);
-        metodaLengthInMinutes.setId(View.generateViewId());
-        metodaLengthInMinutes.setHint("זמן(בדקות)");
-        metodaLengthInMinutes.setTextSize(20);
-        LinearLayout.LayoutParams params3 = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT );
-        params3.setMarginStart(30);
-        params3.setMargins(0,10,0,0);
-        metodaLengthInMinutes.setLayoutParams(params3);
+        addNewMetodaDialog.show();
 
-
-        EditText metodaDescription = new EditText(this);
-        metodaDescription.setId(View.generateViewId());
-        metodaDescription.setHint("תיאור");
-        metodaDescription.setTextSize(25);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                700, 400 );
-        params.setMarginStart(60);
-        params.setMargins(0,30,0,0);
-        metodaDescription.setLayoutParams(params);
-
-        EditText metodaEquipment = new EditText(this);
-        metodaEquipment.setId(View.generateViewId());
-        metodaEquipment.setHint("הוספת ציוד");
-        metodaEquipment.setTextSize(25);
-        LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(
-                300, LinearLayout.LayoutParams.WRAP_CONTENT );
-        params2.setMarginStart(30);
-        params2.setMargins(0,15,0,0);
-        metodaEquipment.setLayoutParams(params2);
-
-
-        // Create a Button dynamically
-        Button addNewMetodaBTN = new Button(this);
-        addNewMetodaBTN.setId(ViewCompat.generateViewId());
-        addNewMetodaBTN.setText("+ הוספת מתודה חדשה");
-        addNewMetodaBTN.setBackgroundColor(-1);
-        addNewMetodaBTN.setTextColor(BLACK);
-        addNewMetodaBTN.setTextSize(25);
-        LinearLayout.LayoutParams params5 = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT );
-        params5.setMargins(0,15,0,0);
-        addNewMetodaBTN.setLayoutParams(params5);
-
-
-        addNewMetodaBTN.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if(v == addNewMetodaBTN){
-                    addMetoda();
-                }
-            }
-        });
-
-        // Add views to the dynamically created LinearLayout
-        linearLayout.addView(metodaTitle);
-        linearLayout.addView(metodaLengthInMinutes);
-        linearLayout.addView(metodaDescription);
-        linearLayout.addView(metodaEquipment);
-        linearLayout.addView(addNewMetodaBTN);
-
-//        tempMetoda = new Metoda(
-//                metodaTitle.getText().toString(),
-//                Integer.parseInt(
-//                        metodaLengthInMinutes.getText().toString()),
-//                metodaDescription.getText().toString(),
-//                metodaEquipment.getText().toString(),counter);
-//        counter++;
-//        metodotArr.add(tempMetoda);
-
-        metodaLayout.addView(linearLayout);
     }
-    public void saveMetoda(){}
+    public void saveMetoda(){
+        int id = myApplication.getNextId();
+        int metodaLengthInt = Integer.parseInt(metodaLength.getText().toString());;
+        String titleStr = title.getText().toString();
+        String descriptionStr = description.getText().toString();
+        String equipmentStr = equipment.getText().toString();
+
+        Metoda newMetoda = new Metoda(titleStr, metodaLengthInt, descriptionStr, equipmentStr, id);
+
+        metodotArr.add(newMetoda);
+        myApplication.setNextId(id++);
+        recyclerAdapter.notifyDataSetChanged();
+
+        addNewMetodaDialog.dismiss();
+    }
 
 
 }

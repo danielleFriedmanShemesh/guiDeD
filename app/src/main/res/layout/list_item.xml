@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     android:padding="10dp"
     android:textSize="16sp"
-    android:fontFamily="@font/yardenboldalefalefalef"
+    android:fontFamily="@font/yardenregularalefalefalef"
     android:text="דניאל"
     >
 </TextView>
