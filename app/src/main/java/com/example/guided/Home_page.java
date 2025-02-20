@@ -40,7 +40,8 @@ public class Home_page extends AppCompatActivity implements PopupMenu.OnMenuItem
         menuBTN = findViewById(R.id.option_btn);
         menuBTN.setOnClickListener(this);
 
-//        navView = findViewById(R.id.bottomNavigationView);
+        navView = findViewById(R.id.bottomNavigationView);
+        navView.setItemIconTintList(null);
 //        navView.setOnItemSelectedListener(item -> {
 ////            switch (item.getItemId()){
 ////                case R.id.home:

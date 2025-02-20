@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button btn1;
     Button btn2;
     Button btn3;
+    Button btn4;
 
 
 
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn2.setOnClickListener(this);
         btn3=findViewById(R.id.add_operation);
         btn3.setOnClickListener(this);
+        btn4=findViewById(R.id.home);
+        btn4.setOnClickListener(this);
 
 
     }
@@ -53,16 +56,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
             finish();
         }
-//        else if (v==btn3){
-//            intent=new Intent(this, Home_page.class);
-//            startActivity(intent);
-//            finish();
-//        }
+        else if (v==btn4){
+            intent=new Intent(this, Home_page.class);
+            startActivity(intent);
+            finish();
+        }
         else if (v==btn3) {
             intent=new Intent(this, Add_operation.class);
             startActivity(intent);
             finish();
         }
+
 
     }
 }

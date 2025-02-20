@@ -56,7 +56,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
     ArrayList<String> arrayList;
     Dialog dialog;
     Button backBTN;
-    Button saveBTN;
+    ImageView saveBTN;
     TextView alartForNickName;
     TextView alartForOrganization;
     TextView alartForBirthday;

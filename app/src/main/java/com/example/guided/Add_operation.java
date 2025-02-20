@@ -96,13 +96,8 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
 
         metodotArr = myApplication.getMetodot();
 
-//        Metoda m = new Metoda("sdfghjk", 5, "hjhjhjhjh", "hjhjhjj", id);
-//        id++;
-//        metodotArr.add(m);
-
         recyclerAdapter = new RecyclerAdapter(metodotArr, Add_operation.this);
         recyclerView.setAdapter(recyclerAdapter);
-
 
 
         ageAdjustments = findViewById(R.id.age);
@@ -161,9 +156,8 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
         else if (v ==saveMetoda) {
             saveMetoda();
         }
-
     }
-    //מקבל את הID של המתודה שאחרייה רוצים לשים את המטודה החדשה
+    //מקבל את הID של המתודה שאחרייה רוצים לשים את המתודה החדשה
     private void addMetoda(){
 
         addNewMetodaDialog = new Dialog(Add_operation.this);

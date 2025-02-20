@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Register_num_one extends AppCompatActivity implements View.OnClickListener {
-    Button continueBtn;
+    ImageView continueBtn;
     EditText userName;
     EditText password;
     EditText email;
