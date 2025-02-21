@@ -1,5 +1,6 @@
 package com.example.guided;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.util.Log;
@@ -44,71 +45,69 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.length.setText(String.valueOf(metodaArrayList.get(position).getLength()));
         holder.description.setText(metodaArrayList.get(position).getDescription());
         holder.equipment.setText(metodaArrayList.get(position).getEquipment());
-//        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int id;
-//                Metoda metoda = null;
-//
-//                if(metodaArrayList == null){
-//                   //create new metoda
-//                }
-//                else {
-//                    //Edit the metoda
-//                    id = metodaArrayList.get(position).getId();
-//
-//                    //לכל מתודה במערך נעשה את הבדיקה
-//                    for(Metoda m: metodaArrayList){
-//                        if(m.getId() == id){
-//                            metoda = m;
-//                        }
-//                    }
-//
-//                    EditText metodaLengthET;
-//                    EditText titleET;
-//                    EditText descriptionET;
-//                    EditText equipmentET;
-//                    Button saveMetodaBTN;
-//
-//                    Dialog metodaDialog;
-//                    metodaDialog = new Dialog(context);
-//                    metodaDialog.setContentView(R.layout.metoda_layout);
-//                    metodaDialog.setCancelable(true);
-//
-//                    titleET = metodaDialog.findViewById(R.id.title);
-//                    metodaLengthET = metodaDialog.findViewById(R.id.lengthInMinutes);
-//                    descriptionET = metodaDialog.findViewById(R.id.description);
-//                    equipmentET = metodaDialog.findViewById(R.id.equipment);
-//                    saveMetodaBTN = metodaDialog.findViewById(R.id.save);
-//
-//                    titleET.setText(metoda.getTitle());
-//                    metodaLengthET.setText(String.valueOf(metoda.getLength()));
-//                    descriptionET.setText(metoda.getDescription());
-//                    equipmentET.setText(metoda.getEquipment());
-//                    saveMetodaBTN.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            int metodaLengthInt = Integer.parseInt(metodaLengthET.getText().toString());;
-//                            String titleStr = titleET.getText().toString();
-//                            String descriptionStr = descriptionET.getText().toString();
-//                            String equipmentStr = equipmentET.getText().toString();
-//
-//                            Metoda newMetoda = new Metoda(titleStr, metodaLengthInt, descriptionStr, equipmentStr, id);
-//
-//                            metodaArrayList.add(newMetoda);
-//                            metodaArrayList.get(position).setId(id++);
-//                            recyclerAdapter.notifyDataSetChanged();
-//                            MetodaDialog.dismiss();
-//                        }
-//                    });
-//
-//                    metodaDialog.show();
-//
-//                }
-//
-//
-//            }
-//        });
+        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int id;
+                Metoda metoda = null;
+
+                if(metodaArrayList != null){
+                    //Edit the metoda
+                    id = metodaArrayList.get(position).getId();
+
+                    //לכל מתודה במערך נעשה את הבדיקה
+                    for (Metoda m : metodaArrayList) {
+                        if (m.getId() == id) {
+                            metoda = m;
+                        }
+                    }
+
+                    Dialog metodaDialog;
+                    metodaDialog = new Dialog(context);
+                    metodaDialog.setContentView(R.layout.metoda_layout);
+                    metodaDialog.setCancelable(true);
+
+                    EditText metodaLengthET;
+                    EditText titleET;
+                    EditText descriptionET;
+                    EditText equipmentET;
+                    Button saveMetodaBTN;
+
+                    titleET = metodaDialog.findViewById(R.id.title);
+                    metodaLengthET = metodaDialog.findViewById(R.id.lengthInMinutes);
+                    descriptionET = metodaDialog.findViewById(R.id.description);
+                    equipmentET = metodaDialog.findViewById(R.id.equipment);
+                    saveMetodaBTN = metodaDialog.findViewById(R.id.saveMetoda);
+
+                    titleET.setText(metoda.getTitle());
+                    metodaLengthET.setText(String.valueOf(metoda.getLength()));
+                    descriptionET.setText(metoda.getDescription());
+                    equipmentET.setText(metoda.getEquipment());
+
+                    saveMetodaBTN.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int metodaLengthInt = Integer.parseInt(metodaLengthET.getText().toString());;
+                            String titleStr = titleET.getText().toString();
+                            String descriptionStr = descriptionET.getText().toString();
+                            String equipmentStr = equipmentET.getText().toString();
+                            Metoda editMetoda = new Metoda(titleStr, metodaLengthInt, descriptionStr, equipmentStr, id);
+
+                            metodaArrayList.set(id, editMetoda);
+
+                            holder.title.setText(metodaArrayList.get(id).getTitle());
+                            holder.length.setText(String.valueOf(metodaArrayList.get(id).getLength()));
+                            holder.description.setText(metodaArrayList.get(id).getDescription());
+                            holder.equipment.setText(metodaArrayList.get(id).getEquipment());
+
+                            metodaDialog.dismiss();
+                        }
+                    });
+                    metodaDialog.show();
+                }
+
+            }
+        });
     }
 
     //מספר השורות שיהיה
@@ -152,45 +151,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         public TextView getEquipment() {
             return equipment;
         }
+
+
     }
-
-//    private void addMetoda(){
-//
-//        EditText metodaLengthET;
-//        EditText titleET;
-//        EditText descriptionET;
-//        EditText equipmentET;
-//
-//        Dialog editMetodaDialog;
-//        editMetodaDialog = new Dialog(context);
-//        editMetodaDialog.setContentView(R.layout.metoda_layout);
-//        editMetodaDialog.setCancelable(true);
-//
-//        titleET = editMetodaDialog.findViewById(R.id.title);
-//        metodaLengthET = editMetodaDialog.findViewById(R.id.lengthInMinutes);
-//        descriptionET = editMetodaDialog.findViewById(R.id.description);
-//        equipmentET = editMetodaDialog.findViewById(R.id.equipment);
-//
-//        saveMetoda = editMetodaDialog.findViewById(R.id.saveMetoda);
-//        saveMetoda.setOnClickListener(this);
-//
-//        editMetodaDialog.show();
-//
-//    }
-//    public void saveMetoda(){
-//        int id = myApplication.getNextId();
-//        int metodaLengthInt = Integer.parseInt(metodaLengthET.getText().toString());;
-//        String titleStr = titleET.getText().toString();
-//        String descriptionStr = descriptionET.getText().toString();
-//        String equipmentStr = equipmentET.getText().toString();
-//
-//        Metoda newMetoda = new Metoda(titleStr, metodaLengthInt, descriptionStr, equipmentStr, id);
-//
-//        metodotArr.add(newMetoda);
-//        myApplication.setNextId(id++);
-//        recyclerAdapter.notifyDataSetChanged();
-//
-//        addNewMetodaDialog.dismiss();
-//    }
-
 }

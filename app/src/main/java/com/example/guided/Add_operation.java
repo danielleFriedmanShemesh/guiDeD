@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -29,10 +30,13 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class Add_operation extends AppCompatActivity implements View.OnClickListener {
@@ -51,8 +55,8 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
     EditText equipment;
     LinearLayout metodaLayout;
 
-    MyApplication myApplication = (MyApplication) this.getApplication();
     ArrayList<Metoda> metodotArr;
+    int id = 0;
 
     RecyclerView recyclerView;
     RecyclerAdapter recyclerAdapter;
@@ -94,10 +98,15 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        metodotArr = myApplication.getMetodot();
+        metodotArr = new ArrayList<Metoda>();
 
         recyclerAdapter = new RecyclerAdapter(metodotArr, Add_operation.this);
         recyclerView.setAdapter(recyclerAdapter);
+
+//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+//        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+
 
 
         ageAdjustments = findViewById(R.id.age);
@@ -176,8 +185,7 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
 
     }
     public void saveMetoda(){
-        int id = myApplication.getNextId();
-        int metodaLengthInt = Integer.parseInt(metodaLength.getText().toString());;
+        int metodaLengthInt = Integer.parseInt(metodaLength.getText().toString());
         String titleStr = title.getText().toString();
         String descriptionStr = description.getText().toString();
         String equipmentStr = equipment.getText().toString();
@@ -185,11 +193,35 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
         Metoda newMetoda = new Metoda(titleStr, metodaLengthInt, descriptionStr, equipmentStr, id);
 
         metodotArr.add(newMetoda);
-        myApplication.setNextId(id++);
+        id++;
         recyclerAdapter.notifyDataSetChanged();
 
         addNewMetodaDialog.dismiss();
     }
+
+//    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.END | ItemTouchHelper.START) {
+//        @Override
+//        //להזיז את הפריט
+//        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+//
+//            int fromPosition = viewHolder.getAdapterPosition();
+//            int toPosition = target.getAdapterPosition();
+//
+//
+//
+//            Collections.swap(metodotArr, fromPosition, toPosition);
+//            recyclerAdapter.notifyItemMoved(fromPosition,toPosition);
+//
+//
+//            return true;
+//        }
+//
+//        @Override
+//        //להחליק לצדדים
+//        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+//
+//        }
+//    };
 
 
 }

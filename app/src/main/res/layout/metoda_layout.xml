@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     >
 
     <EditText
@@ -72,18 +73,6 @@
         app:layout_constraintTop_toBottomOf="@+id/equipment" />
 
 
-    <!-- <Button
-         android:id="@+id/addMetoda"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginTop="15dp"
-         android:backgroundTint="@color/white"
-         android:text="+ הוספת מתודה"
-         android:textColor="@color/black"
-         android:textSize="25dp"
-         android:fontFamily="@font/yardenboldalefalefalef"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintTop_toBottomOf="@+id/equipment" />
- -->
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
