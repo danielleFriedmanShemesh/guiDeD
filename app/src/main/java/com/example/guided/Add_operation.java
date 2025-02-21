@@ -9,6 +9,7 @@ import static androidx.constraintlayout.widget.ConstraintSet.WRAP_CONTENT;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -34,10 +36,14 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class Add_operation extends AppCompatActivity implements View.OnClickListener {
     EditText topic;
@@ -103,8 +109,8 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
         recyclerAdapter = new RecyclerAdapter(metodotArr, Add_operation.this);
         recyclerView.setAdapter(recyclerAdapter);
 
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-//        itemTouchHelper.attachToRecyclerView(recyclerView);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
 
 
@@ -199,29 +205,54 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
         addNewMetodaDialog.dismiss();
     }
 
-//    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.END | ItemTouchHelper.START) {
-//        @Override
-//        //להזיז את הפריט
-//        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-//
+    Metoda deletedMetoda = null;
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
+        @Override
+        //להזיז את הפריט
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+
 //            int fromPosition = viewHolder.getAdapterPosition();
 //            int toPosition = target.getAdapterPosition();
-//
-//
-//
 //            Collections.swap(metodotArr, fromPosition, toPosition);
 //            recyclerAdapter.notifyItemMoved(fromPosition,toPosition);
-//
-//
-//            return true;
-//        }
-//
-//        @Override
-//        //להחליק לצדדים
-//        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-//
-//        }
-//    };
+            return true;
+        }
+
+        @Override
+        //להחליק לצדדים
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+            int position = viewHolder.getAdapterPosition();
+
+            switch (direction){
+                case ItemTouchHelper.LEFT:
+                    deletedMetoda = metodotArr.get(position);
+
+                    metodotArr.remove(position);
+                    recyclerAdapter.notifyItemRemoved(position);
+                    Snackbar.make(recyclerView, deletedMetoda.toString(),Snackbar.LENGTH_LONG).setAction("undo", new View.OnClickListener(){
+                        @Override
+                        public void onClick(View v) {
+                            metodotArr.add(position, deletedMetoda);
+                            recyclerAdapter.notifyItemInserted(position);
+                        }
+                    }).show();
+                    break;
+            }
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(Add_operation.this, R.color.red))
+                    .addSwipeLeftActionIcon(R.drawable.baseline_delete_24)
+                    .create()
+                    .decorate();
+
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+    };
 
 
 }
