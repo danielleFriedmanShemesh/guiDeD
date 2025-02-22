@@ -15,6 +15,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="30dp"
+    android:layout_marginTop="10dp"
     android:layoutDirection="rtl"
     >
     <EditText
@@ -99,6 +100,32 @@
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/equipments"
+            android:layout_width="170dp"
+            android:fontFamily="@font/yardenboldalefalefalef"
+            android:textSize="30dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="30dp"
+            android:hint="עזרים"
+            android:gravity="center"/>
+        <EditText
+            android:id="@+id/goals"
+            android:layout_width="170dp"
+            android:layout_height="150dp"
+            android:textSize="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:hint="מטרות"
+            android:fontFamily="@font/yardenboldalefalefalef"
+            android:gravity="center"/>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/addMetoda"

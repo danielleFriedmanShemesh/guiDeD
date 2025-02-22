@@ -46,20 +46,21 @@ import java.util.List;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class Add_operation extends AppCompatActivity implements View.OnClickListener {
-    EditText topic;
-    TextView ageAdjustments;
+    EditText topic;//שם פעולה
+    TextView length;//אורך הפעולה
+    int lengthCount = 0;
+    EditText goals;//מטרות הפעולה
+    EditText equipments;// עזרים לפעולה
+    TextView ageAdjustments;//גיל החניכים
     String[] listAgeAdjustments;
     boolean[] checkedAgeAdjustments;
     ArrayList<Integer> userAgeAdjustments = new ArrayList<>();
 
-    TextView length;
-
     Button addMetodaBTN;
-    EditText metodaLength;
-    EditText title;
-    EditText description;
-    EditText equipment;
-    LinearLayout metodaLayout;
+    EditText metodaLength;//אורך המטודה
+    EditText title;//כותרת המתודה
+    EditText description;//תוכן המתודה
+    EditText equipment;//עזרים למתודה
 
     ArrayList<Metoda> metodotArr;
     int id = 0;
@@ -69,8 +70,6 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
     RecyclerView.LayoutManager layoutManager;
     Dialog addNewMetodaDialog;
     Button saveMetoda;
-
-
 
     ImageButton exitBTN;
 
@@ -86,11 +85,13 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
             return insets;
         });
         topic = findViewById(R.id.topic);
+        length = findViewById(R.id.length);
+
 
         exitBTN = findViewById(R.id.exit);
         exitBTN.setOnClickListener(this);
 
-        length = findViewById(R.id.length);
+
 
 
         addMetodaBTN= findViewById(R.id.addMetoda);
@@ -202,6 +203,10 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
         id++;
         recyclerAdapter.notifyDataSetChanged();
 
+        lengthCount = lengthCount + metodaLengthInt;
+        length.setText(lengthCount + "דקות");
+
+
         addNewMetodaDialog.dismiss();
     }
 
@@ -227,14 +232,20 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
             switch (direction){
                 case ItemTouchHelper.LEFT:
                     deletedMetoda = metodotArr.get(position);
-
                     metodotArr.remove(position);
                     recyclerAdapter.notifyItemRemoved(position);
+
+                    lengthCount = lengthCount - deletedMetoda.getLength();;
+                    length.setText(lengthCount + "דקות");
+
                     Snackbar.make(recyclerView, deletedMetoda.toString(),Snackbar.LENGTH_LONG).setAction("undo", new View.OnClickListener(){
                         @Override
                         public void onClick(View v) {
                             metodotArr.add(position, deletedMetoda);
                             recyclerAdapter.notifyItemInserted(position);
+
+                            lengthCount = lengthCount + deletedMetoda.getLength();;
+                            length.setText(lengthCount + "דקות");
                         }
                     }).show();
                     break;

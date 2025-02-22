@@ -11,21 +11,21 @@ public class Operation {
     private String organization;
     private ArrayList<Metoda> metodotArr = new ArrayList<>();
     private String goals;
-    private String aids;
+    private String equipment;
 
     public Operation(String nameOfOperation,
                      String age,
                      String privateORpublic,
                      int lengthOfOperation,
                      String goals,
-                     String aids,
+                     String equipment,
                      ArrayList<Metoda> metodotArr) {
         this.nameOfOperation = nameOfOperation;
         this.privateORpublic = privateORpublic;
         this.age = age;
         this.lengthOfOperation = lengthOfOperation;
         this.goals = goals;
-        this.aids = aids;
+        this.equipment = equipment;
 
         //לשלוף מהמסד נתונים של המשתמשים את שם המשתמש ואת התנועה שלו
     }
@@ -94,11 +94,11 @@ public class Operation {
         this.goals = goals;
     }
 
-    public String getAids() {
-        return aids;
+    public String getEquipment() {
+        return equipment;
     }
 
-    public void setAids(String aids) {
-        this.aids = aids;
+    public void setEquipment(String equipment) {
+        this.equipment = equipment;
     }
 }

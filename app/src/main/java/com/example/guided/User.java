@@ -35,15 +35,12 @@ public class User implements Serializable {
     }
 
     public User(String userName, String password, String email, String nickName, String organization, Date birthday, String image){
-        //int dayBirth, int monthBirth, int yearBirth
         this.userName=userName;
         this.password=password;
         this.email=email;
         this.nickName=nickName;
         this.organization=organization;
-        /*this.yearBirth=yearBirth;
-        this.dayBirth=dayBirth;
-        this.monthBirth=monthBirth;*/
+
         this.birthday=birthday;
         this.profileImage= image;
 
