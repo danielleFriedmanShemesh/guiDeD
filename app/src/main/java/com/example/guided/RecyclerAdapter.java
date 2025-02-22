@@ -41,26 +41,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.title.setText(metodaArrayList.get(position).getTitle());
-        holder.length.setText(String.valueOf(metodaArrayList.get(position).getLength()));
-        holder.description.setText(metodaArrayList.get(position).getDescription());
-        holder.equipment.setText(metodaArrayList.get(position).getEquipment());
+        Metoda metoda = metodaArrayList.get(position);
+        holder.title.setText(metoda.getTitle());
+        holder.length.setText(String.valueOf(metoda.getLength()));
+        holder.description.setText(metoda.getDescription());
+        holder.equipment.setText(metoda.getEquipment());
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int id;
-                Metoda metoda = null;
-
                 if(metodaArrayList != null){
+                    int id;
+                    Metoda metoda = null;
                     //Edit the metoda
-                    id = metodaArrayList.get(position).getId();
-
-                    //לכל מתודה במערך נעשה את הבדיקה
-                    for (Metoda m : metodaArrayList) {
-                        if (m.getId() == id) {
-                            metoda = m;
-                        }
-                    }
+                    metoda = metodaArrayList.get(holder.getBindingAdapterPosition());
+                    id = metoda.getId();
 
                     Dialog metodaDialog;
                     metodaDialog = new Dialog(context);
@@ -95,10 +89,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
                             metodaArrayList.set(id, editMetoda);
 
-                            holder.title.setText(metodaArrayList.get(id).getTitle());
-                            holder.length.setText(String.valueOf(metodaArrayList.get(id).getLength()));
-                            holder.description.setText(metodaArrayList.get(id).getDescription());
-                            holder.equipment.setText(metodaArrayList.get(id).getEquipment());
+                            holder.title.setText(editMetoda.getTitle());
+                            holder.length.setText(String.valueOf(editMetoda.getLength()));
+                            holder.description.setText(editMetoda.getDescription());
+                            holder.equipment.setText(editMetoda.getEquipment());
 
                             metodaDialog.dismiss();
                         }
