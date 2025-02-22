@@ -52,7 +52,7 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/yardenregularalefalefalef"
         android:gravity="center_vertical"
-        android:hint="ציוד"
+        android:hint="עזרים"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="@+id/description"
         app:layout_constraintTop_toBottomOf="@+id/description" />

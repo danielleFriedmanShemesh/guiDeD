@@ -70,7 +70,6 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
     RecyclerView.LayoutManager layoutManager;
     Dialog addNewMetodaDialog;
     Button saveMetoda;
-
     ImageButton exitBTN;
 
     @SuppressLint("NotifyDataSetChanged")
@@ -86,6 +85,8 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
         });
         topic = findViewById(R.id.topic);
         length = findViewById(R.id.length);
+        goals = findViewById(R.id.goals);
+        equipments = findViewById(R.id.equipments);
 
 
         exitBTN = findViewById(R.id.exit);
@@ -172,6 +173,9 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
         else if (v ==saveMetoda) {
             saveMetoda();
         }
+        else if(v == exitBTN){
+            saveOperation();
+        }
     }
     //מקבל את הID של המתודה שאחרייה רוצים לשים את המתודה החדשה
     private void addMetoda(){
@@ -216,10 +220,11 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
         //להזיז את הפריט
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
 
-//            int fromPosition = viewHolder.getAdapterPosition();
-//            int toPosition = target.getAdapterPosition();
-//            Collections.swap(metodotArr, fromPosition, toPosition);
-//            recyclerAdapter.notifyItemMoved(fromPosition,toPosition);
+            int fromPosition = viewHolder.getAdapterPosition();
+            int toPosition = target.getAdapterPosition();
+            Collections.swap(metodotArr, fromPosition, toPosition);
+            recyclerAdapter.notifyItemMoved(fromPosition,toPosition);
+
             return true;
         }
 
@@ -266,4 +271,7 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
     };
 
 
+    public void saveOperation() {
+
+    }
 }

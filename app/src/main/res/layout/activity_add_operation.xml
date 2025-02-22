@@ -29,7 +29,6 @@
 
     <ImageButton
         android:id="@+id/exit"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
@@ -149,70 +148,5 @@
 
 
     </androidx.recyclerview.widget.RecyclerView>
-    <!--<ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-         <LinearLayout
-        android:id="@+id/llMetoda"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layoutDirection="rtl"
-        android:textDirection="rtl">
-
-        <EditText
-            android:id="@+id/title"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginStart="30dp"
-            android:hint="כותרת"
-            android:textSize="25dp"
-
-            />
-
-        <EditText
-            android:id="@+id/lengthInMinutes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="זמן(בדקות)"
-            android:textSize="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="30dp"
-            />
-
-        <EditText
-            android:id="@+id/description"
-            android:layout_width="350dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="15dp"
-            android:hint="תיאור"
-            android:textSize="25dp"
-            android:layout_marginStart="30dp"
-            />
-
-        <EditText
-            android:id="@+id/equipment"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:hint="הוספת ציוד"
-            android:textSize="25dp"
-            android:layout_marginStart="30dp"
-            />
-
-        <Button
-            android:id="@+id/addMetoda"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:backgroundTint="@color/white"
-            android:text="+ הוספת מתודה חדשה"
-            android:textColor="@color/black"
-            android:textSize="25dp"
-            />
-    </LinearLayout>
-    </ScrollView>-->
-
 
 </LinearLayout>
