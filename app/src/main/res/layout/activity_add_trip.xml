@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Add_trip"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:layoutDirection="rtl"
+        >
+        <EditText
+            android:id="@+id/topic"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:hint="שם טיול"
+            android:fontFamily="@font/yardenboldalefalefalef"
+            />
+
+        <ImageButton
+            android:id="@+id/exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:layout_marginStart="75dp"
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+       >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/yardenboldalefalefalef"
+                android:hint="מקום הטיול "
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/erea"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/editbox_background"
+                android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
+                android:fontFamily="@font/yardenboldalefalefalef"
+                android:gravity="center_vertical"
+                android:hint="איזור בארץ "
+                android:padding="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/place"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/picName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/yardenboldalefalefalef"
+                android:text="הוספת מסלול"
+                android:textSize="15dp"
+                app:layout_constraintEnd_toStartOf="@+id/erea"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/picName"
+                app:layout_constraintStart_toStartOf="@+id/picName"
+                app:layout_constraintTop_toBottomOf="@+id/picName"
+                app:srcCompat="@drawable/add_image" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="15dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/editbox_background"
+                android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
+                android:gravity="center_vertical"
+                android:hint="גיל החניכים"
+                android:padding="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:fontFamily="@font/yardenboldalefalefalef"
+                />
+
+            <TextView
+                android:id="@+id/lengthName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="אורך המסלול"
+                android:textSize="15dp"
+                app:layout_constraintEnd_toStartOf="@+id/age"
+                app:layout_constraintStart_toEndOf="@+id/publicORpivate"
+                app:layout_constraintTop_toTopOf="parent"
+                android:fontFamily="@font/yardenboldalefalefalef"
+                />
+
+            <TextView
+                android:id="@+id/length"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 קמ "
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/lengthName"
+                app:layout_constraintStart_toStartOf="@+id/lengthName"
+                app:layout_constraintTop_toBottomOf="@+id/lengthName"
+                android:fontFamily="@font/yardenboldalefalefalef"
+                />
+
+
+            <Switch
+                android:id="@+id/publicORpivate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/yardenboldalefalefalef"
+                android:textSize="20dp"
+                android:checked="false"
+                android:thumb="@drawable/baseline_person_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/age" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/equipments"
+            android:layout_width="170dp"
+            android:fontFamily="@font/yardenboldalefalefalef"
+            android:textSize="30dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="30dp"
+            android:hint="עזרים"
+            android:gravity="center"/>
+
+
+        <EditText
+            android:id="@+id/goals"
+            android:layout_width="170dp"
+            android:layout_height="150dp"
+            android:textSize="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:hint="מטרות"
+            android:fontFamily="@font/yardenboldalefalefalef"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/addPart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="#FFFFFF"
+        android:layout_gravity="right"
+        android:text="+ הוספת מקטע חדש"
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        android:fontFamily="@font/yardenboldalefalefalef"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        android:id="@+id/recyclerView"
+        android:fontFamily="@font/yardenboldalefalefalef">
+    </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>

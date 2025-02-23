@@ -1,15 +1,12 @@
 package com.example.guided;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,14 +14,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
+public class RecyclerAdapterOperation extends RecyclerView.Adapter<RecyclerAdapterOperation.ViewHolder>{
 
     private ArrayList<Metoda> metodaArrayList;
     private Context context;
 
-    public RecyclerAdapter(ArrayList<Metoda> metodaArrayList, Context context) {
+    public RecyclerAdapterOperation(ArrayList<Metoda> metodaArrayList, Context context) {
         this.metodaArrayList = metodaArrayList;
         this.context = context;
     }
