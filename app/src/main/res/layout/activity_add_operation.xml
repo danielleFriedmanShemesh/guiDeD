@@ -68,7 +68,7 @@
             android:text="אורך הפעולה"
             android:textSize="15dp"
             app:layout_constraintEnd_toStartOf="@+id/age"
-            app:layout_constraintStart_toEndOf="@+id/switch3"
+            app:layout_constraintStart_toEndOf="@+id/publicORpivate"
             app:layout_constraintTop_toTopOf="parent"
             android:fontFamily="@font/yardenboldalefalefalef"
             />
@@ -86,17 +86,18 @@
             android:fontFamily="@font/yardenboldalefalefalef"
             />
 
+
         <Switch
-            android:id="@+id/switch3"
+            android:id="@+id/publicORpivate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textOff="פרטי"
-            android:textOn="ציבורי"
+            android:fontFamily="@font/yardenboldalefalefalef"
+            android:textSize="20dp"
+            android:checked="false"
+            android:thumb="@drawable/baseline_person_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/age"
-            android:fontFamily="@font/yardenboldalefalefalef"
-            />
+            app:layout_constraintTop_toTopOf="@+id/age" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
     <LinearLayout
@@ -113,6 +114,8 @@
             android:layout_marginStart="30dp"
             android:hint="עזרים"
             android:gravity="center"/>
+
+
         <EditText
             android:id="@+id/goals"
             android:layout_width="170dp"
@@ -142,11 +145,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="15dp"
         android:id="@+id/recyclerView"
-       android:fontFamily="@font/yardenboldalefalefalef"
-
-       >
-
-
+       android:fontFamily="@font/yardenboldalefalefalef">
     </androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>

@@ -1,33 +1,24 @@
 package com.example.guided;
 
-import static android.graphics.Color.BLACK;
-import static android.graphics.Color.WHITE;
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-
-import static androidx.constraintlayout.widget.ConstraintSet.WRAP_CONTENT;
+import static com.example.guided.R.*;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -37,11 +28,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -49,6 +40,7 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
     EditText topic;//שם פעולה
     TextView length;//אורך הפעולה
     int lengthCount = 0;
+    Switch privateORpublic;
     EditText goals;//מטרות הפעולה
     EditText equipments;// עזרים לפעולה
     TextView ageAdjustments;//גיל החניכים
@@ -66,11 +58,12 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
     int id = 0;
 
     RecyclerView recyclerView;
-    RecyclerAdapter recyclerAdapter;
+    RecyclerAdapterOperation recyclerAdapter;
     RecyclerView.LayoutManager layoutManager;
     Dialog addNewMetodaDialog;
     Button saveMetoda;
     ImageButton exitBTN;
+    Operation operation;
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
@@ -87,6 +80,21 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
         length = findViewById(R.id.length);
         goals = findViewById(R.id.goals);
         equipments = findViewById(R.id.equipments);
+        privateORpublic = findViewById(R.id.publicORpivate);
+
+        privateORpublic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(!privateORpublic.isChecked()){
+                    privateORpublic.setThumbDrawable(ContextCompat.getDrawable(Add_operation.this,
+                            drawable.baseline_person_24));
+                }
+                else {
+                    privateORpublic.setThumbDrawable(ContextCompat.getDrawable(Add_operation.this,
+                            drawable.baseline_groups_24));
+                }
+            }
+        } );
 
 
         exitBTN = findViewById(R.id.exit);
@@ -108,7 +116,7 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
 
         metodotArr = new ArrayList<Metoda>();
 
-        recyclerAdapter = new RecyclerAdapter(metodotArr, Add_operation.this);
+        recyclerAdapter = new RecyclerAdapterOperation(metodotArr, Add_operation.this);
         recyclerView.setAdapter(recyclerAdapter);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
@@ -241,7 +249,7 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
                     recyclerAdapter.notifyItemRemoved(position);
 
                     lengthCount = lengthCount - deletedMetoda.getLength();;
-                    length.setText(lengthCount + "דקות");
+                    length.setText(lengthCount + " דקות ");
 
                     Snackbar.make(recyclerView, deletedMetoda.toString(),Snackbar.LENGTH_LONG).setAction("undo", new View.OnClickListener(){
                         @Override
@@ -272,6 +280,29 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
 
 
     public void saveOperation() {
+
+        String nameSTR = topic.getText().toString();
+        String ageSTR = ageAdjustments.getText().toString();
+        String publicORprivateSRT;
+        if (!privateORpublic.isChecked())
+            publicORprivateSRT = "isPrivate";
+        else
+            publicORprivateSRT = "isPublic";
+        int lengthINT = lengthCount;
+        String goalsSTR = goals.getText().toString();
+        String equipmentsSTR = equipments.getText().toString();
+        operation = new Operation(
+                nameSTR,
+                ageSTR,
+                publicORprivateSRT,
+                lengthINT,
+                goalsSTR,
+                equipmentsSTR,
+                metodotArr);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("operations");
+
+        myRef.push().setValue(operation);
 
     }
 }
