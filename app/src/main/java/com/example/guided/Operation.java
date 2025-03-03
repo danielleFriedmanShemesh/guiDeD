@@ -26,6 +26,7 @@ public class Operation {
         this.lengthOfOperation = lengthOfOperation;
         this.goals = goals;
         this.equipment = equipment;
+        this.metodotArr = metodotArr;
 
         //לשלוף מהמסד נתונים של המשתמשים את שם המשתמש ואת התנועה שלו
     }

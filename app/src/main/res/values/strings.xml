@@ -23,4 +23,33 @@
         <item>כיתה י\"ב</item>
         <item>אחר</item>
     </string-array>
+    <string-array name="area_adjustment">
+        <item>רמת הגולן</item>
+        <item>הגליל העליון</item>
+        <item>הגליל המערבי</item>
+        <item>הגליל התחתון</item>
+        <item>הכרמל ועמקיו</item>
+        <item>בקעת הירדן</item>
+        <item>השומרון</item>
+        <item>השפלה</item>
+        <item>הרי יהודה</item>
+        <item>מדבר יהודה</item>
+        <item>השרון</item>
+        <item>מישור החוף</item>
+        <item>גוש דן</item>
+        <item>הערבה</item>
+        <item>צפון הנגב</item>
+        <item>מרכז הנגב ומכתשים</item>
+        <item>דרום הנגב והרי אילת</item>
+    </string-array>
+
+    <string-array name="activity_type_adjustment">
+        <item>הליכה</item>
+        <item>שינה</item>
+        <item>הדרכה</item>
+        <item>נסיעה</item>
+        <item>עצירה</item>
+        <item>פעילות</item>
+        <item>אחר</item>
+    </string-array>
 </resources>

@@ -56,7 +56,6 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
 
     ArrayList<Metoda> metodotArr;
     int id = 0;
-
     RecyclerView recyclerView;
     RecyclerAdapterOperation recyclerAdapter;
     RecyclerView.LayoutManager layoutManager;
@@ -183,9 +182,9 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
         }
         else if(v == exitBTN){
             saveOperation();
+            finish();
         }
     }
-    //מקבל את הID של המתודה שאחרייה רוצים לשים את המתודה החדשה
     private void addMetoda(){
 
         addNewMetodaDialog = new Dialog(Add_operation.this);

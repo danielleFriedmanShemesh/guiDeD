@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button btn2;
     Button btn3;
     Button btn4;
+    Button btn5;
 
 
 
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn2.setOnClickListener(this);
         btn3=findViewById(R.id.add_operation);
         btn3.setOnClickListener(this);
+        btn5=findViewById(R.id.add_trip);
+        btn5.setOnClickListener(this);
         btn4=findViewById(R.id.home);
         btn4.setOnClickListener(this);
 
@@ -63,6 +66,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         else if (v==btn3) {
             intent=new Intent(this, Add_operation.class);
+            startActivity(intent);
+            finish();
+        }
+        else if (v==btn5) {
+            intent=new Intent(this, Add_trip.class);
             startActivity(intent);
             finish();
         }

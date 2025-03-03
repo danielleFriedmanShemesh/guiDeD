@@ -4,4 +4,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="pink">#FFFFAAAA</color>
     <color name="red">#F6FF0000</color>
+    <color name="grayeen1">#e0e3c5</color>
+    <color name="grayeen2">#b1b49e</color>
+    <color name="grayeen3">#9b9f86</color>
+    <color name="grayeen4">#6c6f58</color>
+    <color name="beige1">#decfc2</color>
+    <color name="beige2">#b79c8d</color>
+    <color name="brown">#391d0d</color>
 </resources>
