@@ -95,6 +95,7 @@ public class Add_trip extends AppCompatActivity implements View.OnClickListener 
         goals = findViewById(R.id.goals);
         equipments = findViewById(R.id.equipments);
         place = findViewById(R.id.place);
+        //לעשות שהמיקום הספציפי מתחבר לגוגל מאפ
 
         tripPicture = findViewById(R.id.picture);
         tripPicture.setOnClickListener(this);
@@ -537,10 +538,7 @@ public class Add_trip extends AppCompatActivity implements View.OnClickListener 
                         partsArr,
                         userNameSTR,
                         organizationSTR);
-
-
-
-
+                myRef.push().setValue(trip);
             }
 
             @Override
@@ -549,7 +547,6 @@ public class Add_trip extends AppCompatActivity implements View.OnClickListener 
             }
         });
 
-        myRef.push().setValue(trip);
 
     }
 
