@@ -15,6 +15,9 @@ public class Metoda {
         this.id = id;
     }
 
+    public Metoda() {
+    }
+
     public String getTitle() {
         return title;
     }

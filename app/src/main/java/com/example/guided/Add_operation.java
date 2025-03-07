@@ -290,18 +290,37 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
         int lengthINT = lengthCount;
         String goalsSTR = goals.getText().toString();
         String equipmentsSTR = equipments.getText().toString();
-        operation = new Operation(
-                nameSTR,
-                ageSTR,
-                publicORprivateSRT,
-                lengthINT,
-                goalsSTR,
-                equipmentsSTR,
-                metodotArr);
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("operations");
+        FirebaseUserHelper firebaseUserHelper = new FirebaseUserHelper();
+        firebaseUserHelper.fetchUserData(new FirebaseUserHelper.UserDataCallback() {
+            @Override
+            public void onUserDataLoaded(User user) {
+                String organizationSTR = user.getOrganization();
+                String userNameSTR = user.getUserName();
 
-        myRef.push().setValue(operation);
+                operation = new Operation(
+                        nameSTR,
+                        ageSTR,
+                        publicORprivateSRT,
+                        lengthINT,
+                        goalsSTR,
+                        equipmentsSTR,
+                        metodotArr,
+                        organizationSTR,
+                        userNameSTR);
+                myRef.push().setValue(operation);
+
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
+
+
 
     }
 }
