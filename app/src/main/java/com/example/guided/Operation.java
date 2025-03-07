@@ -19,7 +19,9 @@ public class Operation {
                      int lengthOfOperation,
                      String goals,
                      String equipment,
-                     ArrayList<Metoda> metodotArr) {
+                     ArrayList<Metoda> metodotArr,
+                     String organization,
+                     String userName) {
         this.nameOfOperation = nameOfOperation;
         this.privateORpublic = privateORpublic;
         this.age = age;
@@ -27,8 +29,11 @@ public class Operation {
         this.goals = goals;
         this.equipment = equipment;
         this.metodotArr = metodotArr;
+        this.userName = userName;
+        this.organization = organization;
+    }
 
-        //לשלוף מהמסד נתונים של המשתמשים את שם המשתמש ואת התנועה שלו
+    public Operation() {
     }
 
     public String getNameOfOperation() {
