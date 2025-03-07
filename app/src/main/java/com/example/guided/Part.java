@@ -18,6 +18,7 @@ public class Part {
         this.picture = picture;
         this.id = id;
     }
+    public Part(){}
 
     public String getActivityType() {
         return activityType;

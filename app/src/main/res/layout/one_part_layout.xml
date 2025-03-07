@@ -75,11 +75,19 @@
         android:hint="עזרים"
         android:textSize="25dp"
         android:gravity="center_vertical"
-
         app:layout_constraintEnd_toEndOf="@+id/description"
         app:layout_constraintTop_toBottomOf="@+id/description"
         android:fontFamily="@font/yardenregularalefalefalef"
         />
+    <View
+        android:id="@+id/divider"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="11dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/equipment" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

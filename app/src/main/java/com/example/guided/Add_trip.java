@@ -76,6 +76,8 @@ public class Add_trip extends AppCompatActivity implements View.OnClickListener 
     Button savePartBTN;
     ImageButton exitBTN;
 
+    Trip trip;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -514,9 +516,38 @@ public class Add_trip extends AppCompatActivity implements View.OnClickListener 
         String areaSTR = area.getText().toString();
         String placeSTR = place.getText().toString();
         
-        Trip trip = new Trip(nameSTR,ageSTR,publicORprivateSRT,lengthInKmINT,lengthInMinutesINT,goalsSTR,equipmentsSTR,areaSTR,placeSTR, partsArr);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("trips");
+
+        FirebaseUserHelper firebaseUserHelper = new FirebaseUserHelper();
+        firebaseUserHelper.fetchUserData(new FirebaseUserHelper.UserDataCallback() {
+            @Override
+            public void onUserDataLoaded(User user) {
+                String organizationSTR = user.getOrganization();
+                String userNameSTR = user.getUserName();
+                trip = new Trip(nameSTR,
+                        ageSTR,
+                        publicORprivateSRT,
+                        lengthInKmINT,
+                        lengthInMinutesINT,
+                        goalsSTR,
+                        equipmentsSTR,
+                        areaSTR,
+                        placeSTR,
+                        partsArr,
+                        userNameSTR,
+                        organizationSTR);
+
+
+
+
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
 
         myRef.push().setValue(trip);
 

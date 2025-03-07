@@ -3,6 +3,8 @@ package com.example.guided;
 import java.util.ArrayList;
 
 public class Trip {
+    private String userName;
+    private String organization;
     private String nameOfTrip;
     private String age;
     private String publicORprivate;
@@ -23,7 +25,9 @@ public class Trip {
                 String equipment,
                 String area,
                 String place,
-                ArrayList<Part> partsArr) {
+                ArrayList<Part> partsArr,
+                String userName,
+                String organization) {
         this.nameOfTrip = nameOfTrip;
         this.publicORprivate = privateORpublic;
         this.age = age;
@@ -34,6 +38,27 @@ public class Trip {
         this.area = area;
         this.place = place;
         this.partsArr = partsArr;
+        this.userName = userName;
+        this.organization = organization;
+    }
+
+    public Trip(){
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(String organization) {
+        this.organization = organization;
     }
 
     public String getNameOfTrip() {
