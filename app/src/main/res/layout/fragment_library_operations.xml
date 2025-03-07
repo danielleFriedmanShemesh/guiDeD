@@ -1,18 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LibraryOperationsFragment">
+    tools:context=".LibraryOperationsFragment"
+    android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
 
 
     <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/yardenboldalefalefalef"
+        android:gravity="center"
+        android:text="מאגר פעולות"
+        android:textSize="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:text="Library Operations Fragment"
-    android:textSize="50dp" />
+    android:layout_height="wrap_content">
 
-</RelativeLayout>
+    <EditText
+        android:id="@+id/edit_text"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+        android:entries="@array/language"
+        android:fontFamily="@font/yardenboldalefalefalef"
+        android:hint="חיפוש"
+        android:padding="12dp"
+        android:singleLine="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:src="@drawable/baseline_search_24"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_text"
+        app:layout_constraintStart_toEndOf="@+id/edit_text"
+        app:layout_constraintTop_toTopOf="@+id/edit_text" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_filter_alt_24"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_text"
+        app:layout_constraintEnd_toStartOf="@+id/edit_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/edit_text" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="vertical"
+        android:layout_marginTop="10dp" />
+
+
+</LinearLayout>
