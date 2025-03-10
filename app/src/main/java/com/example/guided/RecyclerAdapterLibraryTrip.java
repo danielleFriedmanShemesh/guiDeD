@@ -15,17 +15,21 @@ import java.util.ArrayList;
 public class RecyclerAdapterLibraryTrip  extends RecyclerView.Adapter<RecyclerAdapterLibraryTrip.ViewHolder>{
 
     private Context context;
-    private ArrayList<Trip> tripsArrayList;
+
+    private ArrayList<Trip> originalList;  // Original Data
+    private ArrayList<Trip> filteredList;  // Filtered Data
 
     public RecyclerAdapterLibraryTrip(Context context, ArrayList<Trip> tripsArrayList) {
         this.context = context;
-        this.tripsArrayList = new ArrayList<>();
+        this.originalList = new ArrayList<>();
         for (int i=0; i<tripsArrayList.size(); i++) {
             Trip trip = tripsArrayList.get(i);
             if (trip.getPublicORprivate().equals("isPublic")) {
-                this.tripsArrayList.add(trip);
+                this.originalList.add(trip);
+
             }
         }
+        this.filteredList = new ArrayList<>(this.originalList);
     }
 
     @NonNull
@@ -40,7 +44,7 @@ public class RecyclerAdapterLibraryTrip  extends RecyclerView.Adapter<RecyclerAd
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapterLibraryTrip.ViewHolder holder, int position) {
 
-        Trip trip = tripsArrayList.get(position);
+        Trip trip = filteredList.get(position);
         holder.topic.setText(trip.getNameOfTrip());
         holder.length.setText(trip.getLengthInKm()+" ק''מ ");
         holder.age.setText(trip.getAge());
@@ -59,12 +63,34 @@ public class RecyclerAdapterLibraryTrip  extends RecyclerView.Adapter<RecyclerAd
 
     @Override
     public int getItemCount() {
-        if(tripsArrayList == null){
+        if(filteredList == null){
             return 0;
         }
         else {
-            return tripsArrayList.size();
+            return filteredList.size();
         }
+    }
+    public void filter(String query) {
+        filteredList.clear();
+        if (query.isEmpty()) {
+            filteredList.addAll(originalList);
+        } else {
+            query = query.toLowerCase(); // It converts the search query (user input) to lowercase letters.
+
+
+            for (Trip trip : originalList) {
+                if (trip.getNameOfTrip().toLowerCase().contains(query) ||
+                        String.valueOf(trip.getLengthInKm()).contains(query) ||
+                        trip.getArea().toLowerCase().contains(query) ||
+                        trip.getPlace().toLowerCase().contains(query) ||
+                        trip.getOrganization().toLowerCase().contains(query) ||
+                        trip.getUserName().toLowerCase().contains(query) ||
+                        String.valueOf(trip.getAge()).contains(query)) {
+                    filteredList.add(trip);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

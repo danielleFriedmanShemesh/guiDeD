@@ -20,17 +20,19 @@ import java.util.ArrayList;
 
 public class RecyclerAdapterLibraryOperation extends RecyclerView.Adapter<RecyclerAdapterLibraryOperation.ViewHolder>{
     private Context context;
-    private ArrayList<Operation> operationArrayList;
+    private ArrayList<Operation> originalList;  // Original Data
+    private ArrayList<Operation> filteredList;  // Filtered Data
 
     public RecyclerAdapterLibraryOperation(Context context, ArrayList<Operation> operationArrayList) {
         this.context = context;
-        this.operationArrayList = new ArrayList<>();
+        this.originalList = new ArrayList<>();
         for (int i=0; i<operationArrayList.size(); i++) {
             Operation operation = operationArrayList.get(i);
             if (operation.getPrivateORpublic().equals("isPublic")) {
-                this.operationArrayList.add(operation);
+                this.originalList.add(operation);
             }
         }
+        this.filteredList = new ArrayList<>(this.originalList);
     }
 
     @NonNull
@@ -45,7 +47,7 @@ public class RecyclerAdapterLibraryOperation extends RecyclerView.Adapter<Recycl
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapterLibraryOperation.ViewHolder holder, int position)
     {
-        Operation operation = operationArrayList.get(position);
+        Operation operation = filteredList.get(position);
         holder.topic.setText(operation.getNameOfOperation());
         holder.time.setText(operation.getLengthOfOperation()+" דקות ");
         holder.age.setText(operation.getAge());
@@ -65,14 +67,37 @@ public class RecyclerAdapterLibraryOperation extends RecyclerView.Adapter<Recycl
     @Override
     public int getItemCount() {
 
-        if(operationArrayList == null){
+        if(filteredList == null){
             return 0;
         }
         else {
-            int opsSize = operationArrayList.size();
+            int opsSize = filteredList.size();
             return opsSize;
         }
     }
+
+    public void filter(String query) {
+        filteredList.clear();
+        if (query.isEmpty()) {
+            filteredList.addAll(originalList);
+        } else {
+            query = query.toLowerCase(); // It converts the search query (user input) to lowercase letters.
+
+
+            for (Operation operation : originalList) {
+                if (operation.getNameOfOperation().toLowerCase().contains(query) ||
+                        String.valueOf(operation.getLengthOfOperation()).contains(query) ||
+                        operation.getGoals().toLowerCase().contains(query) ||
+                        operation.getOrganization().toLowerCase().contains(query) ||
+                        operation.getUserName().toLowerCase().contains(query) ||
+                        String.valueOf(operation.getAge()).contains(query)) {
+                    filteredList.add(operation);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView topic;

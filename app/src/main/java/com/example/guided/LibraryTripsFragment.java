@@ -2,13 +2,18 @@ package com.example.guided;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
@@ -20,6 +25,8 @@ public class LibraryTripsFragment extends Fragment {
     RecyclerView.LayoutManager layoutManager;
     FireBaseTripHelper fireBaseTripHelper;
     ArrayList<Trip> tripsArrayList;
+    android.widget.SearchView search;
+    ImageButton filter;
 
     public LibraryTripsFragment() {
         // Required empty public constructor
@@ -48,6 +55,24 @@ public class LibraryTripsFragment extends Fragment {
 
         if ( v != null)
         {
+
+            search = v.findViewById(R.id.search);
+            search.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    recyclerAdapter.filter(query);
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    recyclerAdapter.filter(newText);
+                    return false;
+                }
+            });
+
+
+
             recyclerView = v.findViewById(R.id.recyclerView);
             recyclerView.setHasFixedSize(true);
 

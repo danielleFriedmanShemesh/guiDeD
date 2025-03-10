@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,9 @@ public class LibraryOperationsFragment extends Fragment {
     RecyclerView.LayoutManager layoutManager;
     FireBaseOperationHelper fireBaseOperationHelper;
     ArrayList<Operation> operationArrayList;
+
+    android.widget.SearchView search;
+    ImageButton filter;
 
 
     public LibraryOperationsFragment() {
@@ -54,6 +58,22 @@ public class LibraryOperationsFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_library_operations, container, false);
         if ( v != null)
         {
+
+            search = v.findViewById(R.id.search);
+            search.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    recyclerAdapter.filter(query);
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    recyclerAdapter.filter(newText);
+                    return false;
+                }
+            });
+
             recyclerView = v.findViewById(R.id.recyclerView);
             recyclerView.setHasFixedSize(true);
 

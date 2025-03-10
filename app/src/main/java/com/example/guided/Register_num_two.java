@@ -5,10 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -215,7 +212,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
                 dialog.show();
 
                 // Initialize and assign variable
-                EditText editText = dialog.findViewById(R.id.edit_text);
+                EditText editText = dialog.findViewById(R.id.search);
                 ListView listView = dialog.findViewById(R.id.list_view);
 
                 // Initialize array adapter
