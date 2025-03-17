@@ -57,8 +57,10 @@ public class RecyclerAdapterLibraryOperation extends RecyclerView.Adapter<Recycl
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(this, view_operation.class);
-//                startActivity(intent);
+                Intent intent = new Intent(context, View_operation.class);
+                intent.putExtra("operationKey", operation.getKey());
+                context.startActivity(intent);
+
             }
         });
 
@@ -76,7 +78,7 @@ public class RecyclerAdapterLibraryOperation extends RecyclerView.Adapter<Recycl
         }
     }
 
-    public void filter(String query) {
+    public void filterSearch(String query) {
         filteredList.clear();
         if (query.isEmpty()) {
             filteredList.addAll(originalList);

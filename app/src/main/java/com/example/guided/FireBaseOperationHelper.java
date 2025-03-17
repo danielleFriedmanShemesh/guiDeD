@@ -14,15 +14,24 @@ import java.util.ArrayList;
 public class FireBaseOperationHelper {
     private DatabaseReference myRef;
     private ArrayList<Operation> operationArrayList;
+    private Operation operation;
 
     public FireBaseOperationHelper() {
         myRef = FirebaseDatabase.getInstance().getReference("operations");
         operationArrayList = new ArrayList<>();
+        operation = new Operation();
     }
 
     public interface DataStatus {
         void onDataLoaded(ArrayList<Operation> operations);
     }
+
+    public interface DataStatusM {
+        void onDataLoaded(Operation operation);
+    }
+
+
+
     public void fetchOperations(DataStatus dataStatus) {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -44,7 +53,37 @@ public class FireBaseOperationHelper {
             }
         });
     }
+
+    public void fetchOneOperation(DataStatusM dataStatusM, String id){
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+//מסיבה כלשהיא זה לא מראה את כל הנתונים של הפעולה צריך לבדוק איך לסדר את זה
+                    operation = dataSnapshot.getValue(Operation.class);
+                    if (operation != null){
+                        operation.setKey(dataSnapshot.getKey()); //  שמירת ה-key
+                    }
+                }
+                //operation = myRef.child("id").get();
+               dataStatusM.onDataLoaded(operation);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+
     public ArrayList<Operation> getOperationArrayList(){
         return operationArrayList;
+    }
+
+    public Operation getOperation() {
+        return operation;
     }
 }

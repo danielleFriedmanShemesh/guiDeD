@@ -12,6 +12,7 @@ public class Operation {
     private ArrayList<Metoda> metodotArr = new ArrayList<>();
     private String goals;
     private String equipment;
+    private String key;
 
     public Operation(String nameOfOperation,
                      String age,
@@ -34,6 +35,14 @@ public class Operation {
     }
 
     public Operation() {
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getNameOfOperation() {

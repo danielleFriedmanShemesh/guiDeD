@@ -63,13 +63,13 @@ public class LibraryOperationsFragment extends Fragment {
             search.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    recyclerAdapter.filter(query);
+                    recyclerAdapter.filterSearch(query);
                     return false;
                 }
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    recyclerAdapter.filter(newText);
+                    recyclerAdapter.filterSearch(newText);
                     return false;
                 }
             });
