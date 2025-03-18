@@ -15,6 +15,8 @@ public class Trip {
     private String goals;
     private String equipments;
     private ArrayList<Part> partsArr = new ArrayList<>();
+    private String key;
+
 
     public Trip(String nameOfTrip,
                 String age,
@@ -43,6 +45,14 @@ public class Trip {
     }
 
     public Trip(){
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getUserName() {

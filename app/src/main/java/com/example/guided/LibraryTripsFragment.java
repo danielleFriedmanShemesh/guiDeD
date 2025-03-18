@@ -60,13 +60,13 @@ public class LibraryTripsFragment extends Fragment {
             search.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    recyclerAdapter.filter(query);
+                    recyclerAdapter.filterSearch(query);
                     return false;
                 }
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    recyclerAdapter.filter(newText);
+                    recyclerAdapter.filterSearch(newText);
                     return false;
                 }
             });
@@ -88,6 +88,7 @@ public class LibraryTripsFragment extends Fragment {
                             tripsArrayList = trips;
                             recyclerAdapter = new RecyclerAdapterLibraryTrip(getContext(), tripsArrayList);
                             recyclerView.setAdapter(recyclerAdapter);
+                            // TODO: לעשות שהטיול הכי עליון שמוצג זה הטיול האחרון שעלה לאתר
                             //recyclerAdapter.notifyItemRangeInserted(0, tripsArrayList.size());
                         }
                     }

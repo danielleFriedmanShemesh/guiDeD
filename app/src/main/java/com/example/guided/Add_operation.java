@@ -312,7 +312,10 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
                         metodotArr,
                         organizationSTR,
                         userNameSTR);
-                myRef.push().setValue(operation);
+
+                String key = myRef.push().getKey();
+                operation.setKey(key);
+                myRef.child(key).setValue(operation);
 
             }
 

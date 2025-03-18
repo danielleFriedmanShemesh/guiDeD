@@ -1,6 +1,7 @@
 package com.example.guided;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,8 +56,9 @@ public class RecyclerAdapterLibraryTrip  extends RecyclerView.Adapter<RecyclerAd
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(this, view_operation.class);
-//                startActivity(intent);
+                Intent intent = new Intent(context, View_trip.class);
+                intent.putExtra("tripKey", trip.getKey());
+                context.startActivity(intent);
             }
         });
     }
@@ -70,7 +72,7 @@ public class RecyclerAdapterLibraryTrip  extends RecyclerView.Adapter<RecyclerAd
             return filteredList.size();
         }
     }
-    public void filter(String query) {
+    public void filterSearch(String query) {
         filteredList.clear();
         if (query.isEmpty()) {
             filteredList.addAll(originalList);
@@ -92,6 +94,10 @@ public class RecyclerAdapterLibraryTrip  extends RecyclerView.Adapter<RecyclerAd
         }
         notifyDataSetChanged();
     }
+    public void filters(){
+        //TODO:  כשיהיה לי זמן להוסיף את הסינון לפי קריטריון מסויים
+
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -109,7 +115,7 @@ public class RecyclerAdapterLibraryTrip  extends RecyclerView.Adapter<RecyclerAd
             topic = itemView.findViewById(R.id.topic);
             length = itemView.findViewById(R.id.length);
             age = itemView.findViewById(R.id.age);
-            area = itemView.findViewById(R.id.area);
+            area = itemView.findViewById(R.id.areaOfTR);
             place = itemView.findViewById(R.id.place);
             userName = itemView.findViewById(R.id.userName);
             organization = itemView.findViewById(R.id.organization);

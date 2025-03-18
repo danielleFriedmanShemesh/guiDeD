@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -30,6 +31,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -39,6 +43,8 @@ import java.util.Collections;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class Add_trip extends AppCompatActivity implements View.OnClickListener {
+    // TODO: להוסיף אפשרות לשמור מקטע וטיול בכללי שלא כל השדות מלאים מבלי שיקרוס
+
 
     EditText topic;//שם הטיול
     TextView length;//אורך הטיול
@@ -538,7 +544,9 @@ public class Add_trip extends AppCompatActivity implements View.OnClickListener 
                         partsArr,
                         userNameSTR,
                         organizationSTR);
-                myRef.push().setValue(trip);
+                String key = myRef.push().getKey();
+                trip.setKey(key);
+                myRef.child(key).setValue(trip);
             }
 
             @Override

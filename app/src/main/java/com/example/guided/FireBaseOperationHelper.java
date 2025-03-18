@@ -59,13 +59,10 @@ public class FireBaseOperationHelper {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-//מסיבה כלשהיא זה לא מראה את כל הנתונים של הפעולה צריך לבדוק איך לסדר את זה
-                    operation = dataSnapshot.getValue(Operation.class);
-                    if (operation != null){
-                        operation.setKey(dataSnapshot.getKey()); //  שמירת ה-key
+                    if(dataSnapshot.getKey().equals(id)) {
+                        operation = dataSnapshot.getValue(Operation.class);
                     }
                 }
-                //operation = myRef.child("id").get();
                dataStatusM.onDataLoaded(operation);
 
             }

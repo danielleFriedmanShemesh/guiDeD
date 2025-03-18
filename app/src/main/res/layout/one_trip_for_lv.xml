@@ -54,7 +54,7 @@
         app:layout_constraintTop_toTopOf="@+id/topic" />
 
     <TextView
-        android:id="@+id/area"
+        android:id="@+id/areaOfTR"
         android:background="@drawable/back"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
         android:background="@drawable/back"
 
         app:layout_constraintBottom_toBottomOf="@+id/place"
-        app:layout_constraintEnd_toStartOf="@+id/area"
+        app:layout_constraintEnd_toStartOf="@+id/areaOfTR"
         app:layout_constraintTop_toTopOf="@+id/place" />
 
     <TextView
