@@ -522,6 +522,9 @@ public class Add_trip extends AppCompatActivity implements View.OnClickListener 
         String equipmentsSTR = equipments.getText().toString();
         String areaSTR = area.getText().toString();
         String placeSTR = place.getText().toString();
+        String picSTR = BitmapHelper.bitmapToString(
+                ((BitmapDrawable)tripPicture.getDrawable())
+                        .getBitmap());
         
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("trips");
@@ -543,7 +546,7 @@ public class Add_trip extends AppCompatActivity implements View.OnClickListener 
                         placeSTR,
                         partsArr,
                         userNameSTR,
-                        organizationSTR);
+                        organizationSTR, picSTR);
                 String key = myRef.push().getKey();
                 trip.setKey(key);
                 myRef.child(key).setValue(trip);

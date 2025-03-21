@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Trip {
     private String userName;
+    private String picture;
     private String organization;
     private String nameOfTrip;
     private String age;
@@ -18,6 +19,7 @@ public class Trip {
     private String key;
 
 
+
     public Trip(String nameOfTrip,
                 String age,
                 String privateORpublic,
@@ -29,7 +31,8 @@ public class Trip {
                 String place,
                 ArrayList<Part> partsArr,
                 String userName,
-                String organization) {
+                String organization,
+                String picture) {
         this.nameOfTrip = nameOfTrip;
         this.publicORprivate = privateORpublic;
         this.age = age;
@@ -42,9 +45,18 @@ public class Trip {
         this.partsArr = partsArr;
         this.userName = userName;
         this.organization = organization;
+        this.picture = picture;
     }
 
     public Trip(){
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public String getKey() {

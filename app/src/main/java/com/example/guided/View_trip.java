@@ -2,13 +2,16 @@ package com.example.guided;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -99,6 +102,29 @@ public class View_trip extends AppCompatActivity implements View.OnClickListener
     public void onClick(View v) {
         if (v == exit){
             finish();
+        } else if (v == pictureBTN) {
+            String image = trip.getPicture();
+            LayoutInflater inflater = LayoutInflater.from(this); // or getLayoutInflater() in an Activity
+            View dialogView = inflater.inflate(R.layout.trip_pic_dialog_layout, null);
+
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("מסלול הטיול");
+
+            if(image != null){
+//   TODO:                למצוא דרך להציג את המסלול בתוך הדיאלוג
+                ImageView imageView = dialogView.findViewById(R.id.pic);
+                imageView.setImageBitmap(BitmapHelper.stringToBitmap(image));
+                builder.setView(dialogView);
+
+            }
+            else {
+                builder.setMessage("לא הוסף מסלול");
+            }
+            builder.setPositiveButton("סגור", null);
+            builder.setCancelable(true);
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
     }
 }
