@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,7 @@ public class LibraryTripsFragment extends Fragment {
     FireBaseTripHelper fireBaseTripHelper;
     ArrayList<Trip> tripsArrayList;
     android.widget.SearchView search;
-    ImageButton filter;
+    ImageView filter;
 
     public LibraryTripsFragment() {
         // Required empty public constructor

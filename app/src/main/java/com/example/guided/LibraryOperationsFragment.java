@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,7 @@ public class LibraryOperationsFragment extends Fragment {
     ArrayList<Operation> operationArrayList;
 
     android.widget.SearchView search;
-    ImageButton filter;
+    ImageView filter;
 
 
     public LibraryOperationsFragment() {
@@ -76,6 +77,7 @@ public class LibraryOperationsFragment extends Fragment {
 
             recyclerView = v.findViewById(R.id.recyclerView);
             recyclerView.setHasFixedSize(true);
+
 
             layoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(layoutManager);

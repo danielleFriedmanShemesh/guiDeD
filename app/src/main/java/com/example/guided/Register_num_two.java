@@ -52,7 +52,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
     ImageView profile;
     ArrayList<String> arrayList;
     Dialog dialog;
-    Button backBTN;
+    ImageView backBTN;
     ImageView saveBTN;
     TextView alartForNickName;
     TextView alartForOrganization;
@@ -347,6 +347,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
             SimpleDateFormat dateFormat = new SimpleDateFormat(
                     "dd/MM/yyyy", Locale.getDefault());
             try {
+                if (!birthday.getText().toString().isEmpty())
                 newUser.setBirthday(
                         dateFormat.parse(
                                 birthday.getText().toString()));

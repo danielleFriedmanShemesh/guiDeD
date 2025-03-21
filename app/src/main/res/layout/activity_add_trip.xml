@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
             android:layout_marginStart="75dp"
-            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+            app:srcCompat="@drawable/x" />
     </LinearLayout>
 
     <LinearLayout

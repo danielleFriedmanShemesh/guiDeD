@@ -271,7 +271,7 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
 
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                     .addSwipeLeftBackgroundColor(ContextCompat.getColor(Add_operation.this, R.color.red))
-                    .addSwipeLeftActionIcon(R.drawable.baseline_delete_24)
+                    .addSwipeLeftActionIcon(drawable.trash)
                     .create()
                     .decorate();
 

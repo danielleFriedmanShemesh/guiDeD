@@ -26,36 +26,41 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <SearchView
+    <android.widget.SearchView
         android:id="@+id/search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/yardenboldalefalefalef"
+        android:searchIcon="@drawable/search"
+        android:textDirection="rtl"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:fontFamily="@font/yardenboldalefalefalef"
-        android:textDirection="rtl"
-        />
-
-    <ImageButton
+        app:layout_constraintTop_toTopOf="parent" />
+    <!--android:closeIcon="@drawable/x"
+            android:goIcon="@drawable/search"
+            android:searchHintIcon="@drawable/search"-->
+    <ImageView
         android:id="@+id/filter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="24pt"
+        android:layout_height="24pt"
         android:backgroundTint="#00FFFFFF"
-        android:src="@drawable/baseline_filter_alt_24"
+        tools:src="@drawable/filter"
+        android:adjustViewBounds="true"
         app:layout_constraintBottom_toBottomOf="@+id/search"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/search" />
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
+<!-- TODO: לשים את הצוק וכשגוללים למטה זה יראה כאילו הוא זז -->
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:scrollbars="vertical"
         android:layout_marginTop="10dp" />
 
-
+</FrameLayout>
 </LinearLayout>

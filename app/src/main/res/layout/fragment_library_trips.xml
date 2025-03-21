@@ -27,6 +27,7 @@
 
         <android.widget.SearchView
             android:id="@+id/search"
+            android:searchIcon="@drawable/search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -36,12 +37,13 @@
             android:textDirection="rtl"
             />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24pt"
+            android:layout_height="24pt"
             android:backgroundTint="#00FFFFFF"
-           android:src="@drawable/baseline_filter_alt_24"
+            tools:src="@drawable/filter"
+            android:adjustViewBounds="true"
             app:layout_constraintBottom_toBottomOf="@+id/search"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/search" />
@@ -55,5 +57,7 @@
         android:layout_weight="1"
         android:scrollbars="vertical"
         android:layout_marginTop="10dp" />
+
+
 
 </LinearLayout>

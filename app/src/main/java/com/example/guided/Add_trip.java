@@ -422,7 +422,7 @@ public class Add_trip extends AppCompatActivity implements View.OnClickListener 
 
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                     .addSwipeLeftBackgroundColor(ContextCompat.getColor(Add_trip.this, R.color.red))
-                    .addSwipeLeftActionIcon(R.drawable.baseline_delete_24)
+                    .addSwipeLeftActionIcon(R.drawable.trash)
                     .create()
                     .decorate();
 

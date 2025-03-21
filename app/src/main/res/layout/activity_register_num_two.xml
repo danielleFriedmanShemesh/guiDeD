@@ -155,34 +155,37 @@
         android:fontFamily="@font/yardenboldalefalefalef"
         />
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/save"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
             android:layout_gravity="center"
-            android:layout_marginStart="0dp"
-            android:layout_marginBottom="-10dp"
-            app:srcCompat="@drawable/sign_continue" />
+            android:layout_marginBottom="-30dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/better_sign_continue" />
 
-        <Button
+        <ImageView
             android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="0dp"
-            android:layout_marginBottom="0dp"
-            android:text="חזור"
+
             android:fontFamily="@font/yardenboldalefalefalef"
-            />
-    </RelativeLayout>
+            app:layout_constraintBottom_toBottomOf="@+id/save"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/save"
+            app:srcCompat="@drawable/better_sign_back" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </LinearLayout>
