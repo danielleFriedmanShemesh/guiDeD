@@ -72,7 +72,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         see_more_trip = v.findViewById(R.id.seeMoreTr);
         see_more_trip.setOnClickListener(this);
 
-        LayoutViews layout1Views = new LayoutViews(
+        LayoutViewsOperation layout1Views = new LayoutViewsOperation(
                 v.findViewById(R.id.topic1),
                 v.findViewById(R.id.ageOp1),
                 v.findViewById(R.id.goals1),
@@ -81,7 +81,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 v.findViewById(R.id.writerUserName1),
                 v.findViewById(R.id.clOp1)
         );
-        LayoutViews layout2Views = new LayoutViews(
+        LayoutViewsOperation layout2Views = new LayoutViewsOperation(
                 v.findViewById(R.id.topic2),
                 v.findViewById(R.id.ageOp2),
                 v.findViewById(R.id.goals2),
@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 v.findViewById(R.id.writerUserName2),
                 v.findViewById(R.id.clOp2)
         );
-        LayoutViews layout3Views = new LayoutViews(
+        LayoutViewsOperation layout3Views = new LayoutViewsOperation(
                 v.findViewById(R.id.topic3),
                 v.findViewById(R.id.ageOp3),
                 v.findViewById(R.id.goals3),
@@ -99,7 +99,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 v.findViewById(R.id.writerUserName3),
                 v.findViewById(R.id.clOp3)
         );
-        LayoutViews layout4Views = new LayoutViews(
+        LayoutViewsOperation layout4Views = new LayoutViewsOperation(
                 v.findViewById(R.id.topic4),
                 v.findViewById(R.id.ageOp4),
                 v.findViewById(R.id.goals4),
@@ -107,6 +107,86 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 v.findViewById(R.id.organizationOP4),
                 v.findViewById(R.id.writerUserName4),
                 v.findViewById(R.id.clOp4)
+        );
+
+        LayoutViewsTrip layout1ViewsTrip = new LayoutViewsTrip(
+                v.findViewById(R.id.title1),
+                v.findViewById(R.id.age1),
+                v.findViewById(R.id.area1),
+                v.findViewById(R.id.length1),
+                v.findViewById(R.id.organization1),
+                v.findViewById(R.id.id1),
+                v.findViewById(R.id.clTr1)
+        );
+        LayoutViewsTrip layout2ViewsTrip = new LayoutViewsTrip(
+                v.findViewById(R.id.title2),
+                v.findViewById(R.id.age2),
+                v.findViewById(R.id.area2),
+                v.findViewById(R.id.length2),
+                v.findViewById(R.id.organization2),
+                v.findViewById(R.id.id2),
+                v.findViewById(R.id.clTr2)
+        );
+        LayoutViewsTrip layout3ViewsTrip = new LayoutViewsTrip(
+                v.findViewById(R.id.title3),
+                v.findViewById(R.id.age3),
+                v.findViewById(R.id.area3),
+                v.findViewById(R.id.length3),
+                v.findViewById(R.id.organization3),
+                v.findViewById(R.id.id3),
+                v.findViewById(R.id.clTr3)
+        );
+        LayoutViewsTrip layout4ViewsTrip = new LayoutViewsTrip(
+                v.findViewById(R.id.title4),
+                v.findViewById(R.id.age4),
+                v.findViewById(R.id.area4),
+                v.findViewById(R.id.length4),
+                v.findViewById(R.id.organization4),
+                v.findViewById(R.id.id4),
+                v.findViewById(R.id.clTr4)
+        );
+
+        FireBaseTripHelper fireBaseTripHelper = new FireBaseTripHelper();
+        fireBaseTripHelper.fetchTrips(
+                new FireBaseTripHelper.DataStatus() {
+                    @Override
+                    public void onDataLoaded(ArrayList<Trip> trips) {
+                        ArrayList<Trip> tripArrayList =  new ArrayList<>();
+                        for (int i = 0; i<trips.size(); i++){
+                            Trip trip = trips.get(i);
+                            if (trip.getPublicORprivate().equals("isPublic")) {
+                                tripArrayList.add(trip);
+                            }
+                        }
+                        if (!tripArrayList.isEmpty() && tripArrayList.size() >= 4){
+                            int index1 = new Random().nextInt(tripArrayList.size());
+                            Trip randomTrip = tripArrayList.get(index1);
+                            int index2 = new Random().nextInt(tripArrayList.size());
+                            while (index2 == index1){
+                                index2 = new Random().nextInt(tripArrayList.size());
+                            }
+                            Trip randomTrip2 = tripArrayList.get(index2);
+
+                            int index3 = new Random().nextInt(tripArrayList.size());
+                            while (index3 == index2 || index3 == index1){
+                                index3 = new Random().nextInt(tripArrayList.size());
+                            }
+                            Trip randomTrip3 = tripArrayList.get(index3);
+
+                            int index4 = new Random().nextInt(tripArrayList.size());
+                            while (index4 == index2 ||index4 == index1 || index4==index3){
+                                index4 = new Random().nextInt(tripArrayList.size());
+                            }
+                            Trip randomTrip4 = tripArrayList.get(index4);
+
+                            displayTripInLayout(randomTrip, layout1ViewsTrip);
+                            displayTripInLayout(randomTrip2, layout2ViewsTrip);
+                            displayTripInLayout(randomTrip3, layout3ViewsTrip);
+                            displayTripInLayout(randomTrip4, layout4ViewsTrip);
+
+                        }
+                    }
+                }
         );
 
         FireBaseOperationHelper fireBaseOperationHelper = new FireBaseOperationHelper();
@@ -157,7 +237,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         return v;
     }
 
-    private void displayOperationInLayout(Operation randomOperation, LayoutViews views) {
+    private void displayOperationInLayout(Operation randomOperation, LayoutViewsOperation views) {
         views.topic.setText(randomOperation.getNameOfOperation());
         views.time.setText(randomOperation.getLengthOfOperation()+" דקות ");
         views.age.setText(randomOperation.getAge());
@@ -169,6 +249,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), View_operation.class);
                 intent.putExtra("operationKey", randomOperation.getKey());
+                startActivity(intent);
+
+            }
+        });
+    }
+    private void displayTripInLayout(Trip randomTrip, LayoutViewsTrip views) {
+        views.title.setText(randomTrip.getNameOfTrip());
+        views.lengh.setText(randomTrip.getLengthInKm()+" ק''מ ");
+        views.age.setText(randomTrip.getAge());
+        views.area.setText(randomTrip.getArea());
+        views.userName.setText(randomTrip.getUserName());
+        views.organization.setText(randomTrip.getOrganization());
+        views.parentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), View_trip.class);
+                intent.putExtra("tripKey", randomTrip.getKey());
                 startActivity(intent);
 
             }
@@ -195,7 +292,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private class LayoutViews {
+    private class LayoutViewsOperation {
         TextView topic;
         TextView time;
         TextView age;
@@ -204,13 +301,33 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         TextView organization;
         ConstraintLayout parentLayout;
 
-        public LayoutViews(TextView topic, TextView age, TextView goals,TextView time,TextView organization, TextView userName,ConstraintLayout parentLayout) {
+        public LayoutViewsOperation(TextView topic, TextView age, TextView goals,TextView time,TextView organization, TextView userName,ConstraintLayout parentLayout) {
             this.age = age;
             this.parentLayout = parentLayout;
             this.goals = goals;
             this.time = time;
             this.organization = organization;
             this.topic = topic;
+            this.userName = userName;
+        }
+    }
+
+    private class LayoutViewsTrip {
+        TextView title;
+        TextView lengh;
+        TextView age;
+        TextView area;
+        TextView userName;
+        TextView organization;
+        ConstraintLayout parentLayout;
+
+        public LayoutViewsTrip(TextView topic, TextView age, TextView area,TextView lengh,TextView organization, TextView userName,ConstraintLayout parentLayout) {
+            this.age = age;
+            this.parentLayout = parentLayout;
+            this.area = area;
+            this.lengh = lengh;
+            this.organization = organization;
+            this.title = topic;
             this.userName = userName;
         }
     }

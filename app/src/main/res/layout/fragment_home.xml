@@ -876,7 +876,7 @@
                             app:layout_constraintEnd_toEndOf="parent" />
 
                         <TextView
-                            android:id="@+id/id"
+                            android:id="@+id/id4"
                             android:layout_width="125dp"
                             android:layout_height="20dp"
                             android:layout_marginEnd="5dp"

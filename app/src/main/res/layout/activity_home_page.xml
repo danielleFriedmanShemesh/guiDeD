@@ -36,7 +36,6 @@
             android:id="@+id/logo"
             android:layout_width="346dp"
             android:layout_height="92dp"
-
             android:layout_gravity="center"
             app:layout_constraintEnd_toStartOf="@+id/option_btn"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +55,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cl"
         app:layout_constraintVertical_bias="0.0">
 
-        <LinearLayout
+       <!-- <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -81,7 +80,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="40dp"
                     android:layout_marginBottom="10dp"
                     android:fontFamily="@font/yardenboldalefalefalef"
                     android:text="פעולות"
@@ -98,9 +97,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-                        <!--
+
                 להכניס את הפעולות ואחרי חמש כאלה שיהיה כפתור של עוד שמוביל למאגר פעולות
-                -->
+
                         <Button
                             android:layout_width="200dp"
                             android:layout_height="150dp"
@@ -191,9 +190,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-                        <!--
+
                 להכניס את הפעולות ואחרי חמש כאלה שיהיה כפתור של עוד שמוביל למאגר פעולות
-                -->
+
                         <Button
                             android:layout_width="200dp"
                             android:layout_height="150dp"
@@ -256,26 +255,24 @@
             </LinearLayout>
 
 
-        </LinearLayout>
+        </LinearLayout>-->
     </FrameLayout>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+  <!--  <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/grayeen3"
         android:visibility="visible"
-        app:itemIconSize="100dp"
+        app:itemIconSize="70dp"
         app:itemTextAppearanceActive="@style/BottomNavActive"
         app:itemTextAppearanceInactive="@style/BottomNavInactive"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
-
         app:menu="@menu/toolbar_menu"
-        tools:visibility="visible" />
+        tools:visibility="visible" />-->
 
 
 
