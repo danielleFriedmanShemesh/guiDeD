@@ -4,10 +4,7 @@
     <item
         android:id="@+id/profile"
         android:icon="@drawable/profile"
-        android:visible="true"
-        android:checked="true"
-        android:title=""
-        app:showAsAction="withText"
+        android:title="פרופיל"
         />
 
     <item

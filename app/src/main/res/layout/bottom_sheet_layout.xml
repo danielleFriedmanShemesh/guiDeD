@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_sheet_bkg"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:id="@+id/trLl"
+        >
+
+        <TextView
+            android:id="@+id/tr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="הוספת טיול"
+            android:textSize="25dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/yardenboldalefalefalef"
+        />
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="24dp"
+            android:src="@drawable/plus"
+           />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/opLl"
+        android:gravity="end"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="10dp"
+        >
+        <TextView
+            android:id="@+id/op"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="הוספת פעולה"
+            android:textSize="25dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/yardenboldalefalefalef"
+            />
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="24dp"
+            android:src="@drawable/plus"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>
