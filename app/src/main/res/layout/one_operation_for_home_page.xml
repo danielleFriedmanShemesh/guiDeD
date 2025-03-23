@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="200dp"
+    android:layout_height="150dp"
+    android:backgroundTint="@color/grayeen3"
+    android:background="@android:drawable/progress_horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/one_operation_for_home_page">
+<!-- TODO: להשתמש בזה במקום לכתוב את אותו הקוד חמישים מיליון פעם-->
+    <TextView
+        android:id="@+id/topic"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
+        android:fontFamily="@font/yardenboldalefalefalef"
+        android:text="שם הפעולה"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:fontFamily="@font/yardenregularalefalefalef"
+        android:text="אורך פעולה"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/topic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/topic" />
+
+
+    <TextView
+        android:id="@+id/ageOp"
+        android:layout_width="56dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:fontFamily="@font/yardenregularalefalefalef"
+        android:text="גיל"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/organizationOP"
+        app:layout_constraintEnd_toStartOf="@+id/organizationOP"
+        app:layout_constraintStart_toEndOf="@+id/goals"
+        app:layout_constraintTop_toTopOf="@+id/organizationOP" />
+
+    <TextView
+        android:id="@+id/organizationOP"
+        android:layout_width="56dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:fontFamily="@font/yardenregularalefalefalef"
+        android:text="מסגרת הדרכה"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topic" />
+
+    <TextView
+        android:id="@+id/writer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/yardenboldalefalefalef"
+        android:text="נכתב ע''י: "
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/topic"
+        app:layout_constraintTop_toBottomOf="@+id/organizationOP" />
+
+    <TextView
+        android:id="@+id/writerUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:fontFamily="@font/yardenregularalefalefalef"
+        android:text="userName"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/writer"
+        app:layout_constraintEnd_toStartOf="@+id/writer"
+        app:layout_constraintTop_toTopOf="@+id/writer" />
+
+    <TextView
+        android:id="@+id/goals"
+        android:layout_width="56dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/yardenregularalefalefalef"
+        android:text="מטרות"
+        android:textDirection="rtl"
+        android:textSize="20dp"
+        app:cornerRadius="25dp"
+        app:layout_constraintBottom_toBottomOf="@+id/organizationOP"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/organizationOP" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

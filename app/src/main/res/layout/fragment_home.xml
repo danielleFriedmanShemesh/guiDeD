@@ -1,0 +1,939 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_home"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentStart="true"
+    android:background="@color/grayeen1"
+
+    android:layoutDirection="rtl"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".HomeFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:background="@color/grayeen2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/yardenboldalefalefalef"
+                android:text="פעולות"
+                android:textSize="30dp" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:paddingLeft="20dp"
+                android:scrollbars="none">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clOp1"
+                        android:layoutDirection="ltr"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:backgroundTint="@color/grayeen3"
+                        android:background="@android:drawable/progress_horizontal">
+                        <TextView
+                            android:id="@+id/topic1"
+                            android:layout_width="130dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="5dp"
+                            android:fontFamily="@font/yardenboldalefalefalef"
+                            android:text="שם הפעולה"
+                            android:textSize="20dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                        <TextView
+                            android:id="@+id/time1"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="5dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="אורך פעולה"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/topic1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/topic1" />
+
+
+                        <TextView
+                            android:id="@+id/ageOp1"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="גיל"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/organizationOP1"
+                            app:layout_constraintEnd_toStartOf="@+id/organizationOP1"
+                            app:layout_constraintStart_toEndOf="@+id/goals1"
+                            app:layout_constraintTop_toTopOf="@+id/organizationOP1" />
+
+                        <TextView
+                            android:id="@+id/organizationOP1"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="מסגרת הדרכה"
+                            android:textSize="15dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/topic1" />
+
+                        <TextView
+                            android:id="@+id/writer1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/yardenboldalefalefalef"
+                            android:text="נכתב ע''י: "
+                            android:textSize="15dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/topic1"
+                            app:layout_constraintTop_toBottomOf="@+id/organizationOP1" />
+
+                        <TextView
+                            android:id="@+id/writerUserName1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="userName"
+                            android:textSize="15dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/writer1"
+                            app:layout_constraintEnd_toStartOf="@+id/writer1"
+                            app:layout_constraintTop_toTopOf="@+id/writer1" />
+
+                        <TextView
+                            android:id="@+id/goals1"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="מטרות"
+                            android:textDirection="rtl"
+                            android:textSize="20dp"
+                            app:cornerRadius="25dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/organizationOP1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/organizationOP1" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clOp2"
+                        android:layoutDirection="ltr"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:backgroundTint="@color/grayeen3"
+                        android:background="@android:drawable/progress_horizontal">
+                        <TextView
+                            android:id="@+id/topic2"
+                            android:layout_width="130dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="5dp"
+                            android:fontFamily="@font/yardenboldalefalefalef"
+                            android:text="שם הפעולה"
+                            android:textSize="20dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                        <TextView
+                            android:id="@+id/time2"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="5dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="אורך פעולה"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/topic2"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/topic2" />
+
+
+                        <TextView
+                            android:id="@+id/ageOp2"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="גיל"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/organizationOP2"
+                            app:layout_constraintEnd_toStartOf="@+id/organizationOP2"
+                            app:layout_constraintStart_toEndOf="@+id/goals2"
+                            app:layout_constraintTop_toTopOf="@+id/organizationOP2" />
+
+                        <TextView
+                            android:id="@+id/organizationOP2"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="מסגרת הדרכה"
+                            android:textSize="15dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/topic2" />
+
+                        <TextView
+                            android:id="@+id/writer2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/yardenboldalefalefalef"
+                            android:text="נכתב ע''י: "
+                            android:textSize="15dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/topic2"
+                            app:layout_constraintTop_toBottomOf="@+id/organizationOP2" />
+
+                        <TextView
+                            android:id="@+id/writerUserName2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="userName"
+                            android:textSize="15dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/writer2"
+                            app:layout_constraintEnd_toStartOf="@+id/writer2"
+                            app:layout_constraintTop_toTopOf="@+id/writer2" />
+
+                        <TextView
+                            android:id="@+id/goals2"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="מטרות"
+                            android:textDirection="rtl"
+                            android:textSize="20dp"
+                            app:cornerRadius="25dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/organizationOP2"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/organizationOP2" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clOp3"
+                        android:layoutDirection="ltr"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:backgroundTint="@color/grayeen3"
+                        android:background="@android:drawable/progress_horizontal">
+                        <TextView
+                            android:id="@+id/topic3"
+                            android:layout_width="130dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="5dp"
+                            android:fontFamily="@font/yardenboldalefalefalef"
+                            android:text="שם הפעולה"
+                            android:textSize="20dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                        <TextView
+                            android:id="@+id/time3"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="5dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="אורך פעולה"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/topic3"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/topic3" />
+
+
+                        <TextView
+                            android:id="@+id/ageOp3"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="גיל"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/organizationOP3"
+                            app:layout_constraintEnd_toStartOf="@+id/organizationOP3"
+                            app:layout_constraintStart_toEndOf="@+id/goals3"
+                            app:layout_constraintTop_toTopOf="@+id/organizationOP3" />
+
+                        <TextView
+                            android:id="@+id/organizationOP3"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="מסגרת הדרכה"
+                            android:textSize="15dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/topic3" />
+
+                        <TextView
+                            android:id="@+id/writer3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/yardenboldalefalefalef"
+                            android:text="נכתב ע''י: "
+                            android:textSize="15dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/topic3"
+                            app:layout_constraintTop_toBottomOf="@+id/organizationOP3" />
+
+                        <TextView
+                            android:id="@+id/writerUserName3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="userName"
+                            android:textSize="15dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/writer3"
+                            app:layout_constraintEnd_toStartOf="@+id/writer3"
+                            app:layout_constraintTop_toTopOf="@+id/writer3" />
+
+                        <TextView
+                            android:id="@+id/goals3"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="מטרות"
+                            android:textDirection="rtl"
+                            android:textSize="20dp"
+                            app:cornerRadius="25dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/organizationOP3"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/organizationOP3" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clOp4"
+                        android:layoutDirection="ltr"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:backgroundTint="@color/grayeen3"
+                        android:background="@android:drawable/progress_horizontal">
+                        <TextView
+                            android:id="@+id/topic4"
+                            android:layout_width="130dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="5dp"
+                            android:fontFamily="@font/yardenboldalefalefalef"
+                            android:text="שם הפעולה"
+                            android:textSize="20dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                        <TextView
+                            android:id="@+id/time4"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="5dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="אורך פעולה"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/topic4"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/topic4" />
+
+
+                        <TextView
+                            android:id="@+id/ageOp4"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="גיל"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/organizationOP4"
+                            app:layout_constraintEnd_toStartOf="@+id/organizationOP4"
+                            app:layout_constraintStart_toEndOf="@+id/goals4"
+                            app:layout_constraintTop_toTopOf="@+id/organizationOP4" />
+
+                        <TextView
+                            android:id="@+id/organizationOP4"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="מסגרת הדרכה"
+                            android:textSize="15dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/topic4" />
+
+                        <TextView
+                            android:id="@+id/writer4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/yardenboldalefalefalef"
+                            android:text="נכתב ע''י: "
+                            android:textSize="15dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/topic4"
+                            app:layout_constraintTop_toBottomOf="@+id/organizationOP4" />
+
+                        <TextView
+                            android:id="@+id/writerUserName4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="userName"
+                            android:textSize="15dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/writer4"
+                            app:layout_constraintEnd_toStartOf="@+id/writer4"
+                            app:layout_constraintTop_toTopOf="@+id/writer4" />
+
+                        <TextView
+                            android:id="@+id/goals4"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="מטרות"
+                            android:textDirection="rtl"
+                            android:textSize="20dp"
+                            app:cornerRadius="25dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/organizationOP4"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/organizationOP4" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/seeMoreOp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        >
+
+                        <ImageView
+                            android:id="@+id/plus1"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/plus"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/yardenboldalefalefalef"
+                            android:text="ראה עוד"
+                            android:textSize="25dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/plus1" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:background="@color/grayeen2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/yardenboldalefalefalef"
+                android:text="טיולים"
+                android:textSize="30dp" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:paddingLeft="20dp"
+                android:scrollbars="none">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <!--
+            להכניס את הפעולות ואחרי חמש כאלה שיהיה כפתור של עוד שמוביל למאגר פעולות
+            -->
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clTr1"
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:backgroundTint="@color/grayeen3"
+                        android:layoutDirection="ltr"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@android:drawable/progress_horizontal">
+                        <TextView
+                            android:id="@+id/title1"
+                            android:layout_width="130dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="5dp"
+                            android:fontFamily="@font/yardenboldalefalefalef"
+                            android:text="כותרת"
+                            android:textSize="20dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/age1"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="גיל"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toTopOf="@+id/textView13"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/title1" />
+
+                        <TextView
+                            android:id="@+id/area1"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="אזור"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/age1"
+                            app:layout_constraintEnd_toStartOf="@+id/age1"
+                            app:layout_constraintStart_toEndOf="@+id/organization1"
+                            app:layout_constraintTop_toTopOf="@+id/age1" />
+
+                        <TextView
+                            android:id="@+id/length1"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="5dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="אורך מסלול"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/title1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/title1" />
+
+                        <TextView
+                            android:id="@+id/textView13"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:fontFamily="@font/yardenboldalefalefalef"
+                            android:text="נכתב ע''י"
+                            android:textSize="15dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
+
+                        <TextView
+                            android:id="@+id/id1"
+                            android:layout_width="125dp"
+                            android:layout_height="20dp"
+                            android:layout_marginEnd="5dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="user name"
+                            android:textSize="15dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView13"
+                            app:layout_constraintEnd_toStartOf="@+id/textView13"
+                            app:layout_constraintTop_toTopOf="@+id/textView13" />
+
+                        <TextView
+                            android:id="@+id/organization1"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="מסגרת הדרכה"
+                            android:textSize="15dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/age1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/age1" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clTr2"
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:backgroundTint="@color/grayeen3"
+                        android:layoutDirection="ltr"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@android:drawable/progress_horizontal">
+                        <TextView
+                            android:id="@+id/title2"
+                            android:layout_width="130dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="5dp"
+                            android:fontFamily="@font/yardenboldalefalefalef"
+                            android:text="כותרת"
+                            android:textSize="20dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/age2"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="גיל"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toTopOf="@+id/textView14"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/title2" />
+
+                        <TextView
+                            android:id="@+id/area2"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="אזור"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/age2"
+                            app:layout_constraintEnd_toStartOf="@+id/age2"
+                            app:layout_constraintStart_toEndOf="@+id/organization2"
+                            app:layout_constraintTop_toTopOf="@+id/age2" />
+
+                        <TextView
+                            android:id="@+id/length2"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="5dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="אורך מסלול"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/title2"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/title2" />
+
+                        <TextView
+                            android:id="@+id/textView14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:fontFamily="@font/yardenboldalefalefalef"
+                            android:text="נכתב ע''י"
+                            android:textSize="15dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
+
+                        <TextView
+                            android:id="@+id/id2"
+                            android:layout_width="125dp"
+                            android:layout_height="20dp"
+                            android:layout_marginEnd="5dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="user name"
+                            android:textSize="15dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView14"
+                            app:layout_constraintEnd_toStartOf="@+id/textView14"
+                            app:layout_constraintTop_toTopOf="@+id/textView14" />
+
+                        <TextView
+                            android:id="@+id/organization2"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="מסגרת הדרכה"
+                            android:textSize="15dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/age2"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/age2" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clTr3"
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:backgroundTint="@color/grayeen3"
+                        android:layoutDirection="ltr"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@android:drawable/progress_horizontal">
+                        <TextView
+                            android:id="@+id/title3"
+                            android:layout_width="130dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="5dp"
+                            android:fontFamily="@font/yardenboldalefalefalef"
+                            android:text="כותרת"
+                            android:textSize="20dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/age3"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="גיל"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toTopOf="@+id/textView15"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/title3" />
+
+                        <TextView
+                            android:id="@+id/area3"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="אזור"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/age3"
+                            app:layout_constraintEnd_toStartOf="@+id/age3"
+                            app:layout_constraintStart_toEndOf="@+id/organization3"
+                            app:layout_constraintTop_toTopOf="@+id/age3" />
+
+                        <TextView
+                            android:id="@+id/length3"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="5dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="אורך מסלול"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/title3"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/title3" />
+
+                        <TextView
+                            android:id="@+id/textView15"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:fontFamily="@font/yardenboldalefalefalef"
+                            android:text="נכתב ע''י"
+                            android:textSize="15dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
+
+                        <TextView
+                            android:id="@+id/id3"
+                            android:layout_width="125dp"
+                            android:layout_height="20dp"
+                            android:layout_marginEnd="5dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="user name"
+                            android:textSize="15dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView15"
+                            app:layout_constraintEnd_toStartOf="@+id/textView15"
+                            app:layout_constraintTop_toTopOf="@+id/textView15" />
+
+                        <TextView
+                            android:id="@+id/organization3"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="מסגרת הדרכה"
+                            android:textSize="15dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/age3"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/age3" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clTr4"
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:backgroundTint="@color/grayeen3"
+                        android:layoutDirection="ltr"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@android:drawable/progress_horizontal">
+                        <TextView
+                            android:id="@+id/title4"
+                            android:layout_width="130dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="5dp"
+                            android:fontFamily="@font/yardenboldalefalefalef"
+                            android:text="כותרת"
+                            android:textSize="20dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/age4"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="גיל"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toTopOf="@+id/textView16"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/title4" />
+
+                        <TextView
+                            android:id="@+id/area4"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="אזור"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/age4"
+                            app:layout_constraintEnd_toStartOf="@+id/age4"
+                            app:layout_constraintStart_toEndOf="@+id/organization4"
+                            app:layout_constraintTop_toTopOf="@+id/age4" />
+
+                        <TextView
+                            android:id="@+id/length4"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="5dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="אורך מסלול"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/title4"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/title4" />
+
+                        <TextView
+                            android:id="@+id/textView16"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:fontFamily="@font/yardenboldalefalefalef"
+                            android:text="נכתב ע''י"
+                            android:textSize="15dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
+
+                        <TextView
+                            android:id="@+id/id"
+                            android:layout_width="125dp"
+                            android:layout_height="20dp"
+                            android:layout_marginEnd="5dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="user name"
+                            android:textSize="15dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView16"
+                            app:layout_constraintEnd_toStartOf="@+id/textView16"
+                            app:layout_constraintTop_toTopOf="@+id/textView16" />
+
+                        <TextView
+                            android:id="@+id/organization4"
+                            android:layout_width="56dp"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/yardenregularalefalefalef"
+                            android:text="מסגרת הדרכה"
+                            android:textSize="15dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/age4"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/age4" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/seeMoreTr"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        >
+
+                        <ImageView
+                            android:id="@+id/plus2"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/plus"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/yardenboldalefalefalef"
+                            android:text="ראה עוד"
+                            android:textSize="25dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/plus2" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+        </LinearLayout>
+
+</LinearLayout>

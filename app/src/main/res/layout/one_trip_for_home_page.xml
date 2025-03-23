@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="200dp"
+    android:layout_height="150dp"
+    android:backgroundTint="@color/grayeen3"
+    android:background="@android:drawable/progress_horizontal"
+    >
+
+    <!-- TODO: להשתמש בזה במקום לכתוב את אותו הקוד חמישים מיליון פעם-->
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
+        android:fontFamily="@font/yardenboldalefalefalef"
+        android:text="כותרת"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/age"
+        android:layout_width="56dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/yardenregularalefalefalef"
+        android:text="גיל"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView13"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <TextView
+        android:id="@+id/area"
+        android:layout_width="56dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:fontFamily="@font/yardenregularalefalefalef"
+        android:text="אזור"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/age"
+        app:layout_constraintEnd_toStartOf="@+id/age"
+        app:layout_constraintStart_toEndOf="@+id/organization"
+        app:layout_constraintTop_toTopOf="@+id/age" />
+
+    <TextView
+        android:id="@+id/length"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:fontFamily="@font/yardenregularalefalefalef"
+        android:text="אורך מסלול"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/title" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/yardenboldalefalefalef"
+        android:text="נכתב ע''י"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/id"
+        android:layout_width="125dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="5dp"
+        android:fontFamily="@font/yardenregularalefalefalef"
+        android:text="user name"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView13"
+        app:layout_constraintEnd_toStartOf="@+id/textView13"
+        app:layout_constraintTop_toTopOf="@+id/textView13" />
+
+    <TextView
+        android:id="@+id/organization"
+        android:layout_width="56dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/yardenregularalefalefalef"
+        android:text="מסגרת הדרכה"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/age"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/age" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
