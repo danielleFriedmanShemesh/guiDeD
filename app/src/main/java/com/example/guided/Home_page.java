@@ -1,10 +1,7 @@
 package com.example.guided;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,10 +10,12 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.guided.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -43,8 +42,11 @@ public class Home_page extends AppCompatActivity implements View.OnClickListener
         menuBTN = findViewById(R.id.option_btn);
         menuBTN.setOnClickListener(this);
 
-        navView = findViewById(R.id.bottomNavigationView);
-        navView.setItemIconTintList(null);
+   //     navView = findViewById(R.id.bottomNavigationView);
+   //     navView.setItemIconTintList(null);
+
+        replaceFragment(new HomeFragment());
+
 
 //        navView.setOnItemSelectedListener(item -> {
 ////            switch (item.getItemId()){
@@ -74,6 +76,7 @@ public class Home_page extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
+        Intent intent;
         int id= item.getItemId();
         if(id == R.id.action_profile){
             Toast.makeText(this, "action_profile", Toast.LENGTH_SHORT).show();
@@ -81,25 +84,39 @@ public class Home_page extends AppCompatActivity implements View.OnClickListener
         }
         else if(id ==  R.id.action_add_operation){
             Toast.makeText(this, "action_add_operation", Toast.LENGTH_SHORT).show();
+            intent = new Intent(this, Add_operation.class);
+            startActivity(intent);
             return true;
         }
         else if(id ==  R.id.action_add_trip){
             Toast.makeText(this, "action_add_trip", Toast.LENGTH_SHORT).show();
+            intent = new Intent(this, Add_trip.class);
+            startActivity(intent);
             return true;
         }
         else if(id ==  R.id.action_library_operations){
             Toast.makeText(this, "action_library_operations", Toast.LENGTH_SHORT).show();
+            replaceFragment(new LibraryOperationsFragment());
             return true;
         }
         else if(id ==  R.id.action_library_trips){
             Toast.makeText(this, "action_library_trips", Toast.LENGTH_SHORT).show();
+            replaceFragment(new LibraryTripsFragment());
             return true;
         }
-        else if(id ==  R.id.home){
+        else if(id ==  R.id.action_home){
             Toast.makeText(this, "action_home", Toast.LENGTH_SHORT).show();
+            replaceFragment(new HomeFragment());
             return true;
         }
         return false;
+    }
+    private void replaceFragment(Fragment fragment) {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayout, fragment);
+        fragmentTransaction.commit();
     }
 
 
