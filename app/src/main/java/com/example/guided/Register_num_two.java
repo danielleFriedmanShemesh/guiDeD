@@ -1,5 +1,6 @@
 package com.example.guided;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -250,6 +251,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
         });
     }
 
+    @SuppressLint("SuspiciousIndentation")
     @Override
     public void onClick(View v) {
         alartForNickName.setText("");

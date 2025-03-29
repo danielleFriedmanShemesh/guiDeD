@@ -10,13 +10,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -74,36 +78,6 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
 
         // if you click on the 'next' button
         if(v==continueBtn){
-            //בדיקות של שם משתמש
-            if(userName.getText().toString().length() != 8){
-                if(userName.getText().toString().length() < 8){
-                    alartForUserName.setText(" * שם משתמש קצר מדי נסה שנית. " +
-                            '\n' +
-                            alartForUserName.getText().toString());
-                }
-                else if(userName.getText().toString().length() > 15){
-                    alartForUserName.setText("* שם משתמש ארוך מדי נסה שנית." +
-                            '\n' +
-                            alartForUserName.getText().toString());
-                }
-            }
-            if(userName.getText().toString().isEmpty())
-            {
-                alartForUserName.setText("* שדה חובה! הכנס שם משתמש" +
-                        '\n' +
-                        alartForUserName.getText().toString());
-            }
-            if(!input_Validation(userName.getText().toString()))
-            {
-                alartForUserName.setText("* שם המשתמש חייב להכיל רק ספרות, אותיות באנגלית ותווים מיוחדים." +
-                        '\n' +
-                        alartForUserName.getText().toString());
-            }
-
-            //אחרי שיהיה דאטא בייס אז זאת תהיה בדיקה האם שם המשתמש כבר קיים
-
-            //if(checkIfOccupied(userName)){
-            //alartForUserName.setText("שם המשתמש תפוס, הכנס שם אחר ונסה שוב."+ '\n'+alartForUserName.getText().toString());}
 
             //בדיקות של סיסמה
             if(password.getText().toString().length() < 6){
@@ -138,26 +112,75 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
                         alartForEmail.getText().toString());
             }
 
-            //final checks before moving to the second activity
-            if((!password.getText().toString().isEmpty()) &&
-                    (!userName.getText().toString().isEmpty()) &&
-                    (!email.getText().toString().isEmpty()))
-            {
-                if(checkUserName(userName.getText().toString()) &&
-                        (checkPassword(password.getText().toString())) &&
-                        (checkEmail(email.getText().toString())))
-                {
-                    newUser.setUserName(userName.getText().toString());
-                    newUser.setPassword(password.getText().toString());
-                    newUser.setEmail(email.getText().toString());
-
-                    //go to the second register activity and transport the User object as an extra
-                    Intent intent=new Intent(this, Register_num_two.class);
-                    intent.putExtra("newUser", newUser);
-                    startActivity(intent);
-                    finish();
+            //בדיקות של שם משתמש
+            if(userName.getText().toString().length() != 8){
+                if(userName.getText().toString().length() < 8){
+                    alartForUserName.setText(" * שם משתמש קצר מדי נסה שנית. " +
+                            '\n' +
+                            alartForUserName.getText().toString());
+                }
+                else if(userName.getText().toString().length() > 15){
+                    alartForUserName.setText("* שם משתמש ארוך מדי נסה שנית." +
+                            '\n' +
+                            alartForUserName.getText().toString());
                 }
             }
+            if(userName.getText().toString().isEmpty())
+            {
+                alartForUserName.setText("* שדה חובה! הכנס שם משתמש" +
+                        '\n' +
+                        alartForUserName.getText().toString());
+            }
+            if(!input_Validation(userName.getText().toString()))
+            {
+                alartForUserName.setText("* שם המשתמש חייב להכיל ספרות, אותיות באנגלית ותווים מיוחדים." +
+                        '\n' +
+                        alartForUserName.getText().toString());
+            }
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("users");
+            myRef.orderByChild("username").equalTo(userName.getText().toString())
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                            if (snapshot.exists()) {
+                                // Username is already taken
+                                alartForUserName.setText("* שם המשתמש שבחרת תפוס בחר שם משתמש אחר " +
+                                        '\n' +
+                                        alartForUserName.getText().toString());
+                            } else {
+                                // Username is unique — you can use it!
+
+                                //final checks before moving to the second activity
+                                if((!password.getText().toString().isEmpty()) &&
+                                        (!userName.getText().toString().isEmpty()) &&
+                                        (!email.getText().toString().isEmpty()))
+                                {
+                                    if(checkUserName(userName.getText().toString()) &&
+                                            (checkPassword(password.getText().toString())) &&
+                                            (checkEmail(email.getText().toString())))
+                                    {
+                                        newUser.setUserName(userName.getText().toString());
+                                        newUser.setPassword(password.getText().toString());
+                                        newUser.setEmail(email.getText().toString());
+
+                                        //go to the second register activity and transport the User object as an extra
+                                        Intent intent=new Intent(Register_num_one.this, Register_num_two.class);
+                                        intent.putExtra("newUser", newUser);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(Register_num_one.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
         }
     }
 

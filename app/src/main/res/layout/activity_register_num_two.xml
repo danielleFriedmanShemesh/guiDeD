@@ -167,11 +167,12 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
             android:layout_gravity="center"
+            android:layout_marginStart="-20dp"
             android:layout_marginBottom="-30dp"
             android:adjustViewBounds="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/better_sign_continue" />
+            app:srcCompat="@drawable/better_sign_finish" />
 
         <ImageView
             android:id="@+id/back"
@@ -179,7 +180,7 @@
             android:layout_height="150dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-
+            android:layout_marginEnd="-30dp"
             android:fontFamily="@font/yardenboldalefalefalef"
             app:layout_constraintBottom_toBottomOf="@+id/save"
             app:layout_constraintEnd_toEndOf="parent"

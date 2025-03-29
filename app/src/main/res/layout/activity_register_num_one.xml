@@ -14,14 +14,13 @@
     <ImageView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_gravity="center"
         android:layout_marginTop="70dp"
         android:paddingHorizontal="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:paddingVertical="50dp"
-        app:srcCompat="@android:drawable/editbox_background" />
+        app:srcCompat="@drawable/logo" />
 
     <TextView
         android:id="@+id/registerTV"
@@ -29,6 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
         android:text="הרשמה לאתר"
         android:layout_gravity="center"
         android:textSize="45dp"
@@ -130,7 +130,7 @@
             android:id="@+id/continueBTN"
             android:layout_width="150dp"
             android:layout_height="150dp"
-
+            android:layout_marginStart="-20dp"
             android:layout_gravity="center"
             android:layout_marginBottom="-30dp"
             android:adjustViewBounds="true"
