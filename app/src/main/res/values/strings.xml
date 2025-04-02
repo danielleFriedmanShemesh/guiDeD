@@ -52,4 +52,66 @@
         <item>פעילות</item>
         <item>אחר</item>
     </string-array>
+
+    <string-array name="organization_adjustment">
+        <item>הצופים</item>
+        <item>הנוער העובד והלומד</item>
+        <item>חוגי סיירות של קק"ל ע"ש אורי מימון</item>
+        <item>כנפיים של קרמבו</item>
+        <item>איגי- ארגון הנוער הגאה</item>
+        <item>השומר הצעיר</item>
+        <item>השומר החדש</item>
+        <item>התנועה החדשה</item>
+        <item>מש"צים</item>
+        <item>בני עקיבא</item>
+        <item>מועצת התלמידים והנוער הארצית</item>
+        <item>חוגי סיירות של החברה להגנת הטבע</item>
+        <item>ברית הנוער הקומוניסטי הישראלי</item>
+        <item>בני המושבים</item>
+        <item>אור לחינוך</item>
+        <item>המכבי הצעיר</item>
+        <item>האות הבינלאומי לנוער וצעירים</item>
+        <item>אחריי!</item>
+        <item>האיגוד החקלאי</item>
+        <item>יוניסטרים</item>
+        <item>קצ"ב</item>
+        <item>נוער חובב תנ"ך</item>
+        <item>נוער לנוער</item>
+        <item>נוער לנוער</item>
+        <item>פסגות</item>
+        <item>צמר"ת</item>
+        <item>שומרי המפרץ</item>
+        <item>תנועת הנוער הדרוזי</item>
+        <item>נטע@</item>
+        <item>החלוץ הצעיר</item>
+        <item>המחנות העולים</item>
+        <item>נוער מרצ</item>
+        <item>נוער העבודה</item>
+        <item>הנוער הלאומי</item>
+        <item>הנוער הציוני</item>
+        <item>נוער הליכוד</item>
+        <item>אריאל</item>
+        <item>עוז</item>
+        <item>עזרא</item>
+        <item>אור ישראלי</item>
+        <item>בני תורה</item>
+        <item>בנות בתיה</item>
+        <item>היכלי ענ"ג</item>
+        <item>פרחי הדגל</item>
+        <item>צבאות השם</item>
+        <item>נוער חב"ד</item>
+        <item>יחדיו</item>
+        <item>נוע"ם</item>
+        <item>נוער תל"ם</item>
+        <item>גדנ"ע</item>
+        <item>גדנ"ע אוויר</item>
+        <item>צופי אש</item>
+        <item>בית"ר</item>
+        <item>נוער המחנה הממלכתי</item>
+        <item>נוער יש עתיד</item>
+        <item>תנועת תרבות</item>
+        <item>הצבעים שלנו</item>
+        <item>סדאקה רעות</item>
+        <item>אחר</item>
+    </string-array>
 </resources>

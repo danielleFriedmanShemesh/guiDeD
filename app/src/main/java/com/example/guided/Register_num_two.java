@@ -51,7 +51,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
     EditText birthday;
     EditText nickName;
     ImageView profile;
-    ArrayList<String> arrayList;
+    String[] listOrganizations;
     Dialog dialog;
     ImageView backBTN;
     ImageView saveBTN;
@@ -138,69 +138,9 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
 
         organization = findViewById(R.id.organization);
         //crating a list of youth organizations in israel
-        arrayList = new ArrayList<>();
 
-        arrayList.add("הצופים");
-        arrayList.add("המכבי הצעיר");
-        arrayList.add("התנועה החדשה");
-        arrayList.add("בני המושבים");
-        arrayList.add("השומר החדש");
-        arrayList.add("אור לחינוך");
-        arrayList.add("האות הבינלאומי לנוער וצעירים");
-        arrayList.add("אחריי!");
-        arrayList.add("האיגוד החקלאי");
-        arrayList.add("יוניסטרים");
-        arrayList.add("כנפיים של קרמבו");
-        arrayList.add("קצ\"ב");
-        arrayList.add("איגי- ארגון הנוער הגאה");
-        arrayList.add("נוער חובב תנ\"ך");
-        arrayList.add("נוער לנוער");
-        arrayList.add("נוער לנוער");
-        arrayList.add("פסגות");
-        arrayList.add("צמר\"ת");
-        arrayList.add("שומרי המפרץ");
-        arrayList.add("תנועת הנוער הדרוזי");
-        arrayList.add("נטע@");
-        arrayList.add("השומר הצעיר");
-        arrayList.add("הנוער העובד והלומד");
-        arrayList.add("ברית הנוער הקומוניסטי הישראלי");
-        arrayList.add("החלוץ הצעיר");
-        arrayList.add("המחנות העולים");
-        arrayList.add("נוער מרצ");
-        arrayList.add("נוער העבודה");
-        arrayList.add("הנוער הלאומי");
-        arrayList.add("הנוער הציוני");
-        arrayList.add("נוער הליכוד");
-        arrayList.add("בני עקיבא");
-        arrayList.add("אריאל");
-        arrayList.add("עוז");
-        arrayList.add("עזרא");
-        arrayList.add("אור ישראלי");
-        arrayList.add("בני תורה");
-        arrayList.add("בנות בתיה");
-        arrayList.add("היכלי ענ\"ג");
-        arrayList.add("פרחי הדגל");
-        arrayList.add("צבאות השם");
-        arrayList.add("נוער חב\"ד");
-        arrayList.add("יחדיו");
-        arrayList.add("נוע\"ם");
-        arrayList.add("נוער תל\"ם");
-        arrayList.add("גדנ\"ע");
-        arrayList.add("גדנ\"ע אוויר");
-        arrayList.add("חוגי סיירות של החברה להגנת הטבע");
-        arrayList.add("חוגי סיירות של קק\"ל ע\"ש אורי מימון");
-        arrayList.add("מועצת התלמידים והנוער הארצית");
-        arrayList.add("מש\"צים");
-        arrayList.add("נוער מד\"א");
-        arrayList.add("מד\"צים");
-        arrayList.add("צופי אש");
-        arrayList.add("בית\"ר");
-        arrayList.add("נוער המחנה הממלכתי");
-        arrayList.add("נוער יש עתיד");
-        arrayList.add("תנועת תרבות");
-        arrayList.add("הצבעים שלנו");
-        arrayList.add("סדאקה רעות");
-        arrayList.add("אחר");
+        listOrganizations = getResources().getStringArray(R.array.organization_adjustment);
+
         organization.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -219,7 +159,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
                 // Initialize array adapter
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(Register_num_two.this,
                         R.layout.list_item,
-                        arrayList);
+                        listOrganizations);
 
 
                 // set adapter
@@ -319,7 +259,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
 
             //בדיקות של מסגרת הדרכה
             if (organization.getText().equals(""))
-                alartForOrganization.setText("* שדה חובה! בחר מסגרת הדרכה");
+                alartForOrganization.setText("* שדה חובה! בחר תנועת נוער");
 
             //final checks of creating a new user at the database
             if (!organization.getText().toString().isEmpty() &&

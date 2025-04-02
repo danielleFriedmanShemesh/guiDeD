@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -137,50 +138,53 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
                         '\n' +
                         alartForUserName.getText().toString());
             }
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("users");
-            myRef.orderByChild("username").equalTo(userName.getText().toString())
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                            if (snapshot.exists()) {
-                                // Username is already taken
-                                alartForUserName.setText("* שם המשתמש שבחרת תפוס בחר שם משתמש אחר " +
-                                        '\n' +
-                                        alartForUserName.getText().toString());
-                            } else {
-                                // Username is unique — you can use it!
+            // הבדיקה של האם השם משתמש קיים או לא לא עובד צריך לסדר את זה
 
-                                //final checks before moving to the second activity
-                                if((!password.getText().toString().isEmpty()) &&
-                                        (!userName.getText().toString().isEmpty()) &&
-                                        (!email.getText().toString().isEmpty()))
-                                {
-                                    if(checkUserName(userName.getText().toString()) &&
-                                            (checkPassword(password.getText().toString())) &&
-                                            (checkEmail(email.getText().toString())))
-                                    {
-                                        newUser.setUserName(userName.getText().toString());
-                                        newUser.setPassword(password.getText().toString());
-                                        newUser.setEmail(email.getText().toString());
+            final boolean[] x = {false};
+            FirebaseUserHelper firebaseUserHelper = new FirebaseUserHelper();
+            firebaseUserHelper.fetchUsers(new FirebaseUserHelper.DataStatus() {
+                @Override
+                public void onDataLoaded(ArrayList<User> users) {
+                    for(User user : users){
+                        if (user.getUserName().equals(userName.getText().toString())) {
+                            // Username is already taken
+                            x[0] = true;
+                        }
+                    }
+                    //x[0] = false;
+                    if (x[0]){
+                        // Username is already taken
+                        alartForUserName.setText("* שם המשתמש שבחרת תפוס בחר שם משתמש אחר " +
+                                '\n' +
+                                alartForUserName.getText().toString());
+                    }
 
-                                        //go to the second register activity and transport the User object as an extra
-                                        Intent intent=new Intent(Register_num_one.this, Register_num_two.class);
-                                        intent.putExtra("newUser", newUser);
-                                        startActivity(intent);
-                                        finish();
-                                    }
-                                }
+                    if(!x[0]) {
+                        //final checks before moving to the second activity
+                        if ((!password.getText().toString().isEmpty()) &&
+                                (!userName.getText().toString().isEmpty()) &&
+                                (!email.getText().toString().isEmpty())) {
+                            if (checkUserName(userName.getText().toString()) &&
+                                    (checkPassword(password.getText().toString())) &&
+                                    (checkEmail(email.getText().toString()))) {
+                                newUser.setUserName(userName.getText().toString());
+                                newUser.setPassword(password.getText().toString());
+                                newUser.setEmail(email.getText().toString());
+
+                                //go to the second register activity and transport the User object as an extra
+                                Intent intent = new Intent(Register_num_one.this, Register_num_two.class);
+                                intent.putExtra("newUser", newUser);
+                                startActivity(intent);
+                                finish();
                             }
                         }
+                    }
+                }
+            });
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(Register_num_one.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
 
-                        }
-                    });
+
         }
     }
 
@@ -200,7 +204,7 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
 
     //checks if username is stand at all the terms
     public static boolean checkUserName(String userName){
-        return ((userName.length() >= 8) && (userName.length() <= 15) && (input_Validation(userName))/*&&checkIfOccupied(userName)==false*/);
+        return ((userName.length() >= 8) && (userName.length() <= 15) && (input_Validation(userName))&& !checkIfOccupied(userName));
     }
 
     //checks if password is stand at all the terms
@@ -212,5 +216,24 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
     public static boolean checkEmail(String email){
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         return (email.matches(emailPattern));
+    }
+
+    public static boolean checkIfOccupied(String userName){
+        final boolean[] x = {false};
+        FirebaseUserHelper firebaseUserHelper = new FirebaseUserHelper();
+        firebaseUserHelper.fetchUsers(new FirebaseUserHelper.DataStatus() {
+            @Override
+            public void onDataLoaded(ArrayList<User> users) {
+                for(User user : users){
+                    if (user.getUserName().equals(userName)) {
+                        // Username is already taken
+                        x[0] = true;
+                    }
+                }
+                x[0] = false;
+            }
+        });
+
+        return x[0];
     }
 }
