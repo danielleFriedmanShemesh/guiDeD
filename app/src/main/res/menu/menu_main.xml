@@ -33,5 +33,9 @@
         android:id="@+id/action_home"
         android:title="בית"
         />
+    <item
+        android:id="@+id/log_out"
+        android:title="התנתק"
+        />
 
 </menu>

@@ -27,6 +27,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.guided.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class Home_page extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -57,14 +58,6 @@ public class Home_page extends AppCompatActivity implements View.OnClickListener
 
         navView.setOnNavigationItemSelectedListener(this);
 
-
-//        navView.setOnItemSelectedListener(item -> {
-////            switch (item.getItemId()){
-////                case R.id.home:
-////                    ;
-////            }
-//            return true;
-//        });
     }
 
     @Override
@@ -119,6 +112,17 @@ public class Home_page extends AppCompatActivity implements View.OnClickListener
             replaceFragment(new HomeFragment());
             return true;
         }
+        else if (id == R.id.log_out){
+            FirebaseAuth.getInstance().signOut();
+
+            Intent intent1 = new Intent(this, MainActivity.class);
+            intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            // FLAG_ACTIVITY_CLEAR_TOP- מנקה את הדרך חזרה ומונע מהמשתמש לחזור למסכים קודמים עם כפתור Back.
+            // FLAG_ACTIVITY_NEW_TASK - פותח את האקטיביטי החדשה בתוך טסק חדש. ועוזר "לנתק" את המסך החדש מהקודמים.
+            startActivity(intent1);
+            finish();
+
+        }
         return false;
     }
     private void replaceFragment(Fragment fragment) {
@@ -136,6 +140,7 @@ public class Home_page extends AppCompatActivity implements View.OnClickListener
         int id= item.getItemId();
         if(id == R.id.profile){
             Toast.makeText(this, "action_profile", Toast.LENGTH_SHORT).show();
+            replaceFragment(new ProfileFragment());
             return true;
         }
         else if(id ==  R.id.add){

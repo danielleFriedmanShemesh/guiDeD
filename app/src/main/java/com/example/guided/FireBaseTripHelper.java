@@ -41,7 +41,8 @@ public class FireBaseTripHelper {
                     }
                 }
                 // Notify that data is loaded
-                dataStatus.onDataLoaded(tripsArrayList);
+                if (!tripsArrayList.isEmpty())
+                    dataStatus.onDataLoaded(tripsArrayList);
 
             }
 
