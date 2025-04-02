@@ -11,10 +11,10 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -41,7 +41,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -252,10 +251,35 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
                         + alartForNickName.getText().toString());
 
             //בדיקות של יום הולדת
+
             if(birthday.getText().toString().isEmpty())
                 alartForBirthday.setText("* שדה חובה! הכנס תאריך לידה"
                         + '\n'
                         + alartForBirthday.getText().toString());
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat(
+                    "dd/MM/yyyy", Locale.getDefault());
+            Date birthdayDate;
+            try {
+                birthdayDate = dateFormat.parse(birthday.getText().toString());
+                Log.e("year", "yearThis: " + (birthdayDate.getYear()+1900));
+
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            Log.e("year", "year: " + year);
+
+            if (birthdayDate != null &&
+                    ((birthdayDate.getYear() + 1900) >= year ||
+                            (birthdayDate.getYear() + 1900) <= 1900)) {
+                alartForBirthday.setText("* התאריך שהוכנס לא תקין! נסה שנית"
+                        + '\n'
+                        + alartForBirthday.getText().toString());
+
+            }
+
 
             //בדיקות של מסגרת הדרכה
             if (organization.getText().equals(""))
@@ -270,13 +294,19 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
                                 .getBitmap())
                         .isEmpty())
             {
-                progressBar.setVisibility(View.VISIBLE);
-                saveUser();
+                if (checkNickName(nickName.getText().toString()) &&
+                        checkBirthday(birthday.getText().toString())) {
+                    Log.e("year", "year: " + birthday.getText().toString());
+                    Log.e("name", "mane: " + nickName.getText().toString());
 
-                //open the home page after the user had been saved in the database
-                Intent intent = new Intent(this, Home_page.class);
-                startActivity(intent);
-                finish();
+                    progressBar.setVisibility(View.VISIBLE);
+                    saveUser();
+
+                    //open the home page after the user had been saved in the database
+                    Intent intent = new Intent(this, Home_page.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         }
 
@@ -395,6 +425,24 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
 
                     }
                 });
+    }
+    public static boolean checkNickName(String nickName){
+        return ((nickName.length() >= 2) && (nickName.length() <= 15));
+    }
 
+    public static boolean checkBirthday(String birthday){
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "dd/MM/yyyy", Locale.getDefault());
+        Date birthdayDate;
+        try {
+            birthdayDate = dateFormat.parse(birthday);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        return (birthdayDate.getYear() + 1900) < year &&
+                (birthdayDate.getYear() + 1900) > 1900;
     }
 }
