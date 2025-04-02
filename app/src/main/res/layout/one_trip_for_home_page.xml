@@ -10,6 +10,8 @@
 
     <!-- TODO: להשתמש בזה במקום לכתוב את אותו הקוד חמישים מיליון פעם-->
 
+    <!-- TODO: להוסיף מיקום ספציפי-->
+
     <TextView
         android:id="@+id/title"
         android:layout_width="130dp"

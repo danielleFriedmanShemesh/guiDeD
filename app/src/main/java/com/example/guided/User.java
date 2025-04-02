@@ -24,13 +24,14 @@ public class User implements Serializable {
 
 
     public User(String userName, String password, String email){
-        this.userName=userName;
-        this.password=password;
-        this.email=email;
-        this.nickName="";
-        this.birthday=new Date();
-        this.organization="";
-        this.profileImage="";
+        this.userName = userName;
+        this.password = password;
+        this.email = email;
+        this.nickName = "";
+        this.birthday = new Date();
+        this.organization = "";
+        this.profileImage = "";
+        //this.uId = "";
 
     }
 
@@ -40,7 +41,6 @@ public class User implements Serializable {
         this.email=email;
         this.nickName=nickName;
         this.organization=organization;
-
         this.birthday=birthday;
         this.profileImage= image;
 

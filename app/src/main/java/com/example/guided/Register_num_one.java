@@ -152,7 +152,6 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
                             x[0] = true;
                         }
                     }
-                    //x[0] = false;
                     if (x[0]){
                         // Username is already taken
                         alartForUserName.setText("* שם המשתמש שבחרת תפוס בחר שם משתמש אחר " +
@@ -204,7 +203,7 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
 
     //checks if username is stand at all the terms
     public static boolean checkUserName(String userName){
-        return ((userName.length() >= 8) && (userName.length() <= 15) && (input_Validation(userName))&& !checkIfOccupied(userName));
+        return ((userName.length() >= 8) && (userName.length() <= 15) && (input_Validation(userName)) && !checkIfOccupied(userName));
     }
 
     //checks if password is stand at all the terms
@@ -230,7 +229,6 @@ public class Register_num_one extends AppCompatActivity implements View.OnClickL
                         x[0] = true;
                     }
                 }
-                x[0] = false;
             }
         });
 

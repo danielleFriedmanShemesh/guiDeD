@@ -19,19 +19,7 @@ import java.util.Random;
 public class HomeFragment extends Fragment implements View.OnClickListener {
     View v;
     ConstraintLayout see_more_operation;
-    ConstraintLayout constraintLayout;
-    ConstraintLayout clOp1;
-    ConstraintLayout clOp2;
-    ConstraintLayout clOp3;
-    ConstraintLayout clOp4;
     ConstraintLayout see_more_trip;
-    ConstraintLayout clTr1;
-    ConstraintLayout clTr2;
-    ConstraintLayout clTr3;
-    ConstraintLayout clTr4;
-
-
-
 
     public HomeFragment() {
         // Required empty public constructor

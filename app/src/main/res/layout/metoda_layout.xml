@@ -27,6 +27,7 @@
         android:layout_marginEnd="30dp"
         android:hint="זמן(בדקות)"
         android:textSize="20dp"
+        android:inputType="number"
         app:layout_constraintBottom_toBottomOf="@+id/title"
         app:layout_constraintEnd_toStartOf="@+id/title"
         app:layout_constraintTop_toTopOf="@+id/title"
