@@ -203,11 +203,11 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
 
             //creating a dialog for adding a profile picture from gallery or for taking a picture at the camera
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("select one option");
-            builder.setMessage("do you want to take a picture or to add a picture from your gallery?");
+            builder.setTitle("העלאת תמונת פרופיל");
+            builder.setMessage("תרצו להעלות תמונה מהגלריה או לצלם תמונה במצלמה?");
             builder.setCancelable(true);
-            builder.setPositiveButton("CAMERA", new HandleAlartDialogLostener());
-            builder.setNegativeButton("GALLERY", new HandleAlartDialogLostener());
+            builder.setPositiveButton("מצלמה", new HandleAlartDialogLostener());
+            builder.setNegativeButton("גלריה", new HandleAlartDialogLostener());
             AlertDialog dialog = builder.create();
             dialog.show();
         }
