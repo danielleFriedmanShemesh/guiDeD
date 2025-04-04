@@ -1,12 +1,14 @@
 package com.example.guided;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -24,6 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,6 +67,8 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
     String password;
     String email;
 
+    ActivityResultLauncher<Intent> cameraLauncher;
+    ActivityResultLauncher<Intent> galleryLauncher;
 
     private FirebaseAuth mAuth;
     ProgressBar progressBar;
@@ -83,7 +89,6 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
         mAuth = FirebaseAuth.getInstance();
         progressBar = findViewById(R.id.progressBar);
 
-
         profile = findViewById(R.id.profile);
         profile.setOnClickListener(this);
 
@@ -99,9 +104,17 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
         saveBTN.setOnClickListener(this);
 
         organization = findViewById(R.id.organization);
+        organization.setOnClickListener(this);
+        //crating a list of youth organizations in israel
+        listOrganizations = getResources().getStringArray(R.array.organization_adjustment);
+        alartForOrganization = findViewById(R.id.alartOrganization);
+        alartForBirthday = findViewById(R.id.alartBirthday);
+        alartForNickName = findViewById(R.id.alartNickName);
+        alartForProfile = findViewById(R.id.alartProfile);
+
 
         //set fields with data from User object that returned from the first register activity as an extra
-        Intent intent=getIntent();
+        Intent intent = getIntent();
         Serializable user = intent.getSerializableExtra("newUser");
         if (user instanceof User){
             newUser = (User) user;
@@ -130,64 +143,33 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
             email = newUser.getEmail();
         }
 
-        alartForOrganization = findViewById(R.id.alartOrganization);
-        alartForBirthday = findViewById(R.id.alartBirthday);
-        alartForNickName = findViewById(R.id.alartNickName);
-        alartForProfile = findViewById(R.id.alartProfile);
-
-        organization = findViewById(R.id.organization);
-        //crating a list of youth organizations in israel
-
-        listOrganizations = getResources().getStringArray(R.array.organization_adjustment);
-
-        organization.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog = new Dialog(Register_num_two.this);
-
-                // set custom dialog
-                dialog.setContentView(R.layout.dialog_searchable_spinner);
-
-                // show dialog
-                dialog.show();
-
-                // Initialize and assign variable
-                EditText editText = dialog.findViewById(R.id.search);
-                ListView listView = dialog.findViewById(R.id.list_view);
-
-                // Initialize array adapter
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(Register_num_two.this,
-                        R.layout.list_item,
-                        listOrganizations);
-
-
-                // set adapter
-                listView.setAdapter(adapter);
-                editText.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        adapter.getFilter().filter(s);
+        // Camera Launcher
+        cameraLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                            profile.setImageBitmap(bitmap);
+                        }
                     }
+                }
+        );
 
-                    @Override
-                    public void afterTextChanged(Editable s) {}
-                });
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        // when item selected from list
-                        // set selected item on textView
-                        organization.setText(adapter.getItem(position));
-
-                        // Dismiss dialog
-                        dialog.dismiss();
+        // Gallery Launcher
+        galleryLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            Uri imageUri = data.getData();
+                            profile.setImageURI(imageUri);
+                        }
                     }
-                });
-            }
-        });
+                }
+        );
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -234,6 +216,51 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
             datePickerDialog.show();
         }
 
+        if (v == organization){
+            dialog = new Dialog(Register_num_two.this);
+
+            // set custom dialog
+            dialog.setContentView(R.layout.dialog_searchable_spinner);
+
+            // show dialog
+            dialog.show();
+
+            // Initialize and assign variable
+            EditText editText = dialog.findViewById(R.id.search);
+            ListView listView = dialog.findViewById(R.id.list_view);
+
+            // Initialize array adapter
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(Register_num_two.this,
+                    R.layout.list_item,
+                    listOrganizations);
+
+            // set adapter
+            listView.setAdapter(adapter);
+            editText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    adapter.getFilter().filter(s);
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // when item selected from list
+                    // set selected item on textView
+                    organization.setText(adapter.getItem(position));
+
+                    // Dismiss dialog
+                    dialog.dismiss();
+                }
+            });
+        }
+
         // if you click on the 'finish' button
         if (v == saveBTN) {
             // בדיקות של כינוי
@@ -277,9 +304,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
                 alartForBirthday.setText("* התאריך שהוכנס לא תקין! נסה שנית"
                         + '\n'
                         + alartForBirthday.getText().toString());
-
             }
-
 
             //בדיקות של מסגרת הדרכה
             if (organization.getText().equals(""))
@@ -344,39 +369,25 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
         public void onClick(DialogInterface dialog, int which) {
             //camera
             if (which == -1) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, 0);
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                cameraLauncher.launch(cameraIntent);
+                //TODO: כשהמשתמש מצלם תמונה שישמור בגלריה את התמונה
+                //TODO: לעשות במקום ONRESULT לעשות LAUNCHER
+                //TODO: להשתמש בBROADCAST RECEIVER יש באפ סקול - זה מודיע מתי שאין אינטרנט
 
             }
             //gallery
             else if (which == -2) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(
-                        Intent.createChooser(intent, "picture"),
-                        1);
+                Intent galleryIntent = new Intent(
+                        Intent.ACTION_PICK,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                // Intent.ACTION_PICK → Opens an app to let the user pick something.
+                //MediaStore.Images.Media.EXTERNAL_CONTENT_URI → Gets images from external storage (Gallery).
+                galleryLauncher.launch(galleryIntent);
             }
         }
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode,resultCode,data);
-        //get image from camera
-        if(requestCode == 0) {
-            if (resultCode == RESULT_OK) {
-                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                profile.setImageBitmap(bitmap);
-            }
-        }
-        //get image from gallery
-        else if(requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                profile.setImageBitmap(bitmap);
-            }
-        }
-    }
+
 
     //save user in data base
     public void saveUser() {

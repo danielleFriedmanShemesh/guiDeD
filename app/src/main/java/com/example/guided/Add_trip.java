@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -464,11 +465,13 @@ public class Add_trip extends AppCompatActivity implements View.OnClickListener 
         //get image from gallery to part
         else if(requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                tripPicture.setImageBitmap(bitmap);
+                Uri imageUri = data.getData();
+                tripPicture.setImageURI(imageUri);
+
             }
         }
 
+        //get image from camera to part
         if(requestCode == 3) {
             if (resultCode == RESULT_OK) {
                 Bitmap bitmap = (Bitmap) data.getExtras().get("data");
@@ -478,8 +481,8 @@ public class Add_trip extends AppCompatActivity implements View.OnClickListener 
         //get image from gallery to part
         else if(requestCode == 4) {
             if (resultCode == RESULT_OK) {
-                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                picture.setImageBitmap(bitmap);
+                Uri imageUri = data.getData();
+                picture.setImageURI(imageUri);
             }
         }
 

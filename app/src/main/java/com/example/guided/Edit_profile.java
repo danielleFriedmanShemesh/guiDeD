@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -23,6 +24,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -60,6 +63,9 @@ public class Edit_profile extends AppCompatActivity implements View.OnClickListe
     TextView alartForBirthday;
     DatabaseReference userRef;
     ProgressBar progressBar;
+
+    ActivityResultLauncher<Intent> cameraLauncher;
+    ActivityResultLauncher<Intent> galleryLauncher;
 
 
     User updatedUser = new User();
@@ -124,8 +130,33 @@ public class Edit_profile extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        // Camera Launcher
+        cameraLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                            profile.setImageBitmap(bitmap);
+                        }
+                    }
+                }
+        );
 
-
+        // Gallery Launcher
+        galleryLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            Uri imageUri = data.getData();
+                            profile.setImageURI(imageUri);
+                        }
+                    }
+                }
+        );
     }
 
     @Override
@@ -351,39 +382,23 @@ public class Edit_profile extends AppCompatActivity implements View.OnClickListe
         public void onClick(DialogInterface dialog, int which) {
             //camera
             if (which == -1) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, 0);
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                cameraLauncher.launch(cameraIntent);
 
             }
             //gallery
             else if (which == -2) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(
-                        Intent.createChooser(intent, "picture"),
-                        1);
+                Intent galleryIntent = new Intent(
+                        Intent.ACTION_PICK,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                // Intent.ACTION_PICK → Opens an app to let the user pick something.
+                //MediaStore.Images.Media.EXTERNAL_CONTENT_URI → Gets images from external storage (Gallery).
+
+                galleryLauncher.launch(galleryIntent);
             }
         }
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode,resultCode,data);
-        //get image from camera
-        if(requestCode == 0) {
-            if (resultCode == RESULT_OK) {
-                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                profile.setImageBitmap(bitmap);
-            }
-        }
-        //get image from gallery
-        else if(requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                profile.setImageBitmap(bitmap);
-            }
-        }
-    }
+
     //checks if input has letters and digits and special characters
     public static boolean input_Validation(String input)
     {
