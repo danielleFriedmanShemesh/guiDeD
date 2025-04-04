@@ -1,6 +1,10 @@
 package com.example.guided;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    BroadcastReceiver broadcastReceiver;
 
     Button register;
     Button logIn;
@@ -43,9 +49,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
 
+
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
 
+
+
+        broadcastReceiver = new InternetReceiver();
+        Internetstatus();
 
 
 
@@ -90,19 +101,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if (v==btn4){
             intent=new Intent(this, Home_page.class);
             startActivity(intent);
-            finish();
         }
         else if (v==btn3) {
             intent=new Intent(this, Add_operation.class);
             startActivity(intent);
-            finish();
         }
         else if (v==btn5) {
             intent=new Intent(this, Add_trip.class);
             startActivity(intent);
-            finish();
         }
-
-
     }
+
+    public void Internetstatus(){
+        registerReceiver(
+                broadcastReceiver,
+                new IntentFilter(
+                        ConnectivityManager.
+                                CONNECTIVITY_ACTION));    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+
 }
+

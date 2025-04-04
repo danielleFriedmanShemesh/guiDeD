@@ -376,9 +376,10 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
             if (which == -1) {
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 cameraLauncher.launch(cameraIntent);
-                //TODO: כשהמשתמש מצלם תמונה שישמור בגלריה את התמונה
+                // כשהמשתמש מצלם תמונה שישמור בגלריה את התמונה
                 // לעשות במקום ONRESULT לעשות LAUNCHER
                 //TODO: להשתמש בBROADCAST RECEIVER יש באפ סקול - זה מודיע מתי שאין אינטרנט
+                //TODO: לשאול את רינת איך לגרום לזה שהבדיקה של האינטרנט תעבוד בכל מסך
 
             }
             //gallery

@@ -1,9 +1,12 @@
 package com.example.guided;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -31,9 +34,10 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Home_page extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
-    ActivityMainBinding binding;
     ImageView menuBTN;
     BottomNavigationView navView;
+    BroadcastReceiver broadcastReceiver;
+
 
 
 
@@ -57,6 +61,11 @@ public class Home_page extends AppCompatActivity implements View.OnClickListener
         navView.setItemIconTintList(null);
 
         navView.setOnNavigationItemSelectedListener(this);
+
+
+        broadcastReceiver = new InternetReceiver();
+        Internetstatus();
+
 
     }
 
@@ -217,6 +226,13 @@ public class Home_page extends AppCompatActivity implements View.OnClickListener
         }
         return false;
     }
+
+    public void Internetstatus(){
+        registerReceiver(
+                broadcastReceiver,
+                new IntentFilter(
+                        ConnectivityManager.
+                                CONNECTIVITY_ACTION));    }
 
 
 
