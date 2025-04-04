@@ -4,12 +4,15 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -42,6 +45,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -152,6 +156,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
                         if (data != null) {
                             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                             profile.setImageBitmap(bitmap);
+                            saveImageToGallery(bitmap, Register_num_two.this);
                         }
                     }
                 }
@@ -372,7 +377,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 cameraLauncher.launch(cameraIntent);
                 //TODO: כשהמשתמש מצלם תמונה שישמור בגלריה את התמונה
-                //TODO: לעשות במקום ONRESULT לעשות LAUNCHER
+                // לעשות במקום ONRESULT לעשות LAUNCHER
                 //TODO: להשתמש בBROADCAST RECEIVER יש באפ סקול - זה מודיע מתי שאין אינטרנט
 
             }
@@ -455,5 +460,28 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
         }
         return (birthdayDate.getYear() + 1900) < year &&
                 (birthdayDate.getYear() + 1900) > 1900;
+    }
+
+    private void saveImageToGallery(Bitmap bitmap, Context context) {
+        ContentValues values = new ContentValues(); //a container (values) that store information (metadata) about the image, such as its name, type, and location.
+
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, "IMG_" + System.currentTimeMillis() + ".jpg"); // Unique image name
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg"); // Image type (JPEG)
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/MyApp"); // Save inside Pictures/MyApp
+
+        //Insert the image metadata into MediaStore and get the Uri
+        Uri imageUri = context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+        //try-with-resources → Ensures the stream closes automatically.
+        try (OutputStream outputStream = context.getContentResolver().openOutputStream(imageUri)) {
+            //Write the bitmap image data into the file
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream); // Save as JPEG with 100% quality
+
+            //Show success message
+            Toast.makeText(context, "נשמר בהצלחה!", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, "שמירה נכשלה!", Toast.LENGTH_SHORT).show();
+        }
     }
 }
