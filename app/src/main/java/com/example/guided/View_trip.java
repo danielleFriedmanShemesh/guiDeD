@@ -112,7 +112,6 @@ public class View_trip extends AppCompatActivity implements View.OnClickListener
             builder.setTitle("מסלול הטיול");
 
             if(image != null){
-//   TODO:                למצוא דרך להציג את המסלול בתוך הדיאלוג
                 ImageView imageView = dialogView.findViewById(R.id.pic);
                 imageView.setImageBitmap(BitmapHelper.stringToBitmap(image));
                 builder.setView(dialogView);

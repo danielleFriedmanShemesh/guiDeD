@@ -7,7 +7,6 @@
     tools:context=".LibraryOperationsFragment"
     android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
 
 
     <TextView
