@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="15dp"
+    app:cardElevation="5dp"
+    android:backgroundTint="@color/grayeen3"
+    android:id="@+id/layout_1_my_trips"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clTr1"
+        android:layout_width="200dp"
+        android:layout_height="120dp"
+        android:layoutDirection="ltr"
+        android:layout_gravity="center"
+>
+        <TextView
+            android:id="@+id/title1"
+            android:layout_width="125dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/yardenboldalefalefalef"
+            android:text="כותרת"
+            android:textDirection="rtl"
+
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/age1"
+            android:layout_width="56dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+
+            android:fontFamily="@font/yardenregularalefalefalef"
+            android:text="גיל"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title1" />
+
+        <TextView
+            android:id="@+id/area1"
+            android:layout_width="56dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+
+            android:fontFamily="@font/yardenregularalefalefalef"
+            android:text="אזור"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/age1"
+            app:layout_constraintEnd_toStartOf="@+id/age1"
+            app:layout_constraintStart_toEndOf="@+id/place1"
+            app:layout_constraintTop_toTopOf="@+id/age1" />
+
+        <TextView
+            android:id="@+id/length1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/yardenregularalefalefalef"
+            android:text="אורך מסלול"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/title1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/title1" />
+
+
+
+        <TextView
+            android:id="@+id/place1"
+            android:layout_width="56dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="10dp"
+
+            android:fontFamily="@font/yardenregularalefalefalef"
+            android:text=" מיקום ספציפי"
+            android:textSize="19dp"
+            app:layout_constraintBottom_toBottomOf="@+id/age1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/age1" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
