@@ -5,6 +5,7 @@ import static com.example.guided.R.*;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.View;
@@ -65,6 +66,10 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
     Button saveMetoda;
     ImageButton exitBTN;
     Operation operation;
+    String operationKey = "";
+
+    FireBaseOperationHelper fireBaseOperationHelper;
+
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
@@ -101,13 +106,8 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
         exitBTN = findViewById(R.id.exit);
         exitBTN.setOnClickListener(this);
 
-
-
-
         addMetodaBTN= findViewById(R.id.addMetoda);
         addMetodaBTN.setOnClickListener(this);
-
-
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -124,11 +124,10 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
 
-
-
         ageAdjustments = findViewById(R.id.age);
         listAgeAdjustments = getResources().getStringArray(R.array.age_adjustment);
         checkedAgeAdjustments = new boolean[listAgeAdjustments.length];
+
 
         ageAdjustments.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,6 +171,36 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
                 dialog.show();
             }
         });
+
+        Intent intent = getIntent();
+        if (intent != null){
+        operationKey = intent.getStringExtra("operationKey");
+
+        fireBaseOperationHelper = new FireBaseOperationHelper();
+        fireBaseOperationHelper.fetchOneOperation(new FireBaseOperationHelper.DataStatusM() {
+            @Override
+            public void onDataLoaded(Operation o) {
+                operation = o;
+
+                topic.setText(operation.getNameOfOperation());
+                ageAdjustments.setText(operation.getAge());
+                lengthCount = lengthCount + operation.getLengthOfOperation();
+                length.setText(lengthCount + "דקות");
+                goals.setText(operation.getGoals());
+                equipments.setText(operation.getEquipment());
+
+                metodotArr = operation.getMetodotArr();
+                //TODO: לשנות את הגיל למערך?
+
+                recyclerAdapter = new RecyclerAdapterOperation(metodotArr, Add_operation.this);
+                recyclerView.setAdapter(recyclerAdapter);
+                //privte or public+ age+ metodot
+
+
+
+            }
+        },operationKey);
+        }
     }
 
     @Override
@@ -313,7 +342,10 @@ public class Add_operation extends AppCompatActivity implements View.OnClickList
                         organizationSTR,
                         userNameSTR);
 
-                String key = myRef.push().getKey();
+                String key;
+                if(operationKey == null)
+                key = myRef.push().getKey();
+                else key = operationKey;
                 operation.setKey(key);
                 myRef.child(key).setValue(operation);
 

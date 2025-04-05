@@ -50,6 +50,7 @@ public class Add_trip extends AppCompatActivity implements View.OnClickListener 
     EditText topic;//שם הטיול
     TextView length;//אורך הטיול
     int lengthCount = 0;
+    int timeCount = 0;
     Switch privateORpublic; //פרטי או ציבורי
     EditText goals;//מטרות הטיול
     EditText equipments;// עזרים לטיול
@@ -83,6 +84,11 @@ public class Add_trip extends AppCompatActivity implements View.OnClickListener 
     Button savePartBTN;
     ImageButton exitBTN;
 
+    String tripKey = "";
+
+    FireBaseTripHelper fireBaseTripHelper;
+
+
     Trip trip;
 
 
@@ -102,7 +108,7 @@ public class Add_trip extends AppCompatActivity implements View.OnClickListener 
         goals = findViewById(R.id.goals);
         equipments = findViewById(R.id.equipments);
         place = findViewById(R.id.place);
-        //לעשות שהמיקום הספציפי מתחבר לגוגל מאפ
+        // TODO: לעשות שהמיקום הספציפי מתחבר לגוגל מאפ
 
         tripPicture = findViewById(R.id.picture);
         tripPicture.setOnClickListener(this);
@@ -158,6 +164,40 @@ public class Add_trip extends AppCompatActivity implements View.OnClickListener 
         listAgeAdjustments = getResources().getStringArray(R.array.age_adjustment);
         checkedAgeAdjustments = new boolean[listAgeAdjustments.length];
         ageAdjustments.setOnClickListener(this);
+
+
+
+        Intent intent = getIntent();
+        if (intent != null){
+            tripKey = intent.getStringExtra("tripKey");
+
+            fireBaseTripHelper = new FireBaseTripHelper();
+            fireBaseTripHelper.fetchOneTrip(new FireBaseTripHelper.DataStatusT() {
+                @Override
+                public void onDataLoaded(Trip t) {
+                    trip = t;
+
+                    topic.setText(trip.getNameOfTrip());
+                    ageAdjustments.setText(trip.getAge());
+                    lengthCount = lengthCount + trip.getLengthInKm();
+                    length.setText(lengthCount + " ק''מ ");
+                    goals.setText(trip.getGoals());
+                    equipments.setText(trip.getEquipments());
+                    area.setText(trip.getArea());
+                    place.setText(trip.getNameOfTrip());
+                    tripPicture.setImageBitmap(BitmapHelper.stringToBitmap(trip.getPicture()));
+
+                    partsArr = trip.getPartsArr();
+                    //TODO: לשנות את הגיל למערך?
+
+                    recyclerAdapter = new RecyclerAdapterTrip(partsArr, Add_trip.this);
+                    recyclerView.setAdapter(recyclerAdapter);
+                    //privte or public+ age+ metodot
+
+
+                }
+            },tripKey);
+        }
     }
 
     @Override
@@ -341,6 +381,9 @@ public class Add_trip extends AppCompatActivity implements View.OnClickListener 
                         dialog.dismiss();
                     }
                 });
+
+                timeCount = timeCount + Integer.parseInt(lengthInMinute.getText().toString());
+
                 AlertDialog dialog = builder.create();
                 dialog.show();
 
@@ -520,7 +563,7 @@ public class Add_trip extends AppCompatActivity implements View.OnClickListener 
         else
             publicORprivateSRT = "isPublic";
         int lengthInKmINT = lengthCount;
-        int lengthInMinutesINT =  Integer.parseInt(lengthInMinute.getText().toString());
+        int lengthInMinutesINT =  timeCount;
         String goalsSTR = goals.getText().toString();
         String equipmentsSTR = equipments.getText().toString();
         String areaSTR = area.getText().toString();
@@ -550,7 +593,10 @@ public class Add_trip extends AppCompatActivity implements View.OnClickListener 
                         partsArr,
                         userNameSTR,
                         organizationSTR, picSTR);
-                String key = myRef.push().getKey();
+                String key;
+                if(tripKey == null)
+                    key = myRef.push().getKey();
+                else key = tripKey;
                 trip.setKey(key);
                 myRef.child(key).setValue(trip);
             }
