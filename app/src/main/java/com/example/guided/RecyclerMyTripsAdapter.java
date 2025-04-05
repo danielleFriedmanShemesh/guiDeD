@@ -27,14 +27,11 @@ public class RecyclerMyTripsAdapter extends RecyclerView.Adapter<RecyclerMyTrips
         this.user = user;
         this.tripArrayList = new ArrayList<>();
 
-
-                for (int i = (trips.size()-1); i>=0; i--) {
-                    Trip trip = trips.get(i);
-                    if (trip.getUserName().equals(user.getUserName()))
-                        tripArrayList.add(trip);
-                }
-
-
+        for (int i = (trips.size()-1); i>=0; i--) {
+            Trip trip = trips.get(i);
+            if (trip.getUserName().equals(user.getUserName()))
+                tripArrayList.add(trip);
+        }
     }
 
     @NonNull
@@ -43,7 +40,8 @@ public class RecyclerMyTripsAdapter extends RecyclerView.Adapter<RecyclerMyTrips
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.layout_1_my_trips, parent, false);
         RecyclerMyTripsAdapter.ViewHolder viewHolder = new RecyclerMyTripsAdapter.ViewHolder(view);
-        return viewHolder;    }
+        return viewHolder;
+    }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerMyTripsAdapter.ViewHolder holder, int position) {
@@ -71,7 +69,8 @@ public class RecyclerMyTripsAdapter extends RecyclerView.Adapter<RecyclerMyTrips
         }
         else {
             return tripArrayList.size();
-        }    }
+        }
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView topic;
