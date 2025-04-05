@@ -334,6 +334,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
 
                     //open the home page after the user had been saved in the database
                     Intent intent = new Intent(this, Home_page.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
                 }
@@ -443,6 +444,7 @@ public class Register_num_two extends AppCompatActivity implements View.OnClickL
                     }
                 });
     }
+
     public static boolean checkNickName(String nickName){
         return ((nickName.length() >= 2) && (nickName.length() <= 15));
     }

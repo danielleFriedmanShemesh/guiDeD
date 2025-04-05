@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String email = user.getEmail();
             Log.e("MainActivity", "id ="+ userId+" email= "+ email);
             Intent intent = new Intent(this, Home_page.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
 
@@ -86,12 +87,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+
+
     @Override
     public void onClick(View v) {
         Intent intent;
         if(v==register) {
             intent=new Intent(this, Register_num_one.class);
             startActivity(intent);
+
 
         }
         else if(v==logIn) {
@@ -122,7 +126,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(broadcastReceiver);
+        try {
+            unregisterReceiver(broadcastReceiver);
+        } catch (IllegalArgumentException e) {
+            // אם ה-Receiver לא נרשם, אנחנו לא צריכים לפתח שגיאה
+            Log.e("ReceiverError", "Receiver was not registered");
+        }
     }
 
 

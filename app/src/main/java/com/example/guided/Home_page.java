@@ -31,6 +31,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.guided.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class Home_page extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -225,6 +226,17 @@ public class Home_page extends AppCompatActivity implements View.OnClickListener
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // אם יש משתמש מחובר, לא נחזור אחורה
+            Toast.makeText(this, "אתה כבר מחובר!", Toast.LENGTH_SHORT).show();
+        } else {
+            super.onBackPressed();  // במידה ואין משתמש מחובר, נשאיר את ההתנהגות הרגילה
+        }
     }
 
     public void Internetstatus(){
