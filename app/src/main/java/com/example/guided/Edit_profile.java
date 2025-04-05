@@ -22,16 +22,20 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -47,7 +51,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Edit_profile extends AppCompatActivity implements View.OnClickListener {
-    //TODO: התחלתי לעבוד על לקבל את השינויים של המשתמש
     EditText userName;
     TextView organization;
     EditText birthday;
@@ -120,9 +123,13 @@ public class Edit_profile extends AppCompatActivity implements View.OnClickListe
                 birthday.setText(
                         DateConverter.convertFullFormatToDate(
                                 u.getBirthday().
-                                        toString()));                userName.setText(u.getUserName());
+                                        toString()));
+                userName.setText(u.getUserName());
                 nickName.setText(u.getNickName());
-                profile.setImageBitmap(BitmapHelper.stringToBitmap(u.getProfileImage()));}
+                profile.setImageBitmap(BitmapHelper.stringToBitmap(u.getProfileImage()));
+                updatedUser.setEmail(u.getEmail());
+                updatedUser.setPassword(u.getPassword());
+            }
 
             @Override
             public void onError(String errorMessage) {
@@ -371,10 +378,18 @@ public class Edit_profile extends AppCompatActivity implements View.OnClickListe
 
     private void setUser() {
 
+        userRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(updatedUser).addOnCompleteListener(
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(Edit_profile.this, "User Registered", Toast.LENGTH_LONG).show();
+                           // progressBar.setVisibility(View.GONE);
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        String uId = auth.getCurrentUser().getUid();
-        userRef.child(uId).setValue(updatedUser);
+                        }
+                    }
+                }
+        );
     }
 
     private class HandleAlartDialogLostener implements DialogInterface.OnClickListener {
