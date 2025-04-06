@@ -43,7 +43,7 @@ import java.util.Collections;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
-public class Add_trip extends AppCompatActivity implements View.OnClickListener {
+public class Add_trip extends BaseActivity implements View.OnClickListener {
     // TODO: להוסיף אפשרות לשמור מקטע וטיול בכללי שלא כל השדות מלאים מבלי שיקרוס
 
 

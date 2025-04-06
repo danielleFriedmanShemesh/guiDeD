@@ -33,14 +33,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class Home_page extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
+public class Home_page extends BaseActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
     ImageView menuBTN;
     BottomNavigationView navView;
-    BroadcastReceiver broadcastReceiver;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +58,6 @@ public class Home_page extends AppCompatActivity implements View.OnClickListener
         navView.setItemIconTintList(null);
 
         navView.setOnNavigationItemSelectedListener(this);
-
-
-        broadcastReceiver = new InternetReceiver();
-        Internetstatus();
 
 
     }
@@ -238,15 +230,6 @@ public class Home_page extends AppCompatActivity implements View.OnClickListener
             super.onBackPressed();  // במידה ואין משתמש מחובר, נשאיר את ההתנהגות הרגילה
         }
     }
-
-    public void Internetstatus(){
-        registerReceiver(
-                broadcastReceiver,
-                new IntentFilter(
-                        ConnectivityManager.
-                                CONNECTIVITY_ACTION));    }
-
-
 
 
 }

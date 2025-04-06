@@ -37,7 +37,7 @@ import java.util.Collections;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
-public class Add_operation extends AppCompatActivity implements View.OnClickListener {
+public class Add_operation extends BaseActivity implements View.OnClickListener {
 
     // TODO: להוסיף אפשרות לשמור מתודה ופעולה בכללי שלא כל השדות מלאים מבלי שיקרוס
     EditText topic;//שם פעולה

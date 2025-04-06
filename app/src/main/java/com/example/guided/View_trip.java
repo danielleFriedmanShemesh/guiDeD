@@ -19,7 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 
-public class View_trip extends AppCompatActivity implements View.OnClickListener {
+public class View_trip extends BaseActivity implements View.OnClickListener {
 
     TextView title;
     TextView writer;

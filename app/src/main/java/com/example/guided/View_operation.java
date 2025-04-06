@@ -22,7 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class View_operation extends AppCompatActivity implements View.OnClickListener {
+public class View_operation extends BaseActivity implements View.OnClickListener {
     TextView title;
     TextView writer;
     TextView age;

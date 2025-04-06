@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Log_in extends AppCompatActivity implements View.OnClickListener {
+public class Log_in extends BaseActivity implements View.OnClickListener {
     ImageView submmitBTN;
     EditText userName;
     EditText password;

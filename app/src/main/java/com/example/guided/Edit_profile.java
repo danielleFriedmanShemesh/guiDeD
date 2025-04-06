@@ -50,7 +50,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Edit_profile extends AppCompatActivity implements View.OnClickListener {
+public class Edit_profile extends BaseActivity implements View.OnClickListener {
     EditText userName;
     TextView organization;
     EditText birthday;

@@ -39,6 +39,12 @@ public class InternetReceiver extends BroadcastReceiver {
     }
     private void showNoInternetDialog(Context context, Intent intent) {
         new Handler(Looper.getMainLooper()).post(() -> {
+            /*
+            AlertDialog dialog = new AlertDialog.Builder(context)
+                    .setView(R.layout.check_internet_connection_dialog)
+                    .setCancelable(false)
+                    .show();
+            */
             Dialog dialog = new Dialog(context);
             dialog.setContentView(R.layout.check_internet_connection_dialog);
             dialog.setCancelable(false);

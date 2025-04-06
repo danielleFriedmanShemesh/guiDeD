@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Register_num_one extends AppCompatActivity implements View.OnClickListener {
+public class Register_num_one extends BaseActivity implements View.OnClickListener {
     ImageView continueBtn;
     EditText userName;
     EditText password;

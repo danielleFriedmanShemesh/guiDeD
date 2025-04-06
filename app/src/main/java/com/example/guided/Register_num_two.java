@@ -53,7 +53,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class Register_num_two extends AppCompatActivity implements View.OnClickListener {
+public class Register_num_two extends BaseActivity implements View.OnClickListener {
     TextView organization;
     EditText birthday;
     EditText nickName;
