@@ -4,8 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".My_operations"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    android:background="@color/grayeen1">
+<!--TODO: לעשות אפשרות למחוק פעולה/טיול שהוסיף משתמש-->
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"

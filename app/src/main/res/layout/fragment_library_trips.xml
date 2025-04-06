@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".LibraryTripsFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/grayeen1"
+    >
 
     <TextView
         android:id="@+id/title"

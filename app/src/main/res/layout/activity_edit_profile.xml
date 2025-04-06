@@ -8,7 +8,8 @@
     tools:context=".Edit_profile"
     android:orientation="vertical"
     android:textDirection="rtl"
-    android:layoutDirection="rtl">
+    android:layoutDirection="rtl"
+    android:background="@color/grayeen1">
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -182,6 +183,7 @@
         android:id="@+id/organization"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/grayeen1.5"
         android:background="@android:drawable/editbox_background"
         android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
         android:gravity="center_vertical"

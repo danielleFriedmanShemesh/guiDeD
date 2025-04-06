@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Log_in"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/grayeen1">
     <ImageView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
@@ -16,7 +17,7 @@
         android:paddingHorizontal="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/logo_new" />
 
     <TextView
         android:id="@+id/logInTV"

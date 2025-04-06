@@ -7,34 +7,49 @@
     android:layout_height="match_parent"
     tools:context=".Add_operation"
     android:orientation="vertical"
+    android:background="@color/grayeen1"
     >
 
 
 
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="30dp"
     android:layout_marginTop="10dp"
-    android:layoutDirection="rtl"
     >
-    <EditText
-        android:id="@+id/topic"
-        android:layout_width="250dp"
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
-        android:hint="שם הפעולה"
+        android:layout_gravity="center"
         android:fontFamily="@font/yardenboldalefalefalef"
-        />
+        android:text="הוספת פעולה"
+        android:textSize="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/exit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
-        android:layout_marginStart="75dp"
+        android:backgroundTint="@color/grayeen1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/x" />
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+    <EditText
+        android:id="@+id/topic"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:layout_marginEnd="10dp"
+        android:hint="שם הפעולה"
+        android:fontFamily="@font/yardenboldalefalefalef"
+        android:layout_gravity="right"
+        />
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -54,6 +69,7 @@
             android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
             android:gravity="center_vertical"
             android:hint="גיל החניכים"
+            android:backgroundTint="@color/grayeen1.5"
             android:padding="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -135,7 +151,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:fontFamily="@font/yardenboldalefalefalef"
-        android:backgroundTint="#FFFFFF"
+        android:backgroundTint="@color/grayeen1"
         android:layout_gravity="right"
         android:text="+ הוספת מתודה חדשה"
         android:textColor="@color/black"

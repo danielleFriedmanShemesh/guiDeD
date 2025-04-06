@@ -20,7 +20,8 @@
         android:paddingHorizontal="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        app:srcCompat="@drawable/logo_new" />
+        app:srcCompat="@drawable/logo_new"
+        />
 
     <TextView
         android:id="@+id/registerTV"

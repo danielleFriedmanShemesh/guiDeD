@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@color/grayeen1.5"
+
     >
 
     <EditText
@@ -64,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/grayeen1.5"
         android:fontFamily="@font/yardenboldalefalefalef"
         android:text="שמור"
         android:textColor="@color/black"

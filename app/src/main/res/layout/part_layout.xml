@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white">
+    android:background="@color/grayeen1.5">
 
     <TextView
         android:id="@+id/activity"
@@ -16,6 +16,7 @@
         android:hint="סוג הפעילות"
         android:textSize="25dp"
         android:padding="12dp"
+        android:backgroundTint="@color/grayeen2"
         android:background="@android:drawable/editbox_background"
         android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
         android:drawablePadding="5dp"
@@ -88,7 +89,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/grayeen1.5"
         android:fontFamily="@font/yardenboldalefalefalef"
         android:text="שמור"
         android:textColor="@color/black"

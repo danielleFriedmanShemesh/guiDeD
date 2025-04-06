@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".My_trips"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/grayeen1">
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"

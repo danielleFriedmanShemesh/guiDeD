@@ -7,19 +7,27 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical"
+    android:background="@drawable/background"
     >
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ברוכה הבאה ל guiDeD!"
+        android:text="ברוכה הבאה ל"
         android:textSize="50dp"
+        android:textColor="@color/blue"
         android:gravity="center"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="250dp"
         android:fontFamily="@font/yardenboldalefalefalef"
+        />
 
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        app:srcCompat="@drawable/logo_new"
+        android:layout_gravity="center"
         />
 
     <Button
@@ -30,6 +38,8 @@
         android:textSize="25dp"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/blue"
         android:fontFamily="@font/yardenboldalefalefalef"
         />
     <Button
@@ -40,10 +50,12 @@
         android:textSize="25dp"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/blue"
         android:fontFamily="@font/yardenboldalefalefalef"
         />
 
-    <Button
+   <!-- <Button
         android:id="@+id/add_operation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -65,6 +77,6 @@
          android:id="@+id/home"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
-         android:text="home" />
+         android:text="home" />-->
 
 </LinearLayout>
