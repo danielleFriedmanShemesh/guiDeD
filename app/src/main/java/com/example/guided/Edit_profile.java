@@ -69,7 +69,7 @@ public class Edit_profile extends AppCompatActivity implements View.OnClickListe
 
     ActivityResultLauncher<Intent> cameraLauncher;
     ActivityResultLauncher<Intent> galleryLauncher;
-
+    //TODO: כשמשנית את השם משתמש צריך לשנות אותו גם בכל הפעולות וטיולים של המשתמש הזה!
 
     User updatedUser = new User();
 

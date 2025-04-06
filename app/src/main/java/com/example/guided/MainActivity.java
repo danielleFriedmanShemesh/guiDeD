@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String email = user.getEmail();
             Log.e("MainActivity", "id ="+ userId+" email= "+ email);
             Intent intent = new Intent(this, Home_page.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
 
@@ -77,12 +76,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         register.setOnClickListener(this);
         logIn=findViewById(R.id.logIn);
         logIn.setOnClickListener(this);
-        btn3=findViewById(R.id.add_operation);
-        btn3.setOnClickListener(this);
-        btn5=findViewById(R.id.add_trip);
-        btn5.setOnClickListener(this);
-        btn4=findViewById(R.id.home);
-        btn4.setOnClickListener(this);
+//        btn3=findViewById(R.id.add_operation);
+//        btn3.setOnClickListener(this);
+//        btn5=findViewById(R.id.add_trip);
+//        btn5.setOnClickListener(this);
+//        btn4=findViewById(R.id.home);
+//        btn4.setOnClickListener(this);
 
 
     }
@@ -102,18 +101,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             intent=new Intent(this, Log_in.class);
             startActivity(intent);
         }
-        else if (v==btn4){
-            intent=new Intent(this, Home_page.class);
-            startActivity(intent);
-        }
-        else if (v==btn3) {
-            intent=new Intent(this, Add_operation.class);
-            startActivity(intent);
-        }
-        else if (v==btn5) {
-            intent=new Intent(this, Add_trip.class);
-            startActivity(intent);
-        }
+//        else if (v==btn4){
+//            intent=new Intent(this, Home_page.class);
+//            startActivity(intent);
+//        }
+//        else if (v==btn3) {
+//            intent=new Intent(this, Add_operation.class);
+//            startActivity(intent);
+//        }
+//        else if (v==btn5) {
+//            intent=new Intent(this, Add_trip.class);
+//            startActivity(intent);
+//        }
     }
 
     public void Internetstatus(){

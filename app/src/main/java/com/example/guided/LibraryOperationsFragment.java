@@ -60,20 +60,6 @@ public class LibraryOperationsFragment extends Fragment {
         if ( v != null)
         {
 
-            search = v.findViewById(R.id.search);
-            search.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    recyclerAdapter.filterSearch(query);
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    recyclerAdapter.filterSearch(newText);
-                    return false;
-                }
-            });
 
             recyclerView = v.findViewById(R.id.recyclerView);
             recyclerView.setHasFixedSize(true);
@@ -91,6 +77,22 @@ public class LibraryOperationsFragment extends Fragment {
                         operationArrayList = operations;
                         recyclerAdapter = new RecyclerAdapterLibraryOperation(getContext(), operationArrayList);
                         recyclerView.setAdapter(recyclerAdapter);
+
+                        search = v.findViewById(R.id.search);
+                        search.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
+                            @Override
+                            public boolean onQueryTextSubmit(String query) {
+                                recyclerAdapter.filterSearch(query);
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onQueryTextChange(String newText) {
+                                recyclerAdapter.filterSearch(newText);
+                                return false;
+                            }
+                        });
+
                         //recyclerAdapter.notifyItemRangeInserted(0, operationArrayList.size());
                     }
                 }
