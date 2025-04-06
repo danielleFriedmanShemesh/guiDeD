@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".Register_num_one"
     android:orientation="vertical"
-    android:layout_marginTop="20dp"
+    android:background="@drawable/background"
     >
 
 
@@ -16,11 +16,11 @@
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="90dp"
         android:paddingHorizontal="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/logo_new" />
 
     <TextView
         android:id="@+id/registerTV"
@@ -125,6 +125,13 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="170dp"
+            android:layout_marginStart="-30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/continueBTN"
+            app:srcCompat="@drawable/girl_walk" />
 
         <ImageView
             android:id="@+id/continueBTN"

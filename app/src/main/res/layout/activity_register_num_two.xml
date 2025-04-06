@@ -5,15 +5,15 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="20dp"
     android:orientation="vertical"
     android:textDirection="rtl"
-    tools:context=".Register_num_two">
+    tools:context=".Register_num_two"
+    android:background="@drawable/background">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="55dp"
         android:gravity="center"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
@@ -159,6 +159,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="170dp"
+            android:layout_marginStart="-20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/save"
+            app:srcCompat="@drawable/girl_walk" />
 
         <ImageView
             android:id="@+id/save"
