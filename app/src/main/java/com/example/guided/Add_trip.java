@@ -1,5 +1,8 @@
 package com.example.guided;
 
+import static android.content.DialogInterface.BUTTON_NEGATIVE;
+import static android.content.DialogInterface.BUTTON_POSITIVE;
+
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -83,10 +86,12 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
     Dialog addNewPartDialog;
     Button savePartBTN;
     ImageButton exitBTN;
+    Button saveTrip;
 
     String tripKey = "";
 
     FireBaseTripHelper fireBaseTripHelper;
+
 
 
     Trip trip;
@@ -133,6 +138,9 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
 
         exitBTN = findViewById(R.id.exit);
         exitBTN.setOnClickListener(this);
+
+        saveTrip = findViewById(R.id.save);
+        saveTrip.setOnClickListener(this);
 
 
         addPartBTN= findViewById(R.id.addPart);
@@ -209,9 +217,19 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         else if (v == savePartBTN) {
             savePart();
         }
-        else if (v == exitBTN){
+        else if(v == saveTrip){
             saveTrip();
             finish();
+        }
+        else if (v == exitBTN){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("סגירת חלון");
+            builder.setMessage("תרצו לשמור את השינויים?");
+            builder.setCancelable(true);
+            builder.setPositiveButton("שמור", new Add_trip.AlartDialogLostenerSaveTrip());
+            builder.setNegativeButton("אל תשמור", new Add_trip.AlartDialogLostenerSaveTrip());
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
 
         else if (v == tripPicture){
@@ -478,13 +496,13 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             //camera
-            if (which == -1) {
+            if (which == BUTTON_POSITIVE) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, 0);
 
             }
             //gallery
-            else if (which == -2) {
+            else if (which == BUTTON_NEGATIVE) {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -492,6 +510,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
                         Intent.createChooser(intent, "picture"),
                         1);
             }
+
         }
     }
 
@@ -536,13 +555,13 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             //camera
-            if (which == -1) {
+            if (which == BUTTON_POSITIVE) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, 3);
 
             }
             //gallery
-            else if (which == -2) {
+            else if (which == BUTTON_NEGATIVE) {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -610,4 +629,16 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
 
     }
 
+    private class AlartDialogLostenerSaveTrip implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            if(which == BUTTON_POSITIVE){
+                saveTrip();
+                finish();
+            }
+            else if(which == BUTTON_NEGATIVE){
+                finish();
+            }
+        }
+    }
 }

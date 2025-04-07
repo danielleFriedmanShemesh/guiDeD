@@ -1,5 +1,7 @@
 package com.example.guided;
 
+import static android.content.DialogInterface.BUTTON_NEGATIVE;
+import static android.content.DialogInterface.BUTTON_POSITIVE;
 import static com.example.guided.R.*;
 
 import android.annotation.SuppressLint;
@@ -65,6 +67,9 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
     Dialog addNewMetodaDialog;
     Button saveMetoda;
     ImageButton exitBTN;
+
+    Button saveOperationBTN;
+
     Operation operation;
     String operationKey = "";
 
@@ -105,6 +110,10 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
 
         exitBTN = findViewById(R.id.exit);
         exitBTN.setOnClickListener(this);
+
+        saveOperationBTN = findViewById(R.id.save);
+        saveOperationBTN.setOnClickListener(this);
+
 
         addMetodaBTN= findViewById(R.id.addMetoda);
         addMetodaBTN.setOnClickListener(this);
@@ -211,9 +220,19 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
         else if (v ==saveMetoda) {
             saveMetoda();
         }
-        else if(v == exitBTN){
+        else if(v == saveOperationBTN){
             saveOperation();
             finish();
+        }
+        else if (v == exitBTN){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("סגירת חלון");
+            builder.setMessage("תרצו לשמור את השינויים?");
+            builder.setCancelable(true);
+            builder.setPositiveButton("שמור", new Add_operation.AlartDialogLostenerSaveOperation());
+            builder.setNegativeButton("אל תשמור", new Add_operation.AlartDialogLostenerSaveOperation());
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
     }
     private void addMetoda(){
@@ -359,5 +378,18 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
 
 
 
+    }
+
+    private class AlartDialogLostenerSaveOperation implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            if(which == BUTTON_POSITIVE){
+                saveOperation();
+                finish();
+            }
+            else if(which == BUTTON_NEGATIVE){
+                finish();
+            }
+        }
     }
 }
