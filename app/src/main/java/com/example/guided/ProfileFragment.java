@@ -321,7 +321,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         views.lengh.setText(trip.getLengthInKm()+" ק''מ ");
         views.age.setText(trip.getAge());
         views.area.setText(trip.getArea());
-        views.place.setText(trip.getOrganization());
+        views.place.setText(trip.getPlace());
         views.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

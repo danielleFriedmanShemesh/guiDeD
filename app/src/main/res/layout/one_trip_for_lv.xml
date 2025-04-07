@@ -21,12 +21,20 @@
         android:fontFamily="@font/yardenboldalefalefalef"
         android:text="שם הטיול"
         android:textSize="20dp"
+        android:background="@color/grayeen3"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="7dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:background="@drawable/back"
-        android:id="@+id/age"
+        android:background="@color/grayeen3"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="7dp"        android:id="@+id/age"
         android:layout_width="55dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -40,7 +48,11 @@
         app:layout_constraintTop_toTopOf="@+id/organization" />
 
     <TextView
-        android:background="@drawable/back"
+        android:background="@color/grayeen3"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="7dp"
         android:id="@+id/length"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
@@ -48,33 +60,39 @@
         android:fontFamily="@font/yardenboldalefalefalef"
         android:text="אורך המסלול"
         android:textSize="15dp"
-        app:layout_constraintBottom_toBottomOf="@+id/topic"
-        app:layout_constraintEnd_toStartOf="@+id/topic"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/topic" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/areaOfTR"
-        android:background="@drawable/back"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:fontFamily="@font/yardenboldalefalefalef"
         android:text="אזור"
         android:textSize="15dp"
+        android:background="@color/grayeen3"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="7dp"
         app:layout_constraintBottom_toBottomOf="@+id/place"
         app:layout_constraintEnd_toStartOf="@+id/place"
         app:layout_constraintTop_toTopOf="@+id/place" />
 
     <TextView
         android:id="@+id/place"
-        android:background="@drawable/back"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/yardenboldalefalefalef"
         android:text="מיקום ספציפי"
         android:textSize="15dp"
+        android:background="@color/grayeen3"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="7dp"
         app:layout_constraintEnd_toEndOf="@+id/topic"
         app:layout_constraintTop_toBottomOf="@+id/topic" />
 
@@ -86,8 +104,11 @@
         android:fontFamily="@font/yardenboldalefalefalef"
         android:text="מסגרת הדרכה"
         android:textSize="15dp"
-        android:background="@drawable/back"
-
+        android:background="@color/grayeen3"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="7dp"
         app:layout_constraintBottom_toBottomOf="@+id/place"
         app:layout_constraintEnd_toStartOf="@+id/areaOfTR"
         app:layout_constraintTop_toTopOf="@+id/place" />

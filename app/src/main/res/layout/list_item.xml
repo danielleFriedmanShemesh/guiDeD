@@ -7,5 +7,7 @@
     android:textSize="16sp"
     android:fontFamily="@font/yardenregularalefalefalef"
     android:text="דניאל"
+    android:background="@color/grayeen1.5"
+
     >
 </TextView>
