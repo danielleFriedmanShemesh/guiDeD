@@ -1,6 +1,10 @@
 package com.example.guided;
 
+import static android.content.DialogInterface.BUTTON_NEGATIVE;
+import static android.content.DialogInterface.BUTTON_POSITIVE;
+
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +12,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -19,6 +27,8 @@ public class RecyclerMyOperationsAdapter extends RecyclerView.Adapter<RecyclerMy
     private Context context;
     private ArrayList<Operation> operationArrayList;
     private User user;
+
+    Operation operation = null;
 
     public RecyclerMyOperationsAdapter(Context context, ArrayList<Operation> operations, User user) {
         this.context = context;
@@ -43,7 +53,7 @@ public class RecyclerMyOperationsAdapter extends RecyclerView.Adapter<RecyclerMy
     @Override
     public void onBindViewHolder(@NonNull RecyclerMyOperationsAdapter.ViewHolder holder, int position) {
 
-        Operation operation = operationArrayList.get(position);
+        operation = operationArrayList.get(position);
         holder.topic.setText(operation.getNameOfOperation());
         holder.time.setText(operation.getLengthOfOperation()+" דקות ");
         holder.age.setText(operation.getAge());
@@ -55,6 +65,44 @@ public class RecyclerMyOperationsAdapter extends RecyclerView.Adapter<RecyclerMy
                 intent.putExtra("operationKey", operation.getKey());
                 context.startActivity(intent);
 
+            }
+        });
+
+        holder.parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext(), R.style.AlertDialog);
+                builder.setMessage("תרצו למחוק את הפעולה?");
+                builder.setCancelable(true);
+
+                builder.setPositiveButton("מחק", (dialog, which) -> {
+
+                    Operation deleteOp = operationArrayList.get(holder.getBindingAdapterPosition());
+                    String operationId = deleteOp.getKey();
+
+                    FirebaseDatabase.getInstance()
+                            .getReference("operations")
+                            .child(operationId)
+                            .removeValue()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    // Remove from RecyclerView
+
+                                    operationArrayList.remove(holder.getBindingAdapterPosition());
+                                    notifyItemRemoved(holder.getBindingAdapterPosition());
+                                    notifyItemRangeChanged(holder.getBindingAdapterPosition(), operationArrayList.size());
+                                    dialog.dismiss();
+                                }
+                            });
+                });
+                builder.setNegativeButton("שמור", null);
+                builder.show();
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                dialog.dismiss();
+
+                return false;
             }
         });
     }

@@ -1,7 +1,12 @@
 package com.example.guided;
 
+import static android.content.DialogInterface.BUTTON_NEGATIVE;
+import static android.content.DialogInterface.BUTTON_POSITIVE;
+
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,7 +27,6 @@ public class My_operations extends Fragment {
     ArrayList<Operation> operationArrayList = new ArrayList<>();
 
 
-    // TODO: לעשות ריסייקלר ויו שעסוי מכרטיסים
 
     public My_operations() {
         // Required empty public constructor

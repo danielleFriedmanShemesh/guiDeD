@@ -182,33 +182,43 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
         });
 
         Intent intent = getIntent();
-        if (intent != null){
-        operationKey = intent.getStringExtra("operationKey");
+        if (intent != null) {
+            operationKey = intent.getStringExtra("operationKey");
 
-        fireBaseOperationHelper = new FireBaseOperationHelper();
-        fireBaseOperationHelper.fetchOneOperation(new FireBaseOperationHelper.DataStatusM() {
-            @Override
-            public void onDataLoaded(Operation o) {
-                operation = o;
+            if (operationKey != null) {
+                fireBaseOperationHelper = new FireBaseOperationHelper();
+                fireBaseOperationHelper.fetchOneOperation(new FireBaseOperationHelper.DataStatusM() {
+                    @Override
+                    public void onDataLoaded(Operation o) {
+                        operation = o;
 
-                topic.setText(operation.getNameOfOperation());
-                ageAdjustments.setText(operation.getAge());
-                lengthCount = lengthCount + operation.getLengthOfOperation();
-                length.setText(lengthCount + "דקות");
-                goals.setText(operation.getGoals());
-                equipments.setText(operation.getEquipment());
+                        topic.setText(operation.getNameOfOperation());
+                        ageAdjustments.setText(operation.getAge());
+                        lengthCount = lengthCount + operation.getLengthOfOperation();
+                        length.setText(lengthCount + "דקות");
+                        goals.setText(operation.getGoals());
+                        equipments.setText(operation.getEquipment());
+                        if (operation.getPrivateORpublic().equals("isPublic")) {
+                            privateORpublic.setChecked(true);
+                            privateORpublic.setThumbDrawable(ContextCompat.getDrawable(Add_operation.this,
+                                    drawable.baseline_groups_24));
+                        } else if (operation.getPrivateORpublic().equals("isPrivate")) {
+                            privateORpublic.setThumbDrawable(ContextCompat.getDrawable(Add_operation.this,
+                                    drawable.baseline_person_24));
 
-                metodotArr = operation.getMetodotArr();
-                //TODO: לשנות את הגיל למערך?
+                        }
 
-                recyclerAdapter = new RecyclerAdapterOperation(metodotArr, Add_operation.this);
-                recyclerView.setAdapter(recyclerAdapter);
-                //privte or public+ age+ metodot
+                        metodotArr = operation.getMetodotArr();
+                        //TODO: לשנות את הגיל למערך?
+
+                        recyclerAdapter = new RecyclerAdapterOperation(metodotArr, Add_operation.this);
+                        recyclerView.setAdapter(recyclerAdapter);
+                        //age
 
 
-
+                    }
+                }, operationKey);
             }
-        },operationKey);
         }
     }
 
@@ -225,10 +235,11 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
             finish();
         }
         else if (v == exitBTN){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialog);
             builder.setTitle("סגירת חלון");
             builder.setMessage("תרצו לשמור את השינויים?");
             builder.setCancelable(true);
+
             builder.setPositiveButton("שמור", new Add_operation.AlartDialogLostenerSaveOperation());
             builder.setNegativeButton("אל תשמור", new Add_operation.AlartDialogLostenerSaveOperation());
             AlertDialog dialog = builder.create();

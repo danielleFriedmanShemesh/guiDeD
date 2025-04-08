@@ -176,35 +176,46 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
 
 
         Intent intent = getIntent();
-        if (intent != null){
+        if (intent != null) {
             tripKey = intent.getStringExtra("tripKey");
+            if (tripKey != null) {
 
-            fireBaseTripHelper = new FireBaseTripHelper();
-            fireBaseTripHelper.fetchOneTrip(new FireBaseTripHelper.DataStatusT() {
-                @Override
-                public void onDataLoaded(Trip t) {
-                    trip = t;
+                fireBaseTripHelper = new FireBaseTripHelper();
+                fireBaseTripHelper.fetchOneTrip(new FireBaseTripHelper.DataStatusT() {
+                    @Override
+                    public void onDataLoaded(Trip t) {
+                        trip = t;
 
-                    topic.setText(trip.getNameOfTrip());
-                    ageAdjustments.setText(trip.getAge());
-                    lengthCount = lengthCount + trip.getLengthInKm();
-                    length.setText(lengthCount + " ק''מ ");
-                    goals.setText(trip.getGoals());
-                    equipments.setText(trip.getEquipments());
-                    area.setText(trip.getArea());
-                    place.setText(trip.getNameOfTrip());
-                    tripPicture.setImageBitmap(BitmapHelper.stringToBitmap(trip.getPicture()));
+                        topic.setText(trip.getNameOfTrip());
+                        ageAdjustments.setText(trip.getAge());
+                        lengthCount = lengthCount + trip.getLengthInKm();
+                        length.setText(lengthCount + " ק''מ ");
+                        goals.setText(trip.getGoals());
+                        equipments.setText(trip.getEquipments());
+                        area.setText(trip.getArea());
+                        place.setText(trip.getNameOfTrip());
+                        tripPicture.setImageBitmap(BitmapHelper.stringToBitmap(trip.getPicture()));
+                        if (trip.getPublicORprivate().equals("isPublic")) {
+                            privateORpublic.setChecked(true);
+                            privateORpublic.setThumbDrawable(ContextCompat.getDrawable(Add_trip.this,
+                                    R.drawable.baseline_groups_24));
+                        } else if (trip.getPublicORprivate().equals("isPrivate")) {
+                            privateORpublic.setThumbDrawable(ContextCompat.getDrawable(Add_trip.this,
+                                    R.drawable.baseline_person_24));
 
-                    partsArr = trip.getPartsArr();
-                    //TODO: לשנות את הגיל למערך?
+                        }
 
-                    recyclerAdapter = new RecyclerAdapterTrip(partsArr, Add_trip.this);
-                    recyclerView.setAdapter(recyclerAdapter);
-                    //privte or public+ age+ metodot
+                        partsArr = trip.getPartsArr();
+                        //TODO: לשנות את הגיל למערך?
+
+                        recyclerAdapter = new RecyclerAdapterTrip(partsArr, Add_trip.this);
+                        recyclerView.setAdapter(recyclerAdapter);
+                        //privte or public+ age+ metodot
 
 
-                }
-            },tripKey);
+                    }
+                }, tripKey);
+            }
         }
     }
 
@@ -222,7 +233,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
             finish();
         }
         else if (v == exitBTN){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialog);
             builder.setTitle("סגירת חלון");
             builder.setMessage("תרצו לשמור את השינויים?");
             builder.setCancelable(true);
@@ -233,7 +244,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         }
 
         else if (v == tripPicture){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialog);
             builder.setTitle("העלאת מסלול");
             builder.setMessage("תרצו להעלות תמונה מהגלריה או לצלם תמונה במצלמה?");
             builder.setCancelable(true);
@@ -246,7 +257,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         }
         else if(v == ageAdjustments){
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(Add_trip.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(Add_trip.this, R.style.AlertDialog);
                 builder.setTitle("בחר את גיל החניכים: ");
                 builder.setMultiChoiceItems(listAgeAdjustments, checkedAgeAdjustments, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
@@ -286,7 +297,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
 
         }
         else if(v == area){
-            AlertDialog.Builder builder = new AlertDialog.Builder(Add_trip.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(Add_trip.this, R.style.AlertDialog);
             builder.setTitle("בחר את אזור הטיול: ");
             builder.setMultiChoiceItems(listArea, checkedArea, new DialogInterface.OnMultiChoiceClickListener() {
                 @Override
@@ -343,7 +354,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(Add_trip.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(Add_trip.this, R.style.AlertDialog);
                 builder.setTitle("העלאת מסלול");
                 builder.setMessage("תרצו להעלות תמונה מהגלריה או לצלם תמונה במצלמה?");
                 builder.setCancelable(true);
@@ -360,7 +371,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         activityType.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(Add_trip.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(Add_trip.this, R.style.AlertDialog);
                 builder.setTitle("בחר את סוג הפעילות ");
                 builder.setMultiChoiceItems(listActivityTypeAdjustments, checkedActivityTypeAdjustments, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override

@@ -114,8 +114,8 @@ public class Register_num_one extends BaseActivity implements View.OnClickListen
             }
 
             //בדיקות של שם משתמש
-            if(userName.getText().toString().length() != 8){
-                if(userName.getText().toString().length() < 8){
+            if(userName.getText().toString().length() != 6){
+                if(userName.getText().toString().length() < 6){
                     alartForUserName.setText(" * שם משתמש קצר מדי נסה שנית. " +
                             '\n' +
                             alartForUserName.getText().toString());
