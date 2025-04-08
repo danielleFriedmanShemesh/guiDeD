@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
-            android:background="@color/grayeen2"
+            android:background="@color/grayeen1.5"
             android:orientation="vertical">
 
             <TextView
@@ -482,7 +482,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
-            android:background="@color/grayeen2"
+            android:background="@color/grayeen1.5"
             android:orientation="vertical">
 
             <TextView

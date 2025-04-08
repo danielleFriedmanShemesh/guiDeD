@@ -141,7 +141,6 @@ public class Home_page extends BaseActivity implements View.OnClickListener, Pop
         Intent intent;
         int id= item.getItemId();
         if(id == R.id.profile){
-            Toast.makeText(this, "action_profile", Toast.LENGTH_SHORT).show();
             replaceFragment(new ProfileFragment());
             return true;
         }
@@ -213,7 +212,6 @@ public class Home_page extends BaseActivity implements View.OnClickListener, Pop
         }
 
         else if(id ==  R.id.home){
-            Toast.makeText(this, "action_home", Toast.LENGTH_SHORT).show();
             replaceFragment(new HomeFragment());
             return true;
         }

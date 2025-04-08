@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -411,7 +412,6 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
                     }
                 });
 
-                timeCount = timeCount + Integer.parseInt(lengthInMinute.getText().toString());
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
@@ -427,14 +427,46 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
     }
     public void savePart(){
 
-        int partLengthInMinuteInt = Integer.parseInt(lengthInMinute.getText().toString());
-        int partLengthInKMInt = Integer.parseInt(lengthInKM.getText().toString());
-        String activityTypeStr = activityType.getText().toString();
-        String descriptionStr = description.getText().toString();
-        String equipmentStr = equipment.getText().toString();
-        String pictureSTR = BitmapHelper.bitmapToString(
+
+        int partLengthInMinuteInt = 0;
+        if(!lengthInMinute.getText().toString().isEmpty()){
+            partLengthInMinuteInt = Integer.parseInt(lengthInMinute.getText().toString());
+        }
+        int partLengthInKMInt = 0;
+        if(!lengthInKM.getText().toString().isEmpty()){
+            partLengthInKMInt = Integer.parseInt(lengthInKM.getText().toString());
+        }
+        String activityTypeStr = "";
+        if(!activityType.getText().toString().isEmpty()){
+            activityTypeStr = activityType.getText().toString();
+
+        }
+        String descriptionStr = "";
+        if(!description.getText().toString().isEmpty()){
+            descriptionStr = description.getText().toString();
+        }
+        String equipmentStr = "";
+        if(!equipment.getText().toString().isEmpty()){
+            equipmentStr = equipment.getText().toString();
+        }
+
+        String pictureSTR = "";
+        if(!BitmapHelper.bitmapToString(
                 ((BitmapDrawable)picture.getDrawable())
-                        .getBitmap());
+                        .getBitmap()).isEmpty()){
+            pictureSTR = BitmapHelper.bitmapToString(
+                    ((BitmapDrawable)picture.getDrawable())
+                            .getBitmap());
+        }
+
+        if(pictureSTR.isEmpty()||
+                equipmentStr.isEmpty()||
+                descriptionStr.isEmpty()||
+                activityTypeStr.isEmpty()||
+                partLengthInKMInt == 0||
+                partLengthInMinuteInt == 0)
+            Toast.makeText(this, "לא כל השדות מלאים!", Toast.LENGTH_LONG).show();
+
         Part newPart = new Part(activityTypeStr, partLengthInMinuteInt, partLengthInKMInt, descriptionStr, equipmentStr, pictureSTR, id);
 
         partsArr.add(newPart);
@@ -443,6 +475,9 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
 
         lengthCount = lengthCount + partLengthInKMInt;
         length.setText(lengthCount + " קמ ");
+
+        timeCount = timeCount + partLengthInMinuteInt;
+
 
 
         addNewPartDialog.dismiss();
@@ -601,7 +636,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         String picSTR = BitmapHelper.bitmapToString(
                 ((BitmapDrawable)tripPicture.getDrawable())
                         .getBitmap());
-        
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("trips");
 

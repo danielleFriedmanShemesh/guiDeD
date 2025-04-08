@@ -65,6 +65,13 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
     TextView alartForOrganization;
     TextView alartForBirthday;
     DatabaseReference userRef;
+
+    String oldUsername;
+    String oldUserId;
+
+    ArrayList<Trip> tripsArrayList;
+    ArrayList<Operation> operationArrayList;
+
     ProgressBar progressBar;
 
     ActivityResultLauncher<Intent> cameraLauncher;
@@ -125,6 +132,9 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
                                 u.getBirthday().
                                         toString()));
                 userName.setText(u.getUserName());
+                oldUsername = u.getUserName();
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                oldUserId = auth.getCurrentUser().getUid();
                 nickName.setText(u.getNickName());
                 profile.setImageBitmap(BitmapHelper.stringToBitmap(u.getProfileImage()));
                 updatedUser.setEmail(u.getEmail());
@@ -299,8 +309,6 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
 
             }
 
-
-
             //בדיקות של מסגרת הדרכה
             if (organization.getText().equals(""))
                 alartForOrganization.setText("* שדה חובה! בחר תנועת נוער");
@@ -385,6 +393,46 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
                         if (task.isSuccessful()) {
                             Toast.makeText(Edit_profile.this, "User Registered", Toast.LENGTH_LONG).show();
                            // progressBar.setVisibility(View.GONE);
+                            FireBaseTripHelper fireBaseTripHelper = new FireBaseTripHelper();
+                            fireBaseTripHelper.fetchTrips(
+                                    new FireBaseTripHelper.DataStatus()
+                                    {
+
+                                        @Override
+                                        public void onDataLoaded(ArrayList<Trip> trips) {
+                                            tripsArrayList = trips;
+                                            for(Trip trip: tripsArrayList){
+                                                if(trip.getUserName().equals(oldUsername)){
+                                                    String tripId = trip.getKey();
+                                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                                    DatabaseReference myRef = database.getReference("trips");
+                                                    myRef.child(tripId).child("userName").setValue(updatedUser.getUserName());
+                                                }
+                                            }
+
+                                            FireBaseOperationHelper fireBaseOperationHelper = new FireBaseOperationHelper();
+                                            fireBaseOperationHelper.fetchOperations(
+                                                    new FireBaseOperationHelper.DataStatus()
+                                                    {
+                                                        @Override
+                                                        public void onDataLoaded(ArrayList<Operation> operations) {
+                                                            operationArrayList = operations;
+                                                            for(Operation operation: operationArrayList) {
+                                                                if (operation.getUserName().equals(oldUsername)) {
+                                                                    String tripId = operation.getKey();
+                                                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                                                    DatabaseReference myRef = database.getReference("operations");
+                                                                    myRef.child(tripId).child("userName").setValue(updatedUser.getUserName());
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                            );
+
+                                        }
+                                    }
+                            );
+
 
                         }
                     }

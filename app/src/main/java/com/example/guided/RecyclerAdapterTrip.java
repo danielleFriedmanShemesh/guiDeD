@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,7 +107,7 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                     activityTypeTV.setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View v) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialog);
                             builder.setTitle("בחר את סוג הפעילות ");
                             builder.setMultiChoiceItems(listActivityTypeAdjustments, checkedActivityTypeAdjustments, new DialogInterface.OnMultiChoiceClickListener() {
                                 @Override
@@ -155,7 +156,7 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                     pictureIV.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialog);
                             builder.setTitle("העלאת מסלול");
                             builder.setMessage("תרצו להעלות תמונה מהגלריה או לצלם תמונה במצלמה?");
                             builder.setCancelable(true);
@@ -198,10 +199,10 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                             }
                             //get image from gallery
                             else if(requestCode == 1) {
-                                if (resultCode == RESULT_OK) {
-                                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                                    pictureIV.setImageBitmap(bitmap);
-                                }
+
+                                    Uri imageUri = data.getData();
+                                    pictureIV.setImageURI(imageUri);
+                                //קורס כשפותחים את המצלמה בפעם שנייה TODO:
                             }
                         }
                     });
