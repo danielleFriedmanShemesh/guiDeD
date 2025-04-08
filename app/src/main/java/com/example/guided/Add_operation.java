@@ -9,6 +9,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -141,7 +143,7 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
         ageAdjustments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(Add_operation.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(Add_operation.this, R.style.AlertDialog);
                 builder.setTitle("בחר את גיל החניכים: ");
                 builder.setMultiChoiceItems(listAgeAdjustments, checkedAgeAdjustments, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
@@ -264,10 +266,25 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
 
     }
     public void saveMetoda(){
-        int metodaLengthInt = Integer.parseInt(metodaLength.getText().toString());
-        String titleStr = title.getText().toString();
-        String descriptionStr = description.getText().toString();
-        String equipmentStr = equipment.getText().toString();
+        int metodaLengthInt = 0;
+        if(!metodaLength.getText().toString().isEmpty()){
+            metodaLengthInt = Integer.parseInt(metodaLength.getText().toString());
+        }
+        String titleStr = "";
+        titleStr = title.getText().toString();
+        String descriptionStr = "";
+        if(!description.getText().toString().isEmpty()){
+            descriptionStr = description.getText().toString();
+        }
+        String equipmentStr = "";
+        if(!equipment.getText().toString().isEmpty()){
+            equipmentStr = equipment.getText().toString();
+        }
+
+        if(equipmentStr.isEmpty()||
+                descriptionStr.isEmpty()||
+                metodaLengthInt == 0)
+            Toast.makeText(this, "לא כל השדות מלאים!", Toast.LENGTH_LONG).show();
 
         Metoda newMetoda = new Metoda(titleStr, metodaLengthInt, descriptionStr, equipmentStr, id);
 
