@@ -3,18 +3,22 @@ package com.example.guided;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
 
-public class My_trips extends Fragment {
+public class My_trips extends Fragment implements View.OnClickListener {
     View v;
+
+    ImageView backBTN;
 
     RecyclerView recyclerView;
     RecyclerMyTripsAdapter recyclerAdapter;
@@ -49,6 +53,9 @@ public class My_trips extends Fragment {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_my_trips, container, false);
         if (v != null){
+
+            backBTN = v.findViewById(R.id.back);
+            backBTN.setOnClickListener(this);
 
             recyclerView = v.findViewById(R.id.recyclerView);
             recyclerView.setHasFixedSize(true);
@@ -89,5 +96,10 @@ public class My_trips extends Fragment {
 
         }
         return v;
+    }
+
+    @Override
+    public void onClick(View v) {
+        requireActivity().getSupportFragmentManager().popBackStack();
     }
 }
