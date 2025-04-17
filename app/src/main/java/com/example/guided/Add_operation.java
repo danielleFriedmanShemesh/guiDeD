@@ -43,7 +43,6 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 public class Add_operation extends BaseActivity implements View.OnClickListener {
 
-    // TODO: להוסיף אפשרות לשמור מתודה ופעולה בכללי שלא כל השדות מלאים מבלי שיקרוס
     EditText topic;//שם פעולה
     TextView length;//אורך הפעולה
     int lengthCount = 0;
@@ -265,6 +264,7 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
         addNewMetodaDialog.show();
 
     }
+    @SuppressLint("SetTextI18n")
     public void saveMetoda(){
         int metodaLengthInt = 0;
         if(!metodaLength.getText().toString().isEmpty()){

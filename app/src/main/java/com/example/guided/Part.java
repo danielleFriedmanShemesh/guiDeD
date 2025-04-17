@@ -3,13 +3,13 @@ package com.example.guided;
 public class Part {
     private String activityType;
     private int lengthInMinute;
-    private int lengthInKM;
+    private double lengthInKM;
     private String description;
     private String equipment;
     private String picture;
     private int id;
 
-    public Part(String activityType, int lengthInMinute, int lengthInKM, String description, String equipment, String picture, int id) {
+    public Part(String activityType, int lengthInMinute, double lengthInKM, String description, String equipment, String picture, int id) {
         this.activityType = activityType;
         this.lengthInMinute = lengthInMinute;
         this.lengthInKM = lengthInKM;
@@ -68,7 +68,7 @@ public class Part {
         this.description = description;
     }
 
-    public int getLengthInKM() {
+    public double getLengthInKM() {
         return lengthInKM;
     }
 

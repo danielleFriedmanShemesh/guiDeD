@@ -1,7 +1,6 @@
 package com.example.guided;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
@@ -27,24 +26,20 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.text.ParseException;
@@ -208,6 +203,7 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
             //open a Date Picker Dialog
             DatePickerDialog datePickerDialog = new DatePickerDialog(
                     Register_num_two.this, new DatePickerDialog.OnDateSetListener() {
+                        @SuppressLint("SetTextI18n")
                         @Override
                         //show the date that the user chose at the birthday edit text
                         public void onDateSet(DatePicker view, int year,
@@ -306,9 +302,9 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
             if (birthdayDate != null &&
                     ((birthdayDate.getYear() + 1900) >= year ||
                             (birthdayDate.getYear() + 1900) <= 1900)) {
-                alartForBirthday.setText("* התאריך שהוכנס לא תקין! נסה שנית"
-                        + '\n'
-                        + alartForBirthday.getText().toString());
+                alartForBirthday.setText("* התאריך שהוכנס לא תקין! נסה שנית" +
+                        '\n' +
+                        alartForBirthday.getText().toString());
             }
 
             //בדיקות של מסגרת הדרכה
@@ -351,7 +347,7 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
                     "dd/MM/yyyy", Locale.getDefault());
             try {
                 if (!birthday.getText().toString().isEmpty())
-                newUser.setBirthday(
+                 newUser.setBirthday(
                         dateFormat.parse(
                                 birthday.getText().toString()));
             } catch (ParseException e) {
@@ -377,11 +373,6 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
             if (which == -1) {
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 cameraLauncher.launch(cameraIntent);
-                // כשהמשתמש מצלם תמונה שישמור בגלריה את התמונה
-                // לעשות במקום ONRESULT לעשות LAUNCHER
-                //TODO: להשתמש בBROADCAST RECEIVER יש באפ סקול - זה מודיע מתי שאין אינטרנט
-                //TODO: לשאול את רינת איך לגרום לזה שהבדיקה של האינטרנט תעבוד בכל מסך
-
             }
             //gallery
             else if (which == -2) {
@@ -461,8 +452,11 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-        return (birthdayDate.getYear() + 1900) < year &&
-                (birthdayDate.getYear() + 1900) > 1900;
+        if (birthdayDate != null) {
+            return (birthdayDate.getYear() + 1900) < year &&
+                    (birthdayDate.getYear() + 1900) > 1900;
+        }
+        return false;
     }
 
     private void saveImageToGallery(Bitmap bitmap, Context context) {

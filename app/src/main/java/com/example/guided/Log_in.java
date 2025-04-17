@@ -2,6 +2,7 @@ package com.example.guided;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -67,6 +68,7 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
 
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onClick(View v) {
         alartForUserName.setText("");
@@ -230,6 +232,7 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
                     if (user.getUserName().equals(userName)) {
                         // Username is already taken
                         x[0] = true;
+                        break;
                     }
                 }
             }

@@ -1,7 +1,6 @@
 package com.example.guided;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -12,9 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -44,6 +40,7 @@ public class RecyclerAdapterLibraryOperation extends RecyclerView.Adapter<Recycl
         return viewHolder;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapterLibraryOperation.ViewHolder holder, int position)
     {
@@ -73,8 +70,7 @@ public class RecyclerAdapterLibraryOperation extends RecyclerView.Adapter<Recycl
             return 0;
         }
         else {
-            int opsSize = filteredList.size();
-            return opsSize;
+            return filteredList.size();
         }
     }
 

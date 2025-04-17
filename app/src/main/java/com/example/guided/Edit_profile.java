@@ -1,5 +1,6 @@
 package com.example.guided;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -72,8 +73,6 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
     ArrayList<Trip> tripsArrayList;
     ArrayList<Operation> operationArrayList;
 
-    ProgressBar progressBar;
-
     ActivityResultLauncher<Intent> cameraLauncher;
     ActivityResultLauncher<Intent> galleryLauncher;
     //TODO: כשמשנית את השם משתמש צריך לשנות אותו גם בכל הפעולות וטיולים של המשתמש הזה!
@@ -92,9 +91,6 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
         });
 
         userRef = FirebaseDatabase.getInstance().getReference("users");
-
-       // progressBar = findViewById(R.id.progressBar);
-
 
 
         alartForUserName=findViewById(R.id.alartUserName);
@@ -176,6 +172,7 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
         );
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onClick(View v) {
         //TODO: ליצור מחלקה של הרשמה שיש לה פונקציות שמתפלות בכל מה שקשור לרישום/ התחברות ושאני פשוטל אקרע לה גם פה וגם בהרשמה ובהתחברת כדי שלא יהיה כפילות של קוד
@@ -194,6 +191,7 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
             //open a Date Picker Dialog
             DatePickerDialog datePickerDialog = new DatePickerDialog(
                     Edit_profile.this, new DatePickerDialog.OnDateSetListener() {
+                @SuppressLint("SetTextI18n")
                 @Override
                 //show the date that the user chose at the birthday edit text
                 public void onDateSet(DatePicker view, int year,

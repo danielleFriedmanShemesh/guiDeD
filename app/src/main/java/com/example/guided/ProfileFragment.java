@@ -1,5 +1,6 @@
 package com.example.guided;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -164,6 +165,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     FireBaseTripHelper fireBaseTripHelper = new FireBaseTripHelper();
                     fireBaseTripHelper.fetchTrips(
                             new FireBaseTripHelper.DataStatus() {
+                                @SuppressLint("SetTextI18n")
                                 @Override
                                 public void onDataLoaded(ArrayList<Trip> trips) {
                                     ArrayList<Trip> tripArrayList =  new ArrayList<>();
@@ -228,6 +230,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     fireBaseOperationHelper.fetchOperations(
                             new FireBaseOperationHelper.DataStatus()
                             {
+                                @SuppressLint("SetTextI18n")
                                 @Override
                                 public void onDataLoaded(ArrayList<Operation> operations) {
                                     ArrayList<Operation> operationArrayList =  new ArrayList<>();
@@ -300,6 +303,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         return v;
     }
 
+    @SuppressLint("SetTextI18n")
     private void displayOpInLayout(Operation operation, ProfileFragment.LayoutViewOp views) {
         views.topic.setText(operation.getNameOfOperation());
         views.time.setText(operation.getLengthOfOperation()+" דקות ");
@@ -316,9 +320,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void displayTrInLayout(Trip trip, ProfileFragment.LayoutViewsTr views) {
         views.title.setText(trip.getNameOfTrip());
-        views.lengh.setText(trip.getLengthInKm()+" ק''מ ");
+        views.length.setText(trip.getLengthInKm()+" ק''מ ");
         views.age.setText(trip.getAge());
         views.area.setText(trip.getArea());
         views.place.setText(trip.getPlace());
@@ -392,7 +397,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
     private static class LayoutViewsTr {
         TextView title;
-        TextView lengh;
+        TextView length;
         TextView age;
         TextView area;
         TextView place;
@@ -402,7 +407,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             this.age = age;
             this.parentLayout = parentLayout;
             this.area = area;
-            this.lengh = lengh;
+            this.length = lengh;
             this.place = place;
             this.title = topic;
         }

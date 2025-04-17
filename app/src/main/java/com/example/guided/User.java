@@ -1,17 +1,11 @@
 package com.example.guided;
 
 
+import androidx.annotation.NonNull;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.widget.ImageView;
 
-import java.io.ByteArrayOutputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.io.Serializable;
-import java.util.Locale;
 
 public class User implements Serializable {
     private String userName;
@@ -31,7 +25,6 @@ public class User implements Serializable {
         this.birthday = new Date();
         this.organization = "";
         this.profileImage = "";
-        //this.uId = "";
 
     }
 
@@ -118,6 +111,7 @@ public class User implements Serializable {
     }
 
 
+    @NonNull
     @Override
     public String toString() {
         return "User{" +

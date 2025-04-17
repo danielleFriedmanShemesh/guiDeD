@@ -9,7 +9,7 @@ public class Trip {
     private String nameOfTrip;
     private String age;
     private String publicORprivate;
-    private int lengthInKm;
+    private double lengthInKm;
     private int lengthInMinutes;
     private String place;
     private String area;
@@ -23,7 +23,7 @@ public class Trip {
     public Trip(String nameOfTrip,
                 String age,
                 String privateORpublic,
-                int lengthOfTripInKM,
+                double lengthOfTripInKM,
                 int lengthOfTripInMinutes,
                 String goals,
                 String equipment,
@@ -107,7 +107,7 @@ public class Trip {
         this.publicORprivate = publicORprivate;
     }
 
-    public int getLengthInKm() {
+    public double getLengthInKm() {
         return lengthInKm;
     }
 

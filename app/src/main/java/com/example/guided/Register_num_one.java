@@ -3,28 +3,15 @@ package com.example.guided;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -70,6 +57,7 @@ public class Register_num_one extends BaseActivity implements View.OnClickListen
         continueBtn.setOnClickListener(this);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onClick(View v) {
 
@@ -227,6 +215,7 @@ public class Register_num_one extends BaseActivity implements View.OnClickListen
                     if (user.getUserName().equals(userName)) {
                         // Username is already taken
                         x[0] = true;
+                        break;
                     }
                 }
             }

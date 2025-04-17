@@ -1,5 +1,6 @@
 package com.example.guided;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -68,6 +69,7 @@ public class View_operation extends BaseActivity implements View.OnClickListener
 
         fireBaseOperationHelper = new FireBaseOperationHelper();
         fireBaseOperationHelper.fetchOneOperation(new FireBaseOperationHelper.DataStatusM() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataLoaded(Operation o) {
                 operation = o;
@@ -136,7 +138,6 @@ public class View_operation extends BaseActivity implements View.OnClickListener
 
 
 
-//הייתי באמצע של לנסות לקבל את הליסט של המטודות מהדטא בייס
 //    }
 
     @Override

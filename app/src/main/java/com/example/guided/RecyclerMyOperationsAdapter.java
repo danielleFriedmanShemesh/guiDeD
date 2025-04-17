@@ -3,6 +3,7 @@ package com.example.guided;
 import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -50,6 +51,7 @@ public class RecyclerMyOperationsAdapter extends RecyclerView.Adapter<RecyclerMy
         RecyclerMyOperationsAdapter.ViewHolder viewHolder = new RecyclerMyOperationsAdapter.ViewHolder(view);
         return viewHolder;     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RecyclerMyOperationsAdapter.ViewHolder holder, int position) {
 

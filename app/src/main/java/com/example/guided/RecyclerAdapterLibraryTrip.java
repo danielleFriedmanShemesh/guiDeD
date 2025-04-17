@@ -1,5 +1,6 @@
 package com.example.guided;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -42,6 +43,7 @@ public class RecyclerAdapterLibraryTrip  extends RecyclerView.Adapter<RecyclerAd
         return viewHolder;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapterLibraryTrip.ViewHolder holder, int position) {
 

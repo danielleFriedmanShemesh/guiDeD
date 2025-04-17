@@ -1,5 +1,6 @@
 package com.example.guided;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -225,6 +226,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         return v;
     }
 
+    @SuppressLint("SetTextI18n")
     private void displayOperationInLayout(Operation randomOperation, LayoutViewsOperation views) {
         views.topic.setText(randomOperation.getNameOfOperation());
         views.time.setText(randomOperation.getLengthOfOperation()+" דקות ");
@@ -242,6 +244,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
+    @SuppressLint("SetTextI18n")
     private void displayTripInLayout(Trip randomTrip, LayoutViewsTrip views) {
         views.title.setText(randomTrip.getNameOfTrip());
         views.lengh.setText(randomTrip.getLengthInKm()+" ק''מ ");
@@ -280,7 +283,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private class LayoutViewsOperation {
+    private static class LayoutViewsOperation {
         TextView topic;
         TextView time;
         TextView age;
@@ -300,7 +303,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private class LayoutViewsTrip {
+    private static class LayoutViewsTrip {
         TextView title;
         TextView lengh;
         TextView age;
