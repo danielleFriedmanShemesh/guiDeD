@@ -22,7 +22,7 @@ public class My_operations extends Fragment implements View.OnClickListener {
     RecyclerMyOperationsAdapter recyclerAdapter;
     RecyclerView.LayoutManager layoutManager;
     FireBaseOperationHelper fireBaseOperationHelper;
-    ArrayList<Operation> operationArrayList = new ArrayList<>();
+    ArrayList<Operation> operationArrayList;
 
 
 
@@ -51,6 +51,7 @@ public class My_operations extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_my_operations, container, false);
         if (v != null){
+            //operationArrayList = new ArrayList<>();
 
             backBTN = v.findViewById(R.id.back);
             backBTN.setOnClickListener(this);

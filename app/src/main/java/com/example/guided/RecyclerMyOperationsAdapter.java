@@ -29,13 +29,13 @@ public class RecyclerMyOperationsAdapter extends RecyclerView.Adapter<RecyclerMy
     private ArrayList<Operation> operationArrayList;
     private User user;
 
-    Operation operation = null;
+
 
     public RecyclerMyOperationsAdapter(Context context, ArrayList<Operation> operations, User user) {
         this.context = context;
         this.user = user;
 
-        this.operationArrayList = new ArrayList<>();;
+        this.operationArrayList = new ArrayList<>();
         for (int i = (operations.size()-1); i>=0; i--) {
             Operation operation = operations.get(i);
             if (operation.getUserName().equals(user.getUserName()))
@@ -55,7 +55,7 @@ public class RecyclerMyOperationsAdapter extends RecyclerView.Adapter<RecyclerMy
     @Override
     public void onBindViewHolder(@NonNull RecyclerMyOperationsAdapter.ViewHolder holder, int position) {
 
-        operation = operationArrayList.get(position);
+        Operation operation = operationArrayList.get(position);
         holder.topic.setText(operation.getNameOfOperation());
         holder.time.setText(operation.getLengthOfOperation()+" דקות ");
         holder.age.setText(operation.getAge());

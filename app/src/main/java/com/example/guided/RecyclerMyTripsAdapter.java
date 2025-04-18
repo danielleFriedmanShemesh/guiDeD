@@ -25,7 +25,6 @@ public class RecyclerMyTripsAdapter extends RecyclerView.Adapter<RecyclerMyTrips
     private User user;
 
 
-    Trip trip = null;
 
     public RecyclerMyTripsAdapter(ArrayList<Trip> trips, Context context, User user) {
         this.context = context;
@@ -52,7 +51,7 @@ public class RecyclerMyTripsAdapter extends RecyclerView.Adapter<RecyclerMyTrips
     @Override
     public void onBindViewHolder(@NonNull RecyclerMyTripsAdapter.ViewHolder holder, int position) {
 
-        trip = tripArrayList.get(position);
+        Trip trip = tripArrayList.get(position);
         holder.topic.setText(trip.getNameOfTrip());
         holder.length.setText(trip.getLengthInKm()+" ק''מ ");
         holder.age.setText(trip.getAge());

@@ -24,7 +24,7 @@ public class My_trips extends Fragment implements View.OnClickListener {
     RecyclerMyTripsAdapter recyclerAdapter;
     RecyclerView.LayoutManager layoutManager;
     FireBaseTripHelper fireBaseTripHelper;
-    ArrayList<Trip> tripsArrayList = new ArrayList<>();
+    ArrayList<Trip> tripsArrayList;
 
     public My_trips() {
         // Required empty public constructor
