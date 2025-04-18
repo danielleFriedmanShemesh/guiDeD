@@ -53,7 +53,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
 
     EditText topic;//שם הטיול
     TextView length;//אורך הטיול
-    int lengthCount = 0;
+    double lengthCount = 0;
     int timeCount = 0;
     Switch privateORpublic; //פרטי או ציבורי
     EditText goals;//מטרות הטיול
@@ -156,7 +156,26 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
 
         partsArr = new ArrayList<Part>();
 
-        recyclerAdapter = new RecyclerAdapterTrip(partsArr, Add_trip.this);
+        recyclerAdapter = new RecyclerAdapterTrip(
+                partsArr,
+                Add_trip.this);
+        //,
+        //                tempImages
+
+        recyclerAdapter.setOnPartListChangedListener(new RecyclerAdapterTrip.OnPartListChangedListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onPartListChanged(ArrayList<Part> parts) {
+                lengthCount = 0;
+                timeCount = 0;
+                for (Part p : parts) {
+                    lengthCount += p.getLengthInKM();
+                    timeCount += p.getLengthInMinute();
+                }
+                length.setText(lengthCount + " ק''מ ");
+            }
+        });
+
         recyclerView.setAdapter(recyclerAdapter);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
@@ -183,6 +202,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
 
                 fireBaseTripHelper = new FireBaseTripHelper();
                 fireBaseTripHelper.fetchOneTrip(new FireBaseTripHelper.DataStatusT() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onDataLoaded(Trip t) {
                         trip = t;
@@ -191,6 +211,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
                         ageAdjustments.setText(trip.getAge());
                         lengthCount = lengthCount + trip.getLengthInKm();
                         length.setText(lengthCount + " ק''מ ");
+                        timeCount = timeCount + trip.getLengthInMinutes();
                         goals.setText(trip.getGoals());
                         equipments.setText(trip.getEquipments());
                         area.setText(trip.getArea());
@@ -209,7 +230,26 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
                         partsArr = trip.getPartsArr();
                         //TODO: לשנות את הגיל למערך?
 
-                        recyclerAdapter = new RecyclerAdapterTrip(partsArr, Add_trip.this);
+                        recyclerAdapter = new RecyclerAdapterTrip(
+                                partsArr,
+                                Add_trip.this);
+                        //,
+                        //                                tempImages
+
+                        recyclerAdapter.setOnPartListChangedListener(new RecyclerAdapterTrip.OnPartListChangedListener() {
+                            @SuppressLint("SetTextI18n")
+                            @Override
+                            public void onPartListChanged(ArrayList<Part> parts) {
+                                lengthCount = 0;
+                                timeCount = 0;
+                                for (Part p : parts) {
+                                    lengthCount += p.getLengthInKM();
+                                    timeCount += p.getLengthInMinute();
+                                }
+                                length.setText(lengthCount + " ק''מ ");
+                            }
+                        });
+
                         recyclerView.setAdapter(recyclerAdapter);
                         //privte or public+ age+ metodot
 
@@ -425,6 +465,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         addNewPartDialog.show();
 
     }
+    @SuppressLint("SetTextI18n")
     public void savePart(){
 
 
@@ -473,12 +514,19 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         id++;
         recyclerAdapter.notifyDataSetChanged();
 
-        lengthCount = lengthCount + partLengthInKMInt;
-        length.setText(lengthCount + " קמ ");
-
-        timeCount = timeCount + partLengthInMinuteInt;
-
-
+        recyclerAdapter.setOnPartListChangedListener(new RecyclerAdapterTrip.OnPartListChangedListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onPartListChanged(ArrayList<Part> parts) {
+                lengthCount = 0;
+                timeCount = 0;
+                for (Part p : parts) {
+                    lengthCount += p.getLengthInKM();
+                    timeCount += p.getLengthInMinute();
+                }
+                length.setText(lengthCount + " ק''מ ");
+            }
+        });
 
         addNewPartDialog.dismiss();
     }
@@ -497,6 +545,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
             return true;
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
@@ -627,7 +676,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
             publicORprivateSRT = "isPrivate";
         else
             publicORprivateSRT = "isPublic";
-        int lengthInKmINT = lengthCount;
+        double lengthInKmINT = lengthCount;
         int lengthInMinutesINT =  timeCount;
         String goalsSTR = goals.getText().toString();
         String equipmentsSTR = equipments.getText().toString();

@@ -123,6 +123,20 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
         metodotArr = new ArrayList<Metoda>();
 
         recyclerAdapter = new RecyclerAdapterOperation(metodotArr, Add_operation.this);
+
+        recyclerAdapter.setOnMetodaListChangedListener(new RecyclerAdapterOperation.OnMetodaListChangedListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onMetodaListChanged(ArrayList<Metoda> metodot) {
+                lengthCount = 0;
+                for (Metoda m : metodot) {
+                    lengthCount += m.getLength();
+                }
+                length.setText(lengthCount + " דקות ");
+            }
+        });
+
+
         recyclerView.setAdapter(recyclerAdapter);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
@@ -191,8 +205,8 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
 
                         topic.setText(operation.getNameOfOperation());
                         ageAdjustments.setText(operation.getAge());
-                        //lengthCount = lengthCount + operation.getLengthOfOperation();
-
+                        lengthCount = lengthCount + operation.getLengthOfOperation();
+                        length.setText(lengthCount + " דקות ");
                         goals.setText(operation.getGoals());
                         equipments.setText(operation.getEquipment());
                         if (operation.getPrivateORpublic().equals("isPublic")) {
@@ -206,14 +220,23 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
                         }
 
                         metodotArr = operation.getMetodotArr();
-                        lengthCount = 0;
-                        for(int i = 0; i < metodotArr.size(); i++){
-                            lengthCount = lengthCount + metodotArr.get(i).getLength();
-                        }
-                        length.setText(lengthCount + " דקות ");
+
                         //TODO: לשנות את הגיל למערך?
 
                         recyclerAdapter = new RecyclerAdapterOperation(metodotArr, Add_operation.this);
+
+                        recyclerAdapter.setOnMetodaListChangedListener(new RecyclerAdapterOperation.OnMetodaListChangedListener() {
+                            @Override
+                            public void onMetodaListChanged(ArrayList<Metoda> metodot) {
+                                lengthCount = 0;
+                                for (Metoda m : metodot) {
+                                    lengthCount += m.getLength();
+                                }
+                                length.setText(lengthCount + " דקות ");
+                            }
+                        });
+
+
                         recyclerView.setAdapter(recyclerAdapter);
                         //age
 
@@ -291,15 +314,22 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
 
         metodotArr.add(newMetoda);
         id++;
-        lengthCount = 0;
-        for(int i = 0; i < metodotArr.size(); i++){
-            lengthCount = lengthCount + metodotArr.get(i).getLength();
-        }
-
-        // lengthCount = lengthCount + metodaLengthInt;
-        length.setText(lengthCount + " דקות ");
 
         recyclerAdapter.notifyDataSetChanged();
+
+        recyclerAdapter.setOnMetodaListChangedListener(new RecyclerAdapterOperation.OnMetodaListChangedListener() {
+            @Override
+            public void onMetodaListChanged(ArrayList<Metoda> metodot) {
+                lengthCount = 0;
+                for (Metoda m : metodot) {
+                    lengthCount += m.getLength();
+                }
+                length.setText(lengthCount + " דקות ");
+            }
+        });
+
+
+
 
         addNewMetodaDialog.dismiss();
     }

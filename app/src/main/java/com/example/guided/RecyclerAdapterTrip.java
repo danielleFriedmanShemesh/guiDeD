@@ -39,7 +39,22 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
     private ArrayList<Part> partsArrayList;
     private Context context;
 
-    public RecyclerAdapterTrip(ArrayList<Part> partsArrayList, Context context) {
+    private RecyclerAdapterTrip.OnPartListChangedListener listener;
+
+    // private Map<Integer, Bitmap> tempImages;
+
+    public void setOnPartListChangedListener(RecyclerAdapterTrip.OnPartListChangedListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnPartListChangedListener {
+        void onPartListChanged(ArrayList<Part> parts);
+    }
+
+
+
+    public RecyclerAdapterTrip(ArrayList<Part> partsArrayList, Context context) //, Map<Integer, Bitmap> tempImages
+    {
         this.partsArrayList = partsArrayList;
         this.context = context;
     }
@@ -211,7 +226,7 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                         @Override
                         public void onClick(View v) {
                             int partLengthInMinuteInt = Integer.parseInt(lengthInMinuteET.getText().toString());
-                            int partLengthInKMInt = Integer.parseInt(lengthInKM_ET.getText().toString());
+                            double partLengthInKMInt = Double.parseDouble(lengthInKM_ET.getText().toString());
                             String activityTypeStr = activityTypeTV.getText().toString();
                             String descriptionStr = descriptionET.getText().toString();
                             String equipmentStr = equipmentET.getText().toString();
@@ -229,6 +244,10 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                             holder.description.setText(editPart.getDescription());
                             holder.equipment.setText(editPart.getEquipment());
                             holder.picture.setImageBitmap(BitmapHelper.stringToBitmap(editPart.getPicture()));
+
+                            if (listener != null) {
+                                listener.onPartListChanged(partsArrayList);
+                            }
 
                             partDialog.dismiss();
                         }

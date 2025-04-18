@@ -20,6 +20,17 @@ public class RecyclerAdapterOperation extends RecyclerView.Adapter<RecyclerAdapt
     private ArrayList<Metoda> metodaArrayList;
     private Context context;
 
+    private OnMetodaListChangedListener listener;
+
+    public void setOnMetodaListChangedListener(OnMetodaListChangedListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnMetodaListChangedListener {
+        void onMetodaListChanged(ArrayList<Metoda> metodot);
+    }
+
+
     public RecyclerAdapterOperation(ArrayList<Metoda> metodaArrayList, Context context) {
         this.metodaArrayList = metodaArrayList;
         this.context = context;
@@ -90,6 +101,10 @@ public class RecyclerAdapterOperation extends RecyclerView.Adapter<RecyclerAdapt
                             holder.description.setText(editMetoda.getDescription());
                             holder.equipment.setText(editMetoda.getEquipment());
 
+                            if (listener != null) {
+                                listener.onMetodaListChanged(metodaArrayList);
+                            }
+
                             metodaDialog.dismiss();
                         }
                     });
@@ -109,6 +124,8 @@ public class RecyclerAdapterOperation extends RecyclerView.Adapter<RecyclerAdapt
         else{
             return metodaArrayList.size();}
     }
+
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         TextView title;
