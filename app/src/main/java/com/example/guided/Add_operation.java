@@ -53,13 +53,11 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
     String[] listAgeAdjustments;
     boolean[] checkedAgeAdjustments;
     ArrayList<Integer> userAgeAdjustments = new ArrayList<>();
-
     Button addMetodaBTN;
     EditText metodaLength;//אורך המטודה
     EditText title;//כותרת המתודה
     EditText description;//תוכן המתודה
     EditText equipment;//עזרים למתודה
-
     ArrayList<Metoda> metodotArr;
     int id = 0;
     RecyclerView recyclerView;
@@ -68,12 +66,9 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
     Dialog addNewMetodaDialog;
     Button saveMetoda;
     ImageButton exitBTN;
-
     Button saveOperationBTN;
-
     Operation operation;
     String operationKey = "";
-
     FireBaseOperationHelper fireBaseOperationHelper;
 
 
@@ -189,14 +184,15 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
             if (operationKey != null) {
                 fireBaseOperationHelper = new FireBaseOperationHelper();
                 fireBaseOperationHelper.fetchOneOperation(new FireBaseOperationHelper.DataStatusM() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onDataLoaded(Operation o) {
                         operation = o;
 
                         topic.setText(operation.getNameOfOperation());
                         ageAdjustments.setText(operation.getAge());
-                        lengthCount = lengthCount + operation.getLengthOfOperation();
-                        length.setText(lengthCount + "דקות");
+                        //lengthCount = lengthCount + operation.getLengthOfOperation();
+
                         goals.setText(operation.getGoals());
                         equipments.setText(operation.getEquipment());
                         if (operation.getPrivateORpublic().equals("isPublic")) {
@@ -210,6 +206,11 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
                         }
 
                         metodotArr = operation.getMetodotArr();
+                        lengthCount = 0;
+                        for(int i = 0; i < metodotArr.size(); i++){
+                            lengthCount = lengthCount + metodotArr.get(i).getLength();
+                        }
+                        length.setText(lengthCount + " דקות ");
                         //TODO: לשנות את הגיל למערך?
 
                         recyclerAdapter = new RecyclerAdapterOperation(metodotArr, Add_operation.this);
@@ -290,11 +291,15 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
 
         metodotArr.add(newMetoda);
         id++;
+        lengthCount = 0;
+        for(int i = 0; i < metodotArr.size(); i++){
+            lengthCount = lengthCount + metodotArr.get(i).getLength();
+        }
+
+        // lengthCount = lengthCount + metodaLengthInt;
+        length.setText(lengthCount + " דקות ");
+
         recyclerAdapter.notifyDataSetChanged();
-
-        lengthCount = lengthCount + metodaLengthInt;
-        length.setText(lengthCount + "דקות");
-
 
         addNewMetodaDialog.dismiss();
     }
@@ -313,6 +318,7 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
             return true;
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         //להחליק לצדדים
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
@@ -329,13 +335,14 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
                     length.setText(lengthCount + " דקות ");
 
                     Snackbar.make(recyclerView, deletedMetoda.toString(),Snackbar.LENGTH_LONG).setAction("undo", new View.OnClickListener(){
+                        @SuppressLint("SetTextI18n")
                         @Override
                         public void onClick(View v) {
                             metodotArr.add(position, deletedMetoda);
                             recyclerAdapter.notifyItemInserted(position);
 
                             lengthCount = lengthCount + deletedMetoda.getLength();;
-                            length.setText(lengthCount + "דקות");
+                            length.setText(lengthCount + " דקות ");
                         }
                     }).show();
                     break;
