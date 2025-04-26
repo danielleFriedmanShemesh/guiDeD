@@ -3,10 +3,12 @@ package com.example.guided;
 import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -23,10 +25,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -36,12 +38,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -49,8 +50,6 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 public class Add_trip extends BaseActivity implements View.OnClickListener {
     // TODO: להוסיף אפשרות לשמור מקטע וטיול בכללי שלא כל השדות מלאים מבלי שיקרוס
-
-
     EditText topic;//שם הטיול
     TextView length;//אורך הטיול
     double lengthCount = 0;
@@ -85,6 +84,12 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
     RecyclerAdapterTrip recyclerAdapter;
     RecyclerView.LayoutManager layoutManager;
     Dialog addNewPartDialog;
+
+    ActivityResultLauncher<Intent> cameraLauncher;
+    ActivityResultLauncher<Intent> galleryLauncher;
+    int selectedPartPosition = -1;  // נשתמש כדי לדעת עבור איזה פריט לבחור תמונה
+    public ImageView currentDialogImageView; // משתנה ברמת המחלקה
+
     Button savePartBTN;
     ImageButton exitBTN;
     Button saveTrip;
@@ -92,8 +97,6 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
     String tripKey = "";
 
     FireBaseTripHelper fireBaseTripHelper;
-
-
 
     Trip trip;
 
@@ -156,27 +159,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
 
         partsArr = new ArrayList<Part>();
 
-        recyclerAdapter = new RecyclerAdapterTrip(
-                partsArr,
-                Add_trip.this);
-        //,
-        //                tempImages
-
-        recyclerAdapter.setOnPartListChangedListener(new RecyclerAdapterTrip.OnPartListChangedListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onPartListChanged(ArrayList<Part> parts) {
-                lengthCount = 0;
-                timeCount = 0;
-                for (Part p : parts) {
-                    lengthCount += p.getLengthInKM();
-                    timeCount += p.getLengthInMinute();
-                }
-                length.setText(lengthCount + " ק''מ ");
-            }
-        });
-
-        recyclerView.setAdapter(recyclerAdapter);
+        setAdapter();
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
@@ -192,6 +175,46 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         listAgeAdjustments = getResources().getStringArray(R.array.age_adjustment);
         checkedAgeAdjustments = new boolean[listAgeAdjustments.length];
         ageAdjustments.setOnClickListener(this);
+        //TODO: זה עובד רק כשיוצרים טיול חדש ולא כשעורכים טיול קיים
+        cameraLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && currentDialogImageView != null) {
+
+                        Intent data = result.getData();
+                        if (data != null) {
+                            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                            currentDialogImageView.setImageBitmap(bitmap);
+                        }
+                    }
+                }
+        );
+
+        galleryLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && currentDialogImageView != null) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            Uri imageUri = data.getData();
+                            try {
+                                Bitmap bitmap = MediaStore.
+                                        Images.
+                                        Media.
+                                        getBitmap(
+                                                this.getContentResolver(),
+                                                imageUri);
+                                currentDialogImageView.setImageBitmap(bitmap);
+
+                            } catch (IOException e) {
+                                throw new RuntimeException(e); //מדפיס פרטי שגיאה
+                            }
+                        }
+                    }
+                }
+        );
+
+
 
 
 
@@ -216,7 +239,15 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
                         equipments.setText(trip.getEquipments());
                         area.setText(trip.getArea());
                         place.setText(trip.getNameOfTrip());
-                        tripPicture.setImageBitmap(BitmapHelper.stringToBitmap(trip.getPicture()));
+//                        if (trip.getPicture() == null)
+  //                          tripPicture.setImageResource(R.drawable.add_image);
+//                            tripPicture.setImageBitmap(
+//                                            BitmapFactory.
+//                                                    decodeResource(
+//                                                            getResources(),
+//                                                            R.drawable.add_image));
+ //                       else
+                            tripPicture.setImageBitmap(BitmapHelper.stringToBitmap(trip.getPicture()));
                         if (trip.getPublicORprivate().equals("isPublic")) {
                             privateORpublic.setChecked(true);
                             privateORpublic.setThumbDrawable(ContextCompat.getDrawable(Add_trip.this,
@@ -229,31 +260,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
 
                         partsArr = trip.getPartsArr();
                         //TODO: לשנות את הגיל למערך?
-
-                        recyclerAdapter = new RecyclerAdapterTrip(
-                                partsArr,
-                                Add_trip.this);
-                        //,
-                        //                                tempImages
-
-                        recyclerAdapter.setOnPartListChangedListener(new RecyclerAdapterTrip.OnPartListChangedListener() {
-                            @SuppressLint("SetTextI18n")
-                            @Override
-                            public void onPartListChanged(ArrayList<Part> parts) {
-                                lengthCount = 0;
-                                timeCount = 0;
-                                for (Part p : parts) {
-                                    lengthCount += p.getLengthInKM();
-                                    timeCount += p.getLengthInMinute();
-                                }
-                                length.setText(lengthCount + " ק''מ ");
-                            }
-                        });
-
-                        recyclerView.setAdapter(recyclerAdapter);
-                        //privte or public+ age+ metodot
-
-
+                        setAdapter();
                     }
                 }, tripKey);
             }
@@ -491,7 +498,13 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
             equipmentStr = equipment.getText().toString();
         }
 
-        String pictureSTR = "";
+        String pictureSTR;
+        pictureSTR = BitmapHelper.
+                bitmapToString(
+                        BitmapFactory.
+                                decodeResource(
+                                        getResources(),
+                                        R.drawable.add_image));
         if(!BitmapHelper.bitmapToString(
                 ((BitmapDrawable)picture.getDrawable())
                         .getBitmap()).isEmpty()){
@@ -652,6 +665,9 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
             //camera
             if (which == BUTTON_POSITIVE) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+           //     cameraLauncher.launch(intent);
+//recyclerAdapter.notifyItemChanged(selectedPosition);
+//
                 startActivityForResult(intent, 3);
 
             }
@@ -660,9 +676,11 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
+             //   galleryLauncher.launch(intent);
+               // recyclerAdapter.notifyItemChanged(selectedPosition);
                 startActivityForResult(
                         Intent.createChooser(intent, "picture"),
-                        3);
+                        4);
             }
         }
     }
@@ -686,10 +704,24 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
                 ((BitmapDrawable)tripPicture.getDrawable())
                         .getBitmap());
 
+
+        /*String picSTR = "";
+
+        if(!BitmapHelper.bitmapToString(
+                ((BitmapDrawable)tripPicture.getDrawable())
+                        .getBitmap()).isEmpty()){
+            picSTR = BitmapHelper.
+                    bitmapToString(
+                            ((BitmapDrawable)tripPicture.
+                                    getDrawable())
+                                    .getBitmap());
+        }*/
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("trips");
 
         FirebaseUserHelper firebaseUserHelper = new FirebaseUserHelper();
+        String finalPicSTR = picSTR;
         firebaseUserHelper.fetchUserData(new FirebaseUserHelper.UserDataCallback() {
             @Override
             public void onUserDataLoaded(User user) {
@@ -706,7 +738,8 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
                         placeSTR,
                         partsArr,
                         userNameSTR,
-                        organizationSTR, picSTR);
+                        organizationSTR,
+                        finalPicSTR);
                 String key;
                 if(tripKey == null)
                     key = myRef.push().getKey();
@@ -736,4 +769,61 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
             }
         }
     }
+
+    private void setAdapter(){
+        recyclerAdapter = new RecyclerAdapterTrip(
+                partsArr,
+                Add_trip.this);
+        recyclerAdapter.setOnPartListChangedListener(new RecyclerAdapterTrip.OnPartListChangedListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onPartListChanged(ArrayList<Part> parts) {
+                lengthCount = 0;
+                timeCount = 0;
+                for (Part p : parts) {
+                    lengthCount += p.getLengthInKM();
+                    timeCount += p.getLengthInMinute();
+                }
+                length.setText(lengthCount + " ק''מ ");
+            }
+        });
+        recyclerAdapter.setOnImagePickerRequestedListener(new RecyclerAdapterTrip.OnImagePickerRequestedListener() {
+            @Override
+            public void onCameraRequested(int position, ImageView imageView) {
+                // שמרי את המיקום, ואז הפעלי את cameraLauncher
+                selectedPartPosition = position;
+                currentDialogImageView = imageView;
+                cameraLauncher.launch(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
+            }
+
+            @Override
+            public void onGalleryRequested(int position, ImageView imageView) {
+                selectedPartPosition = position;
+                currentDialogImageView = imageView;
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                galleryLauncher.launch(galleryIntent);
+            }
+        });
+
+
+        recyclerView.setAdapter(recyclerAdapter);
+    }
+
+  /*  public void openImageDialog(int position){
+        selectedPosition = position;
+        AlertDialog.Builder builder = new AlertDialog.Builder(Add_trip.this, R.style.AlertDialog);
+        builder.setTitle("העלאת מסלול");
+        builder.setMessage("תרצו להעלות תמונה מהגלריה או לצלם תמונה במצלמה?");
+        builder.setCancelable(true);
+        builder.setPositiveButton("מצלמה", new Add_trip.HandleAlartDialogLostener2());
+        builder.setNegativeButton("גלריה", new Add_trip.HandleAlartDialogLostener2());
+        AlertDialog dialog = builder.create();
+
+//        if(picture != null){
+//            if (tempImages.containsKey(position)) {
+//                picture.setImageBitmap(tempImages.get(position));
+//            }
+//        }
+        dialog.show();
+    }*/
 }

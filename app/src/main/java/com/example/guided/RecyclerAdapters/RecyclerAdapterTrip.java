@@ -3,9 +3,7 @@ package com.example.guided;
 import static android.app.Activity.RESULT_OK;
 import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
 //import static androidx.appcompat.graphics.drawable.DrawableContainerCompat.Api21Impl.getResources;
-import static androidx.core.app.ActivityCompat.startActivityForResult;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,10 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -41,8 +36,6 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
 
     private RecyclerAdapterTrip.OnPartListChangedListener listener;
 
-    // private Map<Integer, Bitmap> tempImages;
-
     public void setOnPartListChangedListener(RecyclerAdapterTrip.OnPartListChangedListener listener) {
         this.listener = listener;
     }
@@ -50,6 +43,18 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
     public interface OnPartListChangedListener {
         void onPartListChanged(ArrayList<Part> parts);
     }
+
+    public interface OnImagePickerRequestedListener {
+        void onCameraRequested(int position, ImageView imageView);
+        void onGalleryRequested(int position, ImageView imageView);
+    }
+
+    private OnImagePickerRequestedListener imagePickerListener;
+
+    public void setOnImagePickerRequestedListener(OnImagePickerRequestedListener listener) {
+        this.imagePickerListener = listener;
+    }
+
 
 
 
@@ -77,7 +82,8 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
         holder.lengthInKM.setText(String.valueOf(part.getLengthInKM()));
         holder.description.setText(part.getDescription());
         holder.equipment.setText(part.getEquipment());
-        holder.picture.setImageBitmap(BitmapHelper.stringToBitmap(part.getPicture()));
+        //if (part.getPicture() != null)
+            holder.picture.setImageBitmap(BitmapHelper.stringToBitmap(part.getPicture()));
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,6 +121,10 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                     descriptionET.setText(part.getDescription());
                     equipmentET.setText(part.getEquipment());
                     pictureIV.setImageBitmap(BitmapHelper.stringToBitmap(part.getPicture()));
+                    ((Add_trip) context).currentDialogImageView = pictureIV;
+
+                    //       if (tempImages.containsKey(position))
+              //          pictureIV.setImageBitmap(tempImages.get(position));
 
                     String[] listActivityTypeAdjustments = context.getResources().getStringArray(R.array.activity_type_adjustment);;
                     boolean[] checkedActivityTypeAdjustments = new boolean[listActivityTypeAdjustments.length];;
@@ -131,7 +141,7 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                                         if(! userActivityTypeAdjustments.contains(which)){
                                             userActivityTypeAdjustments.add(which);
                                             if (listActivityTypeAdjustments.equals("אחר")){
-                                                //לתת אפשרות לכתוב משהו שלא מופיע כאחד מהאופציות
+                                                //TODO: לתת אפשרות לכתוב משהו שלא מופיע כאחד מהאופציות
                                             }
                                         }
 
@@ -172,55 +182,32 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                         @Override
                         public void onClick(View v) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialog);
-                            builder.setTitle("העלאת מסלול");
+                            builder.setTitle("העלאת תמונה");
                             builder.setMessage("תרצו להעלות תמונה מהגלריה או לצלם תמונה במצלמה?");
                             builder.setCancelable(true);
                             builder.setPositiveButton("מצלמה", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    //camera
-                                    if (which == -1) {
-                                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                        onActivityResult(0, RESULT_OK, intent);
+                                    if (imagePickerListener != null) {
+                                        imagePickerListener.onCameraRequested(holder.getBindingAdapterPosition(),pictureIV);
                                     }
                                 }
                             });
                             builder.setNegativeButton("גלריה", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    //gallery
-                                    if (which == -2) {
-                                        Intent intent = new Intent();
-                                        intent.setType("image/*");
-                                        intent.setAction(Intent.ACTION_GET_CONTENT);
-                                        onActivityResult(1, RESULT_OK,
-                                                Intent.createChooser(intent, "picture")
-                                                );
+                                    if (imagePickerListener != null) {
+                                        imagePickerListener.onGalleryRequested(holder.getBindingAdapterPosition(),pictureIV);
                                     }
                                 }
                             });
-
                             AlertDialog dialog = builder.create();
                             dialog.show();
                         }
-
-                        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-                            //get image from camera
-                            if(requestCode == 0) {
-                                if (resultCode == RESULT_OK) {
-                                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                                    pictureIV.setImageBitmap(bitmap);
-                                }
-                            }
-                            //get image from gallery
-                            else if(requestCode == 1) {
-
-                                    Uri imageUri = data.getData();
-                                    pictureIV.setImageURI(imageUri);
-                                //קורס כשפותחים את המצלמה בפעם שנייה TODO:
-                            }
-                        }
                     });
+
+
+
 
                     savePartBTN.setOnClickListener(new View.OnClickListener() {
                         @Override
