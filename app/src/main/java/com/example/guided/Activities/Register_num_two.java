@@ -284,7 +284,6 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
                         + alartForNickName.getText().toString());
 
             //בדיקות של יום הולדת
-
             if(birthday.getText().toString().isEmpty())
                 alartForBirthday.setText("* שדה חובה! הכנס תאריך לידה"
                         + '\n'
@@ -318,12 +317,12 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
 
             //final checks of creating a new user at the database
             if (!organization.getText().toString().isEmpty() &&
-                !birthday.getText().toString().isEmpty() &&
-                !nickName.getText().toString().isEmpty() &&
-                !BitmapHelper.bitmapToString(
-                        ((BitmapDrawable)profile.getDrawable())
-                                .getBitmap())
-                        .isEmpty())
+                    !birthday.getText().toString().isEmpty() &&
+                    !nickName.getText().toString().isEmpty() &&
+                    !BitmapHelper.bitmapToString(
+                                    ((BitmapDrawable)profile.getDrawable())
+                                            .getBitmap())
+                            .isEmpty())
             {
                 if (checkNickName(nickName.getText().toString()) &&
                         checkBirthday(birthday.getText().toString())) {

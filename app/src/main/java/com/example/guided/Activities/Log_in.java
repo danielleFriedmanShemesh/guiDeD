@@ -39,6 +39,7 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
     TextView alartForUserName;
     TextView alartForPassword;
     TextView alartForEmail;
+    TextView alartForAll;
 
     private FirebaseAuth mAuth;
 
@@ -63,6 +64,7 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
         alartForUserName = findViewById(R.id.alartUserName);
         alartForPassword = findViewById(R.id.alartPassword);
         alartForEmail = findViewById(R.id.alartEmail);
+        alartForAll = findViewById(R.id.alartsForAll);
 
         submmitBTN = findViewById(R.id.save);
         submmitBTN.setOnClickListener(this);
@@ -76,6 +78,8 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
         alartForUserName.setText("");
         alartForPassword.setText("");
         alartForEmail.setText("");
+        alartForAll.setText("");
+        alartForAll.setVisibility(View.INVISIBLE);
 
         if(v == submmitBTN){
             //בדיקות סיסמה
@@ -100,7 +104,7 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
             String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
             if(email.getText().toString().isEmpty())
             {
-                alartForUserName.setText("* שדה חובה! הכנס מייל" +
+                alartForEmail.setText("* שדה חובה! הכנס מייל" +
                         '\n' +
                         alartForEmail.getText().toString());
             }
@@ -161,6 +165,13 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
                                                     Log.d(TAG, "signInWithEmail:success");
                                                     FirebaseUser user = mAuth.getCurrentUser();
                                                     updateUI(user);
+                                                    //go to the second register activity and transport the User object as an extra
+                                                    Intent intent = new Intent(Log_in.this, Home_page.class);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    // FLAG_ACTIVITY_CLEAR_TOP- מנקה את הדרך חזרה ומונע מהמשתמש לחזור למסכים קודמים עם כפתור Back.
+                                                    // FLAG_ACTIVITY_NEW_TASK - פותח את האקטיביטי החדשה בתוך טסק חדש. ועוזר "לנתק" את המסך החדש מהקודמים.
+                                                    startActivity(intent);
+                                                    finish();
                                                 } else {
                                                     // If sign in fails, display a message to the user.
                                                     Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -169,14 +180,13 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
                                                     updateUI(null);
                                                 }
                                             }
+
                                         });
-                                //go to the second register activity and transport the User object as an extra
-                                Intent intent = new Intent(Log_in.this, Home_page.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                // FLAG_ACTIVITY_CLEAR_TOP- מנקה את הדרך חזרה ומונע מהמשתמש לחזור למסכים קודמים עם כפתור Back.
-                                // FLAG_ACTIVITY_NEW_TASK - פותח את האקטיביטי החדשה בתוך טסק חדש. ועוזר "לנתק" את המסך החדש מהקודמים.
-                                startActivity(intent);
-                                finish();
+
+                            }
+                            else {
+                                alartForAll.setText("אחד או יותר מהפרטי ההזדהות שהוכנסו שגויים! ");
+                                alartForAll.setVisibility(View.VISIBLE);
                             }
                         }
                     }
@@ -194,7 +204,13 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    //checks if input has letters and digits and special characters
+    /**
+     * בודק אם קלט כולל אותיות, ספרות ותווים מיוחדים.
+     * משמש לאימות תקינות של שם משתמש.
+     *
+     * @param input מחרוזת לבדיקה
+     * @return true אם הקלט כולל את שלושת הסוגים, אחרת false
+     */
     public static boolean input_Validation(String input)
     {
         Pattern letter = Pattern.compile("[a-zA-Z]");
@@ -210,8 +226,9 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
 
     //checks if username is stand at all the terms
     public static boolean checkUserName(String userName){
-        return ((userName.length() >= 8) && (userName.length() <= 15) && (input_Validation(userName)) && !checkIfOccupied(userName));
+        return ((userName.length() >= 8) && (userName.length() <= 15) && (input_Validation(userName)));
     }
+
 
     //checks if password is stand at all the terms
     public static boolean checkPassword(String password){
@@ -222,25 +239,6 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
     public static boolean checkEmail(String email){
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         return (email.matches(emailPattern));
-    }
-
-    public static boolean checkIfOccupied(String userName){
-        final boolean[] x = {false};
-        FirebaseUserHelper firebaseUserHelper = new FirebaseUserHelper();
-        firebaseUserHelper.fetchUsers(new FirebaseUserHelper.DataStatus() {
-            @Override
-            public void onDataLoaded(ArrayList<User> users) {
-                for(User user : users){
-                    if (user.getUserName().equals(userName)) {
-                        // Username is already taken
-                        x[0] = true;
-                        break;
-                    }
-                }
-            }
-        });
-
-        return x[0];
     }
 
     private void updateUI(FirebaseUser user) {

@@ -148,12 +148,6 @@ public class Register_num_one extends BaseActivity implements View.OnClickListen
                             x[0] = true;
                         }
                     }
-                    if (x[0]){
-                        // Username is already taken
-                        alartForUserName.setText("* שם המשתמש שבחרת תפוס בחר שם משתמש אחר " +
-                                '\n' +
-                                alartForUserName.getText().toString());
-                    }
 
                     if(!x[0]) {
                         //final checks before moving to the second activity
@@ -177,11 +171,14 @@ public class Register_num_one extends BaseActivity implements View.OnClickListen
                             }
                         }
                     }
+                    else{
+                        // Username is already taken
+                        alartForUserName.setText("* שם המשתמש שבחרת תפוס בחר שם משתמש אחר " +
+                                '\n' +
+                                alartForUserName.getText().toString());
+                    }
                 }
             });
-
-
-
         }
     }
 
@@ -201,7 +198,7 @@ public class Register_num_one extends BaseActivity implements View.OnClickListen
 
     //checks if username is stand at all the terms
     public static boolean checkUserName(String userName){
-        return ((userName.length() >= 8) && (userName.length() <= 15) && (input_Validation(userName)) && !checkIfOccupied(userName));
+        return (((userName.length() >= 8) && (userName.length() <= 15)) && (input_Validation(userName)));
     }
 
     //checks if password is stand at all the terms
@@ -216,22 +213,4 @@ public class Register_num_one extends BaseActivity implements View.OnClickListen
         return (email.matches(emailPattern));
     }
 
-    public static boolean checkIfOccupied(String userName){
-        final boolean[] x = {false};
-        FirebaseUserHelper firebaseUserHelper = new FirebaseUserHelper();
-        firebaseUserHelper.fetchUsers(new FirebaseUserHelper.DataStatus() {
-            @Override
-            public void onDataLoaded(ArrayList<User> users) {
-                for(User user : users){
-                    if (user.getUserName().equals(userName)) {
-                        // Username is already taken
-                        x[0] = true;
-                        break;
-                    }
-                }
-            }
-        });
-
-        return x[0];
-    }
 }

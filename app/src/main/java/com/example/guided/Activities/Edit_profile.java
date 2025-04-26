@@ -343,44 +343,55 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
                         alartForUserName.getText().toString());
             }
 
-            boolean x = checkIfOccupied(userName.getText().toString());
+            final boolean[] x = {false};
+            FirebaseUserHelper firebaseUserHelper = new FirebaseUserHelper();
+            firebaseUserHelper.fetchUsers(new FirebaseUserHelper.DataStatus() {
+                @Override
+                public void onDataLoaded(ArrayList<User> users) {
+                    for(User user : users){
+                        if (user.getUserName().equals(userName.getText().toString())) {
+                            // Username is already taken
+                            x[0] = true;
+                        }
+                    }
+                    if(!x[0]) {
 
-            if (x){
-                // Username is already taken
-                alartForUserName.setText("* שם המשתמש שבחרת תפוס בחר שם משתמש אחר " +
-                        '\n' +
-                        alartForUserName.getText().toString());
-            }
+                            //final checks of creating a new user at the database
+                            if (!organization.getText().toString().isEmpty() &&
+                                    !birthday.getText().toString().isEmpty() &&
+                                    !nickName.getText().toString().isEmpty() &&
+                                    !BitmapHelper.bitmapToString(
+                                                    ((BitmapDrawable) profile.getDrawable())
+                                                            .getBitmap())
+                                            .isEmpty() &&
+                                    !userName.getText().toString().isEmpty()) {
+                                if (checkUserName(userName.getText().toString()) &&
+                                        checkNickName(nickName.getText().toString()) &&
+                                        checkBirthday(birthday.getText().toString())) {
+                                    updatedUser.setUserName(userName.getText().toString());
+                                    updatedUser.setNickName(nickName.getText().toString());
+                                    updatedUser.setOrganization(organization.getText().toString());
+                                    updatedUser.setProfileImage(BitmapHelper.bitmapToString(
+                                            ((BitmapDrawable) profile.getDrawable())
+                                                    .getBitmap()));
 
-            //TODO: לבדוק איך לעשות שזה יעשה ריפרש ויראה ישר את הפרטים החדשים
+                                    updatedUser.setBirthday(birthdayDate);
+                                    //progressBar.setVisibility(View.VISIBLE);
+                                    setUser();
+                                    finish();
+                                }
+                        }
+                    }
+                    else{
+                        // Username is in the dataBase
 
-            if(!x) {
-                //final checks of creating a new user at the database
-                if (!organization.getText().toString().isEmpty() &&
-                        !birthday.getText().toString().isEmpty() &&
-                        !nickName.getText().toString().isEmpty() &&
-                        !BitmapHelper.bitmapToString(
-                                        ((BitmapDrawable) profile.getDrawable())
-                                                .getBitmap())
-                                .isEmpty() &&
-                        !userName.getText().toString().isEmpty()) {
-                    if (checkUserName(userName.getText().toString()) &&
-                            checkNickName(nickName.getText().toString()) &&
-                            checkBirthday(birthday.getText().toString())) {
-                        updatedUser.setUserName(userName.getText().toString());
-                        updatedUser.setNickName(nickName.getText().toString());
-                        updatedUser.setOrganization(organization.getText().toString());
-                        updatedUser.setProfileImage(BitmapHelper.bitmapToString(
-                                ((BitmapDrawable) profile.getDrawable())
-                                        .getBitmap()));
-
-                        updatedUser.setBirthday(birthdayDate);
-                        //progressBar.setVisibility(View.VISIBLE);
-                        setUser();
-                        finish();
+                        alartForUserName.setText("* שם המשתמש שבחרת תפוס בחר שם משתמש אחר " +
+                                '\n' +
+                                alartForUserName.getText().toString());
                     }
                 }
-            }
+            });
+            //TODO: לבדוק איך לעשות שזה יעשה ריפרש ויראה ישר את הפרטים החדשים
         }
 
         if (v == exitBTN){
@@ -503,29 +514,4 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
         return (birthdayDate.getYear() + 1900) < year &&
                 (birthdayDate.getYear() + 1900) > 1900;
     }
-
-
-
-
-
-    public static boolean checkIfOccupied(String userName){
-        final boolean[] x = {false};
-        FirebaseUserHelper firebaseUserHelper = new FirebaseUserHelper();
-        firebaseUserHelper.fetchUsers(new FirebaseUserHelper.DataStatus() {
-            @Override
-            public void onDataLoaded(ArrayList<User> users) {
-                for(User user : users){
-                    if (user.getUserName().equals(userName)) {
-                        // Username is already taken
-                        x[0] = true;
-                    }
-                }
-                x[0] = false;
-            }
-        });
-
-        return x[0];
-    }
-
-
 }
