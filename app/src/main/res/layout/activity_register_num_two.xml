@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:textDirection="rtl"
-    tools:context=".Register_num_two"
+    tools:context=".Activities.Register_num_two"
     android:background="@drawable/background">
 
     <TextView

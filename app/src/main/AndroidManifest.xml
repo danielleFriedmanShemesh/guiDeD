@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
-        android:name=".MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -16,34 +15,34 @@
         android:theme="@style/Theme.GuiDeD"
         tools:targetApi="31">
         <activity
-            android:name=".Edit_profile"
+            android:name=".Activities.Edit_profile"
             android:exported="false" />
         <activity
-            android:name=".Log_in"
+            android:name=".Activities.Log_in"
             android:exported="false" />
         <activity
-            android:name=".View_trip"
+            android:name=".Activities.View_trip"
             android:exported="false" />
         <activity
-            android:name=".View_operation"
+            android:name=".Activities.View_operation"
             android:exported="false" />
         <activity
-            android:name=".Add_trip"
+            android:name=".Activities.Add_trip"
             android:exported="false" />
         <activity
-            android:name=".Add_operation"
+            android:name=".Activities.Add_operation"
             android:exported="false" />
         <activity
-            android:name=".Home_page"
+            android:name=".Activities.Home_page"
             android:exported="false" />
         <activity
-            android:name=".Register_num_two"
+            android:name=".Activities.Register_num_two"
             android:exported="false" />
         <activity
-            android:name=".Register_num_one"
+            android:name=".Activities.Register_num_one"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.example.guided;
+package com.example.guided.RecyclerAdapters;
 
 import static android.app.Activity.RESULT_OK;
 import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
@@ -25,7 +25,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+import com.example.guided.Activities.Add_trip;
+import com.example.guided.Helpers.BitmapHelper;
+import com.example.guided.Classes.Part;
+import com.example.guided.R;
 
 import java.util.ArrayList;
 
@@ -75,7 +78,7 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapterTrip.ViewHolder holder, int position) {
-
+//TODO: לעשות אפשרות מחיקת תמונה
         Part part = partsArrayList.get(position);
         holder.activityType.setText(part.getActivityType());
         holder.lengthInMinute.setText(String.valueOf(part.getLengthInMinute()));

@@ -1,4 +1,4 @@
-package com.example.guided;
+package com.example.guided.Activities;
 
 import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
@@ -37,6 +37,14 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.guided.Classes.Part;
+import com.example.guided.Classes.Trip;
+import com.example.guided.Classes.User;
+import com.example.guided.Helpers.BitmapHelper;
+import com.example.guided.Helpers.FireBaseTripHelper;
+import com.example.guided.Helpers.FirebaseUserHelper;
+import com.example.guided.R;
+import com.example.guided.RecyclerAdapters.RecyclerAdapterTrip;
 import com.google.android.material.snackbar.Snackbar;
 
 import com.google.firebase.database.DatabaseReference;
@@ -175,7 +183,6 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         listAgeAdjustments = getResources().getStringArray(R.array.age_adjustment);
         checkedAgeAdjustments = new boolean[listAgeAdjustments.length];
         ageAdjustments.setOnClickListener(this);
-        //TODO: זה עובד רק כשיוצרים טיול חדש ולא כשעורכים טיול קיים
         cameraLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {

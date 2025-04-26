@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Add_operation"
+    tools:context=".Activities.Add_operation"
     android:orientation="vertical"
     android:background="@color/grayeen1"
     >
