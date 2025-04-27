@@ -1,11 +1,9 @@
 package com.example.guided.Activities;
 
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -13,24 +11,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -38,6 +26,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.guided.Classes.User;
 import com.example.guided.Helpers.BitmapHelper;
 import com.example.guided.Helpers.DateConverter;
+import com.example.guided.Helpers.RegisteretionHelper;
 import com.example.guided.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -49,7 +38,6 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -59,7 +47,6 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
     EditText nickName;
     ImageView profile;
     String[] listOrganizations;
-    Dialog dialog;
     ImageView backBTN;
     ImageView saveBTN;
     TextView alartForNickName;
@@ -70,9 +57,6 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
     String userName;
     String password;
     String email;
-
-    ActivityResultLauncher<Intent> cameraLauncher;
-    ActivityResultLauncher<Intent> galleryLauncher;
 
     private FirebaseAuth mAuth;
     ProgressBar progressBar;
@@ -146,35 +130,6 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
             password = newUser.getPassword();
             email = newUser.getEmail();
         }
-
-        // Camera Launcher
-        cameraLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK) {
-                        Intent data = result.getData();
-                        if (data != null) {
-                            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                            profile.setImageBitmap(bitmap);
-                            saveImageToGallery(bitmap, Register_num_two.this);
-                        }
-                    }
-                }
-        );
-
-        // Gallery Launcher
-        galleryLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK) {
-                        Intent data = result.getData();
-                        if (data != null) {
-                            Uri imageUri = data.getData();
-                            profile.setImageURI(imageUri);
-                        }
-                    }
-                }
-        );
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -186,158 +141,39 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
 
         // if user click on the profile image view
         if (v == profile) {
-
-            //creating a dialog for adding a profile picture from gallery or for taking a picture at the camera
-            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialog);
-            builder.setTitle("העלאת תמונת פרופיל");
-            builder.setMessage("תרצו להעלות תמונה מהגלריה או לצלם תמונה במצלמה?");
-            builder.setCancelable(true);
-            builder.setPositiveButton("מצלמה", new HandleAlartDialogLostener());
-            builder.setNegativeButton("גלריה", new HandleAlartDialogLostener());
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            profile.setImageBitmap(RegisteretionHelper.setPic(Register_num_two.this));
         }
 
         //if user click on the birthday edit text
         if (v == birthday){
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-
-            //open a Date Picker Dialog
-            DatePickerDialog datePickerDialog = new DatePickerDialog(
-                    Register_num_two.this, new DatePickerDialog.OnDateSetListener() {
-                        @SuppressLint("SetTextI18n")
-                        @Override
-                        //show the date that the user chose at the birthday edit text
-                        public void onDateSet(DatePicker view, int year,
-                                              int monthOfYear, int dayOfMonth) {
-                            // on below line we are setting date to our edit text.
-                            birthday.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-
-                        }
-                    }, year, month, day);
-
-            datePickerDialog.show();
+            birthday.setText(RegisteretionHelper.setBirthdate(Register_num_two.this));
         }
 
         if (v == organization){
-            dialog = new Dialog(Register_num_two.this);
-
-            // set custom dialog
-            dialog.setContentView(R.layout.dialog_searchable_spinner);
-
-            // show dialog
-            dialog.show();
-
-            // Initialize and assign variable
-            EditText editText = dialog.findViewById(R.id.search);
-            ListView listView = dialog.findViewById(R.id.list_view);
-
-            // Initialize array adapter
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(Register_num_two.this,
-                    R.layout.list_item,
-                    listOrganizations);
-
-            // set adapter
-            listView.setAdapter(adapter);
-            editText.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    adapter.getFilter().filter(s);
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {}
-            });
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    // when item selected from list
-                    // set selected item on textView
-                    organization.setText(adapter.getItem(position));
-
-                    // Dismiss dialog
-                    dialog.dismiss();
-                }
-            });
+            organization.setText(RegisteretionHelper.setOrganization(Register_num_two.this));
         }
 
         // if you click on the 'finish' button
         if (v == saveBTN) {
-            // בדיקות של כינוי
-            if (nickName.getText().toString().length() < 2)
-                alartForNickName.setText(" * כינוי קצר מדי נסה שנית. "
-                        + '\n'
-                        + alartForNickName.getText().toString());
-            else if (nickName.getText().toString().length() > 15)
-                alartForNickName.setText("* כינוי ארוך מדי נסה שנית."
-                        + '\n'
-                        + alartForNickName.getText().toString());
-            if (nickName.getText().toString().isEmpty())
-                alartForNickName.setText("* שדה חובה! הכנס כינוי"
-                        + '\n'
-                        + alartForNickName.getText().toString());
-
-            //בדיקות של יום הולדת
-            if(birthday.getText().toString().isEmpty())
-                alartForBirthday.setText("* שדה חובה! הכנס תאריך לידה"
-                        + '\n'
-                        + alartForBirthday.getText().toString());
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat(
-                    "dd/MM/yyyy", Locale.getDefault());
-            Date birthdayDate;
-            try {
-                birthdayDate = dateFormat.parse(birthday.getText().toString());
-                Log.e("year", "yearThis: " + (birthdayDate.getYear()+1900));
-
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            Log.e("year", "year: " + year);
-
-            if (birthdayDate != null &&
-                    ((birthdayDate.getYear() + 1900) >= year ||
-                            (birthdayDate.getYear() + 1900) <= 1900)) {
-                alartForBirthday.setText("* התאריך שהוכנס לא תקין! נסה שנית" +
-                        '\n' +
-                        alartForBirthday.getText().toString());
-            }
-
-            //בדיקות של מסגרת הדרכה
-            if (organization.getText().equals(""))
-                alartForOrganization.setText("* שדה חובה! בחר תנועת נוער");
+            alartForNickName.setText(RegisteretionHelper.checkAlertForNickName(nickName.getText().toString()));
+            alartForBirthday.setText(RegisteretionHelper.checkAlertsForBirthday(birthday.getText().toString()));
+            alartForOrganization.setText(RegisteretionHelper.checkAlertsForOrganization(organization.getText().toString()));
 
             //final checks of creating a new user at the database
-            if (!organization.getText().toString().isEmpty() &&
-                    !birthday.getText().toString().isEmpty() &&
-                    !nickName.getText().toString().isEmpty() &&
-                    !BitmapHelper.bitmapToString(
-                                    ((BitmapDrawable)profile.getDrawable())
-                                            .getBitmap())
-                            .isEmpty())
+            if (RegisteretionHelper.checkOrganization(organization.getText().toString()) &&
+                    RegisteretionHelper.checkBirthday(birthday.getText().toString()) &&
+                    RegisteretionHelper.checkNickName(nickName.getText().toString()) &&
+                    RegisteretionHelper.checkPic(((BitmapDrawable)profile.getDrawable()).getBitmap()))
             {
-                if (checkNickName(nickName.getText().toString()) &&
-                        checkBirthday(birthday.getText().toString())) {
-                    Log.e("year", "year: " + birthday.getText().toString());
-                    Log.e("name", "mane: " + nickName.getText().toString());
 
-                    progressBar.setVisibility(View.VISIBLE);
-                    saveUser();
+                progressBar.setVisibility(View.VISIBLE);
+                saveUser();
 
-                    //open the home page after the user had been saved in the database
-                    Intent intent = new Intent(this, Home_page.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
-                }
+                //open the home page after the user had been saved in the database
+                Intent intent = new Intent(this, Home_page.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
             }
         }
 
@@ -347,6 +183,7 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
             //saving the inputs that the user entered at an User object
             newUser.setNickName(nickName.getText().toString());
             newUser.setOrganization(organization.getText().toString());
+
             SimpleDateFormat dateFormat = new SimpleDateFormat(
                     "dd/MM/yyyy", Locale.getDefault());
             try {
@@ -370,40 +207,11 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
         }
     }
 
-    private class HandleAlartDialogLostener implements DialogInterface.OnClickListener {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            //camera
-            if (which == -1) {
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                cameraLauncher.launch(cameraIntent);
-            }
-            //gallery
-            else if (which == -2) {
-                Intent galleryIntent = new Intent(
-                        Intent.ACTION_PICK,
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                // Intent.ACTION_PICK → Opens an app to let the user pick something.
-                //MediaStore.Images.Media.EXTERNAL_CONTENT_URI → Gets images from external storage (Gallery).
-                galleryLauncher.launch(galleryIntent);
-            }
-        }
-    }
-
 
     //save user in data base
     public void saveUser() {
         // Write a message to the database
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "dd/MM/yyyy", Locale.getDefault());
-        Date birthdayDate;
-        //A try-catch block handles invalid input formats, ensuring the app doesn't crash if the user enters an incorrect date.
-        try{
-            // dateFormat.parse(dateString) converts the string into a Date object.
-            birthdayDate = dateFormat.parse(birthday.getText().toString());}
-        catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+
 
         mAuth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -415,7 +223,7 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
                                     newUser.getEmail(),
                                     nickName.getText().toString(),
                                     organization.getText().toString(),
-                                    birthdayDate,
+                                    DateConverter.convertStringToDate(birthday.getText().toString()),
                                     BitmapHelper.bitmapToString(
                                             ((BitmapDrawable)profile.getDrawable())
                                                     .getBitmap()));
@@ -438,29 +246,6 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
 
                     }
                 });
-    }
-
-    public static boolean checkNickName(String nickName){
-        return ((nickName.length() >= 2) && (nickName.length() <= 15));
-    }
-
-    public static boolean checkBirthday(String birthday){
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "dd/MM/yyyy", Locale.getDefault());
-        Date birthdayDate;
-        try {
-            birthdayDate = dateFormat.parse(birthday);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        if (birthdayDate != null) {
-            return (birthdayDate.getYear() + 1900) < year &&
-                    (birthdayDate.getYear() + 1900) > 1900;
-        }
-        return false;
     }
 
     private void saveImageToGallery(Bitmap bitmap, Context context) {

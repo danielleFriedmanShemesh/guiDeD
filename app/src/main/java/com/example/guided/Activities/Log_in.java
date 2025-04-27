@@ -2,6 +2,8 @@ package com.example.guided.Activities;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import static com.example.guided.Helpers.RegisteretionHelper.*;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,8 +30,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Log_in extends BaseActivity implements View.OnClickListener {
     ImageView submmitBTN;
@@ -82,57 +82,9 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
         alartForAll.setVisibility(View.INVISIBLE);
 
         if(v == submmitBTN){
-            //בדיקות סיסמה
-            if(password.getText().toString().length() < 6){
-                alartForPassword.setText("* סיסמה קצרה מדי נסה שנית" +
-                        '\n' +
-                        alartForPassword.getText().toString());
-            }
-            if(password.getText().toString().isEmpty())
-            {
-                alartForPassword.setText("* שדה חובה! הכנס סיסמה" +
-                        '\n' +
-                        alartForPassword.getText().toString());
-            }
-            else if(password.getText().toString().length() > 10){
-                alartForPassword.setText("* סיסמה ארוכה מדי נסה שנית" +
-                        '\n' +
-                        alartForPassword.getText().toString());
-            }
-
-            //בדיקות של אימייל
-            String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-            if(email.getText().toString().isEmpty())
-            {
-                alartForEmail.setText("* שדה חובה! הכנס מייל" +
-                        '\n' +
-                        alartForEmail.getText().toString());
-            }
-            if(!email.getText().toString().matches(emailPattern))
-            {
-                alartForEmail.setText("* המייל שהכנסת אינו תקין, נסה שנית" +
-                        '\n' +
-                        alartForEmail.getText().toString());
-            }
-//בדיכות שם משתמש
-            if(userName.getText().toString().isEmpty())
-            {
-                alartForUserName.setText("* שדה חובה! הכנס שם משתמש" +
-                        '\n' +
-                        alartForUserName.getText().toString());
-            }
-            if(userName.getText().toString().length() != 8){
-                if(userName.getText().toString().length() < 8){
-                    alartForUserName.setText(" * שם משתמש קצר מדי נסה שנית. " +
-                            '\n' +
-                            alartForUserName.getText().toString());
-                }
-                else if(userName.getText().toString().length() > 15){
-                    alartForUserName.setText("* שם משתמש ארוך מדי נסה שנית." +
-                            '\n' +
-                            alartForUserName.getText().toString());
-                }
-            }
+            alartForPassword.setText(checkAlertsForPassword(password.getText().toString()));
+            alartForEmail.setText(checkAlertsForEmail(email.getText().toString()));
+            alartForUserName.setText(checkAlertsForUserName(userName.getText().toString()));
 
             final boolean[] x = {false};
             FirebaseUserHelper firebaseUserHelper = new FirebaseUserHelper();
@@ -149,50 +101,43 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
                         // Username is in the dataBase
 
                         //final checks before moving to the second activity
-                        if ((!password.getText().toString().isEmpty()) &&
-                                (!userName.getText().toString().isEmpty()) &&
-                                (!email.getText().toString().isEmpty())) {
-                            if (checkUserName(userName.getText().toString()) &&
-                                    (checkPassword(password.getText().toString())) &&
-                                    (checkEmail(email.getText().toString()))) {
+                        if (checkUserName(userName.getText().toString()) &&
+                                checkPassword(password.getText().toString()) &&
+                                checkEmail(email.getText().toString())) {
 
-                                mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
-                                        .addOnCompleteListener(Log_in.this, new OnCompleteListener<AuthResult>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                                if (task.isSuccessful()) {
-                                                    // Sign in success, update UI with the signed-in user's information
-                                                    Log.d(TAG, "signInWithEmail:success");
-                                                    FirebaseUser user = mAuth.getCurrentUser();
-                                                    updateUI(user);
-                                                    //go to the second register activity and transport the User object as an extra
-                                                    Intent intent = new Intent(Log_in.this, Home_page.class);
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                    // FLAG_ACTIVITY_CLEAR_TOP- מנקה את הדרך חזרה ומונע מהמשתמש לחזור למסכים קודמים עם כפתור Back.
-                                                    // FLAG_ACTIVITY_NEW_TASK - פותח את האקטיביטי החדשה בתוך טסק חדש. ועוזר "לנתק" את המסך החדש מהקודמים.
-                                                    startActivity(intent);
-                                                    finish();
-                                                } else {
-                                                    // If sign in fails, display a message to the user.
-                                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                                    Toast.makeText(Log_in.this, "Authentication failed.",
-                                                            Toast.LENGTH_SHORT).show();
-                                                    updateUI(null);
-                                                }
+                            mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+                                    .addOnCompleteListener(Log_in.this, new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                            if (task.isSuccessful()) {
+                                                // Sign in success, update UI with the signed-in user's information
+                                                Log.d(TAG, "signInWithEmail:success");
+                                                FirebaseUser user = mAuth.getCurrentUser();
+                                                updateUI(user);
+                                                //go to the second register activity and transport the User object as an extra
+                                                Intent intent = new Intent(Log_in.this, Home_page.class);
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                // FLAG_ACTIVITY_CLEAR_TOP- מנקה את הדרך חזרה ומונע מהמשתמש לחזור למסכים קודמים עם כפתור Back.
+                                                // FLAG_ACTIVITY_NEW_TASK - פותח את האקטיביטי החדשה בתוך טסק חדש. ועוזר "לנתק" את המסך החדש מהקודמים.
+                                                startActivity(intent);
+                                                finish();
+                                            } else {
+                                                // If sign in fails, display a message to the user.
+                                                Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                                Toast.makeText(Log_in.this, "Authentication failed.",
+                                                        Toast.LENGTH_SHORT).show();
+                                                updateUI(null);
                                             }
-
-                                        });
-
-                            }
-                            else {
-                                alartForAll.setText("אחד או יותר מהפרטי ההזדהות שהוכנסו שגויים! ");
-                                alartForAll.setVisibility(View.VISIBLE);
-                            }
+                                        }
+                                    });
+                        }
+                        else {
+                            alartForAll.setText("אחד או יותר מהפרטי ההזדהות שהוכנסו שגויים! ");
+                            alartForAll.setVisibility(View.VISIBLE);
                         }
                     }
 
                     if(!x[0]) {
-
                         alartForUserName.setText("* שם המשתמש שבחרת לא קיים " +
                                 '\n' +
                                 alartForUserName.getText().toString());
@@ -204,42 +149,6 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    /**
-     * בודק אם קלט כולל אותיות, ספרות ותווים מיוחדים.
-     * משמש לאימות תקינות של שם משתמש.
-     *
-     * @param input מחרוזת לבדיקה
-     * @return true אם הקלט כולל את שלושת הסוגים, אחרת false
-     */
-    public static boolean input_Validation(String input)
-    {
-        Pattern letter = Pattern.compile("[a-zA-Z]");
-        Pattern digit = Pattern.compile("[0-9]");
-        Pattern special = Pattern.compile ("[^A-Za-z0-9]");
-
-        Matcher hasLetter = letter.matcher(input);
-        Matcher hasDigit = digit.matcher(input);
-        Matcher hasSpecial = special.matcher(input);
-
-        return hasLetter.find() && hasDigit.find() && hasSpecial.find();
-    }
-
-    //checks if username is stand at all the terms
-    public static boolean checkUserName(String userName){
-        return ((userName.length() >= 8) && (userName.length() <= 15) && (input_Validation(userName)));
-    }
-
-
-    //checks if password is stand at all the terms
-    public static boolean checkPassword(String password){
-        return ((password.length() >= 6) && (password.length() <= 10));
-    }
-
-    //checks if email is stand at all the terms
-    public static boolean checkEmail(String email){
-        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-        return (email.matches(emailPattern));
-    }
 
     private void updateUI(FirebaseUser user) {
 
