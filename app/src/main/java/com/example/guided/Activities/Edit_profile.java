@@ -9,13 +9,9 @@ import android.app.Dialog;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 

@@ -29,6 +29,29 @@ public class FireBaseTripHelper {
         void onDataLoaded(Trip trip);
     }
 
+    public void fetchMyTrips(FireBaseTripHelper.DataStatus dataStatus, String userName){
+        myRef.orderByChild("userName").equalTo(userName).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                tripsArrayList.clear();
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    Trip trip = data.getValue(Trip.class);
+                    if (trip != null) {
+                        tripsArrayList.add(trip);
+                    }
+                }
+                // Notify that data is loaded
+                if (!tripsArrayList.isEmpty())
+                    dataStatus.onDataLoaded(tripsArrayList);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
 
     public void fetchTrips(FireBaseTripHelper.DataStatus dataStatus) {
         myRef.addValueEventListener(new ValueEventListener() {

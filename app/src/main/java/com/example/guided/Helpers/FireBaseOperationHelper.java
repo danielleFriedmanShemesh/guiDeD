@@ -3,6 +3,7 @@ package com.example.guided.Helpers;
 import androidx.annotation.NonNull;
 
 import com.example.guided.Classes.Operation;
+import com.example.guided.Classes.Trip;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +31,29 @@ public class FireBaseOperationHelper {
         void onDataLoaded(Operation operation);
     }
 
+
+    public void fetchMyOperations(DataStatus dataStatus, String userName){
+        myRef.orderByChild("userName").equalTo(userName).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                operationArrayList.clear();
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    Operation operation = data.getValue(Operation.class);
+                    if (operation != null) {
+                        operationArrayList.add(operation);
+                    }
+                }
+                // Notify that data is loaded
+                if (!operationArrayList.isEmpty())
+                    dataStatus.onDataLoaded(operationArrayList);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
 
 
     public void fetchOperations(DataStatus dataStatus) {
