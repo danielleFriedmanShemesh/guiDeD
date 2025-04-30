@@ -6,7 +6,6 @@
     <item
         android:id="@+id/action_profile"
         android:title="פרופיל אישי"
-
         />
 
     <item
