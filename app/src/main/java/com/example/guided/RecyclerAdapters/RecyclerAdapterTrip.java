@@ -184,28 +184,35 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                     pictureIV.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialog);
-                            builder.setTitle("העלאת תמונה");
-                            builder.setMessage("תרצו להעלות תמונה מהגלריה או לצלם תמונה במצלמה?");
-                            builder.setCancelable(true);
-                            builder.setPositiveButton("מצלמה", new DialogInterface.OnClickListener() {
+
+                            Dialog dialog = new Dialog(context);
+                            dialog.setContentView(R.layout.dialog_add_pic);
+                            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            dialog.show();
+
+                            Button galery = dialog.findViewById(R.id.galery);
+                            Button camera = dialog.findViewById(R.id.camera);
+                            TextView title = dialog.findViewById(R.id.titleDialog);
+                            title.setText("העלאת תמונה");
+
+                            galery.setOnClickListener(new View.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
+                                public void onClick(View v) {
                                     if (imagePickerListener != null) {
-                                        imagePickerListener.onCameraRequested(holder.getBindingAdapterPosition(),pictureIV);
-                                    }
-                                }
-                            });
-                            builder.setNegativeButton("גלריה", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if (imagePickerListener != null) {
+                                        dialog.dismiss();
                                         imagePickerListener.onGalleryRequested(holder.getBindingAdapterPosition(),pictureIV);
                                     }
                                 }
                             });
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
+                            camera.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (imagePickerListener != null) {
+                                        dialog.dismiss();
+                                        imagePickerListener.onCameraRequested(holder.getBindingAdapterPosition(),pictureIV);
+                                    }
+                                }
+                            });
                         }
                     });
 

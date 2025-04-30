@@ -25,6 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -43,6 +45,7 @@ import com.example.guided.Classes.User;
 import com.example.guided.Helpers.BitmapHelper;
 import com.example.guided.Helpers.FireBaseTripHelper;
 import com.example.guided.Helpers.FirebaseUserHelper;
+import com.example.guided.Helpers.OperationsAndTripsHelper;
 import com.example.guided.R;
 import com.example.guided.RecyclerAdapters.RecyclerAdapterTrip;
 import com.google.android.material.snackbar.Snackbar;
@@ -183,15 +186,19 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         listAgeAdjustments = getResources().getStringArray(R.array.age_adjustment);
         checkedAgeAdjustments = new boolean[listAgeAdjustments.length];
         ageAdjustments.setOnClickListener(this);
+
         cameraLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK && currentDialogImageView != null) {
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult o) {
+                        if (o.getResultCode() == RESULT_OK && currentDialogImageView != null) {
 
-                        Intent data = result.getData();
-                        if (data != null) {
-                            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                            currentDialogImageView.setImageBitmap(bitmap);
+                            Intent data = o.getData();
+                            if (data != null) {
+                                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                                currentDialogImageView.setImageBitmap(bitmap);
+                            }
                         }
                     }
                 }
@@ -199,38 +206,39 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
 
         galleryLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK && currentDialogImageView != null) {
-                        Intent data = result.getData();
-                        if (data != null) {
-                            Uri imageUri = data.getData();
-                            try {
-                                Bitmap bitmap = MediaStore.
-                                        Images.
-                                        Media.
-                                        getBitmap(
-                                                this.getContentResolver(),
-                                                imageUri);
-                                currentDialogImageView.setImageBitmap(bitmap);
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult o) {
 
-                            } catch (IOException e) {
-                                throw new RuntimeException(e); //מדפיס פרטי שגיאה
+
+                        if (o.getResultCode() == RESULT_OK && currentDialogImageView != null) {
+                            Intent data = o.getData();
+                            if (data != null) {
+                                Uri imageUri = data.getData();
+                                try {
+                                    Bitmap bitmap = MediaStore.
+                                            Images.
+                                            Media.
+                                            getBitmap(
+                                                    Add_trip.this.getContentResolver(),
+                                                    imageUri);
+                                    currentDialogImageView.setImageBitmap(bitmap);
+
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e); //מדפיס פרטי שגיאה
+                                }
                             }
                         }
                     }
                 }
         );
 
-
-
-
-
         Intent intent = getIntent();
         if (intent != null) {
             tripKey = intent.getStringExtra("tripKey");
             if (tripKey != null) {
 
-                fireBaseTripHelper = new FireBaseTripHelper();
+                FireBaseTripHelper fireBaseTripHelper = new FireBaseTripHelper();
                 fireBaseTripHelper.fetchOneTrip(new FireBaseTripHelper.DataStatusT() {
                     @SuppressLint("SetTextI18n")
                     @Override
@@ -262,9 +270,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
                         } else if (trip.getPublicORprivate().equals("isPrivate")) {
                             privateORpublic.setThumbDrawable(ContextCompat.getDrawable(Add_trip.this,
                                     R.drawable.baseline_person_24));
-
                         }
-
                         partsArr = trip.getPartsArr();
                         //TODO: לשנות את הגיל למערך?
                         setAdapter();
@@ -288,27 +294,26 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
             finish();
         }
         else if (v == exitBTN){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialog);
-            builder.setTitle("סגירת חלון");
-            builder.setMessage("תרצו לשמור את השינויים?");
-            builder.setCancelable(true);
-            builder.setPositiveButton("שמור", new Add_trip.AlartDialogLostenerSaveTrip());
-            builder.setNegativeButton("אל תשמור", new Add_trip.AlartDialogLostenerSaveTrip());
-            AlertDialog dialog = builder.create();
-            dialog.show();
+             OperationsAndTripsHelper
+                    .showExitDialog(
+                            Add_trip.this, new OperationsAndTripsHelper.ExitDialogCallback() {
+                                @Override
+                                public void onResult(boolean exitAndSave) {
+                                    if (exitAndSave)
+                                        saveTrip();
+                                    finish();
+                                }
+                            });
         }
 
         else if (v == tripPicture){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialog);
-            builder.setTitle("העלאת מסלול");
-            builder.setMessage("תרצו להעלות תמונה מהגלריה או לצלם תמונה במצלמה?");
-            builder.setCancelable(true);
-            builder.setPositiveButton("מצלמה", new Add_trip.HandleAlartDialogLostener());
-            builder.setNegativeButton("גלריה", new Add_trip.HandleAlartDialogLostener());
-            AlertDialog dialog = builder.create();
-            dialog.show();
-
-            //לשים את התמונה של המקטע בחלק הנכון
+            currentDialogImageView = tripPicture;
+            OperationsAndTripsHelper.showTripPic(Add_trip.this, cameraLauncher, galleryLauncher, new OperationsAndTripsHelper.PicDialogCallback() {
+                @Override
+                public void onResult(ImageView pic) {
+                    tripPicture = pic;
+                }
+            });
         }
         else if(v == ageAdjustments){
 
@@ -405,18 +410,18 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         picture = addNewPartDialog.findViewById(R.id.picture);
         description = addNewPartDialog.findViewById(R.id.description);
         equipment = addNewPartDialog.findViewById(R.id.equipment);
+        currentDialogImageView = picture;
 
         picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(Add_trip.this, R.style.AlertDialog);
-                builder.setTitle("העלאת מסלול");
-                builder.setMessage("תרצו להעלות תמונה מהגלריה או לצלם תמונה במצלמה?");
-                builder.setCancelable(true);
-                builder.setPositiveButton("מצלמה", new Add_trip.HandleAlartDialogLostener2());
-                builder.setNegativeButton("גלריה", new Add_trip.HandleAlartDialogLostener2());
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                currentDialogImageView = picture;
+                OperationsAndTripsHelper.showTripPic(Add_trip.this, cameraLauncher, galleryLauncher, new OperationsAndTripsHelper.PicDialogCallback() {
+                    @Override
+                    public void onResult(ImageView pic) {
+                        picture = pic;
+                    }
+                });
             }
         });
 
@@ -644,7 +649,6 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
             if (resultCode == RESULT_OK) {
                 Uri imageUri = data.getData();
                 tripPicture.setImageURI(imageUri);
-
             }
         }
 
@@ -760,21 +764,6 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
 
             }
         });
-
-
-    }
-
-    private class AlartDialogLostenerSaveTrip implements DialogInterface.OnClickListener {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            if(which == BUTTON_POSITIVE){
-                saveTrip();
-                finish();
-            }
-            else if(which == BUTTON_NEGATIVE){
-                finish();
-            }
-        }
     }
 
     private void setAdapter(){
@@ -815,22 +804,4 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
 
         recyclerView.setAdapter(recyclerAdapter);
     }
-
-  /*  public void openImageDialog(int position){
-        selectedPosition = position;
-        AlertDialog.Builder builder = new AlertDialog.Builder(Add_trip.this, R.style.AlertDialog);
-        builder.setTitle("העלאת מסלול");
-        builder.setMessage("תרצו להעלות תמונה מהגלריה או לצלם תמונה במצלמה?");
-        builder.setCancelable(true);
-        builder.setPositiveButton("מצלמה", new Add_trip.HandleAlartDialogLostener2());
-        builder.setNegativeButton("גלריה", new Add_trip.HandleAlartDialogLostener2());
-        AlertDialog dialog = builder.create();
-
-//        if(picture != null){
-//            if (tempImages.containsKey(position)) {
-//                picture.setImageBitmap(tempImages.get(position));
-//            }
-//        }
-        dialog.show();
-    }*/
 }
