@@ -1,10 +1,12 @@
 package com.example.guided.Activities;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -112,26 +114,27 @@ public class View_trip extends BaseActivity implements View.OnClickListener {
             finish();
         } else if (v == pictureBTN) {
             String image = trip.getPicture();
-            LayoutInflater inflater = LayoutInflater.from(this); // or getLayoutInflater() in an Activity
-            View dialogView = inflater.inflate(R.layout.trip_pic_dialog_layout, null);
+            Dialog dialog = new Dialog( View_trip.this);
+            dialog.setContentView(R.layout.trip_pic_dialog_layout);
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.show();
 
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("מסלול הטיול");
-
+            ImageView tripPic = dialog.findViewById(R.id.pic);
+            TextView noPic = dialog.findViewById(R.id.noPic);
+            Button close = dialog.findViewById(R.id.closeBtn);
+            close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
             if(image != null){
-                ImageView imageView = dialogView.findViewById(R.id.pic);
-                imageView.setImageBitmap(BitmapHelper.stringToBitmap(image));
-                builder.setView(dialogView);
-
+                tripPic.setImageBitmap(BitmapHelper.stringToBitmap(image));
+                noPic.setVisibility(View.GONE);
             }
             else {
-                builder.setMessage("לא הוסף מסלול");
+                tripPic.setVisibility(View.GONE);
             }
-            builder.setPositiveButton("סגור", null);
-            builder.setCancelable(true);
-            AlertDialog dialog = builder.create();
-            dialog.show();
         }
     }
 }
