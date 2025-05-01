@@ -6,6 +6,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +23,7 @@ import com.example.guided.Activities.Add_trip;
 import com.example.guided.Classes.Operation;
 import com.example.guided.Classes.Trip;
 import com.example.guided.R;
+import com.example.guided.RecyclerAdapters.RecyclerAdapterTrip;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -73,7 +77,8 @@ public class OperationsAndTripsHelper {
 
     public void showTripPic(
                 ActivityResultLauncher< Intent > cameraLauncher,
-                ActivityResultLauncher<Intent> galleryLauncher, PicDialogCallback callback){
+                ActivityResultLauncher<Intent> galleryLauncher,
+                PicDialogCallback callback){
             //creating a dialog for adding a profile picture from gallery or for taking a picture at the camera
 
             Dialog dialog = new Dialog(context);
@@ -83,11 +88,21 @@ public class OperationsAndTripsHelper {
 
             Button galery = dialog.findViewById(R.id.galery);
             Button camera = dialog.findViewById(R.id.camera);
-            TextView title = dialog.findViewById(R.id.titleDialog);
-            title.setText("העלאת תמונה");
+        Button delete = dialog.findViewById(R.id.delete);
+        TextView title = dialog.findViewById(R.id.titleDialog);
+        title.setText("העלאת תמונה");
         /*
-          מאזין ללחיצה בדיאלוג תמונה – מפעיל את המצלמה או הגלריה בהתאם ללחיצה.
+          מאזין ללחיצה בדיאלוג תמונה – מפעיל את המצלמה או הגלריה או מחיקה בהתאם ללחיצה.
          */
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.add_image); // טוען את התמונה
+                ((Add_trip) context).currentDialogImageView.setImageBitmap(bitmap); // מציג אותה בתוך ה-ImageView
+                dialog.dismiss();
+                callback.onResult(((Add_trip) context).currentDialogImageView);
+            }
+        });
             galery.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -214,7 +214,13 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
         }
 
         if(v == profile){
-            RegisteretionHelper.setPic(Edit_profile.this, cameraLauncher, galleryLauncher);
+            RegisteretionHelper.setPic(Edit_profile.this, cameraLauncher, galleryLauncher, new PicDialogCallback() {
+                @Override
+                public void onResult(int pic) {
+                    profile.setImageResource(pic);
+
+                }
+            });
         }
 
         if (v == saveBTN){

@@ -588,6 +588,12 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 galleryLauncher.launch(galleryIntent);
             }
+
+            @Override
+            public void onDeleteRequested(int position, ImageView imageView) {
+                selectedPartPosition = position;
+                currentDialogImageView = imageView;
+            }
         });
 
         recyclerView.setAdapter(recyclerAdapter);

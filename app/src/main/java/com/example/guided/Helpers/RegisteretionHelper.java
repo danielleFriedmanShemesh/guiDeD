@@ -4,9 +4,12 @@ package com.example.guided.Helpers;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,14 +20,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.guided.R;
 
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -33,54 +39,46 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * RegisteretionHelper היא מחלקת עזר שמספקת פונקציות סטטיות שונות
+ * עבור תהליך ההרשמה של משתמש חדש, כולל בחירת תאריך לידה, תנועת נוער,
+ * העלאת תמונת פרופיל ובדיקת תקינות של שדות קלט כמו שם משתמש, סיסמה, מייל ועוד.
+ *
+ * המחלקה מכילה גם ממשקים פנימיים לקריאה חוזרת (Callbacks) לצורך קבלת ערכים ממשתמש,
+ * ומטפלת בדיאלוגים של בחירה בצורה ידידותית למשתמש.
+ */
 public class RegisteretionHelper extends AppCompatActivity {
 
-    private static final Bitmap[] picture = new Bitmap[1];
-    private static ActivityResultLauncher<Intent> cameraLauncher;
-    private static ActivityResultLauncher<Intent> galleryLauncher;
-
-    public RegisteretionHelper() {
-        cameraLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK) {
-                        Intent data = result.getData();
-                        if (data != null) {
-                            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                            picture[0] = bitmap;
-                        }
-                    }
-                }
-        );
-
-        galleryLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK) {
-                        Intent data = result.getData();
-                        if (data != null) {
-                            Uri imageUri = data.getData();
-                            try {
-                                Bitmap bitmap = MediaStore.
-                                        Images.
-                                        Media.
-                                        getBitmap(
-                                                this.getContentResolver(),
-                                                imageUri);
-                                picture[0] = bitmap;
-
-                            } catch (IOException e) {
-                                throw new RuntimeException(e); //מדפיס פרטי שגיאה
-                            }
-                        }
-                    }
-                }
-        );
+    /**
+     * ממשק לקריאה חוזרת כאשר המשתמש בחר תנועת נוער.
+     */
+    public interface OrganizationCallback {
+        void onOrganizationSelected(String organization);
     }
 
-    //TODO: לעשות גם לתמונה
+    /**
+     * ממשק לקריאה חוזרת כאשר המשתמש בחר תאריך לידה.
+     */
+    public interface BirthdayCallback {
+        void onBirthdaySelected(String birthday);
+    }
 
-    public static Bitmap setPic(Context context){
+
+    public interface PicDialogCallback {
+        void onResult(int pic);
+    }
+
+    /**
+     * פותחת דיאלוג לבחירת תמונת פרופיל – מצלמה או גלריה.
+     *
+     * @param context ההקשר של האקטיביטי הנוכחי
+     * @param cameraLauncher משגר הפעולה למצלמה
+     * @param galleryLauncher משגר הפעולה לגלריה
+     */
+    public static void setPic(
+            Context context,
+            ActivityResultLauncher<Intent> cameraLauncher,
+            ActivityResultLauncher<Intent> galleryLauncher, PicDialogCallback callback){
         //creating a dialog for adding a profile picture from gallery or for taking a picture at the camera
 
         Dialog dialog = new Dialog(context);
@@ -90,11 +88,20 @@ public class RegisteretionHelper extends AppCompatActivity {
 
         Button galery = dialog.findViewById(R.id.galery);
         Button camera = dialog.findViewById(R.id.camera);
+        Button delete = dialog.findViewById(R.id.delete);
         TextView title = dialog.findViewById(R.id.titleDialog);
         title.setText("העלאת תמונת פרופיל");
         /*
-          מאזין ללחיצה בדיאלוג תמונה – מפעיל את המצלמה או הגלריה בהתאם ללחיצה.
+          מאזין ללחיצה בדיאלוג תמונה – מפעיל את המצלמה או הגלריה או מחיקה בהתאם ללחיצה.
          */
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                callback.onResult(R.drawable.profile);
+            }
+        });
+
         galery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,8 +125,15 @@ public class RegisteretionHelper extends AppCompatActivity {
         });
     }
 
-    public static String setOrganization(Context context){
-        final String[] organization = new String[1];
+    /**
+     * פותחת דיאלוג לבחירת תנועת נוער מתוך רשימה.
+     *
+     * @param context הקשר האקטיביטי
+     * @param callback קריאה חוזרת עם תנועת הנוער שנבחרה
+     */
+    public static void setOrganization(
+            Context context,
+            OrganizationCallback callback){
         String[] listOrganizations = context.
                 getResources().
                 getStringArray(
@@ -179,11 +193,17 @@ public class RegisteretionHelper extends AppCompatActivity {
 
             }
         });
-        return organization[0];
     }
 
-    public static String setBirthdate(Context context){
-        final String[] date = new String[1];
+    /**
+     * פותחת דיאלוג לבחירת תאריך לידה ומחזירה את התוצאה באמצעות callback.
+     *
+     * @param context ההקשר של האקטיביטי
+     * @param callback קריאה חוזרת עם תאריך הלידה שנבחר
+     */
+    public static void setBirthdate(
+            Context context,
+            BirthdayCallback callback){
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
@@ -210,6 +230,62 @@ public class RegisteretionHelper extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    /**
+     * שומר תמונה בגלריית המכשיר תחת Pictures/MyApp.
+     *
+     * @param bitmap התמונה לשמירה
+     * @param context ההקשר של האקטיביטי
+     */
+    public static void saveImageToGallery(Bitmap bitmap, Context context) {
+        ContentValues values = new ContentValues(); //משתנה(values) ששומר בתוכו מידע(metadata) על התמונה כגון שם התמונה, סוגה, ומיקומה
+
+        values.put(
+                MediaStore.Images.Media.DISPLAY_NAME,
+                "IMG_" +
+                        System.currentTimeMillis() +
+                        ".jpg"); // שם תמונה ייחודי
+        values.put(MediaStore.Images.Media.MIME_TYPE,
+                "image/jpeg"); // סוג התמונה (JPEG)
+        values.put(
+                MediaStore.Images.Media.RELATIVE_PATH,
+                Environment.DIRECTORY_PICTURES +
+                        "/MyApp"); // נשמר בתוך Pictures/MyApp
+
+        //מכניס את מידע על התמונה לתוך MediaStore וקבל את Uri
+        Uri imageUri = context.
+                getContentResolver().
+                insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        values);
+
+        //try-with-resources -> מבטיח שהזרם נסגר אוטומטית
+        try (OutputStream outputStream = context.
+                getContentResolver().
+                openOutputStream(imageUri)) {
+            //כותב את נתוני התמונה מסוג bitmap לתוך הקובץ
+            bitmap.compress(
+                    Bitmap.CompressFormat.JPEG,
+                    100,
+                    outputStream); // שומר את התמונה כJPEG באיכות 100%
+            Toast.makeText(context,
+                            "נשמר בהצלחה בגלריה!",
+                            Toast.LENGTH_SHORT).
+                    show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context,
+                            "שמירה בגלריה נכשלה!",
+                            Toast.LENGTH_SHORT).
+                    show();
+        }
+    }
+
+    /**
+     * מחזירה הודעת שגיאה עבור שדה תנועת נוער במידה ולא נבחר ערך.
+     *
+     * @param organization ערך שנבחר
+     * @return מחרוזת שגיאה אם השדה ריק, אחרת מחרוזת ריקה
+     */
     public static String checkAlertsForOrganization(String organization){
         String alartForOrganization = "";
         if (organization.isEmpty())
@@ -217,6 +293,12 @@ public class RegisteretionHelper extends AppCompatActivity {
         return alartForOrganization;
     }
 
+    /**
+     * מחזירה הודעות שגיאה עבור שדה תאריך לידה – אם ריק או לא תקין.
+     *
+     * @param birthday מחרוזת תאריך
+     * @return מחרוזת שגיאות בהתאם לתוצאה
+     */
     public static String checkAlertsForBirthday(String birthday){
         String alartForBirthday = "";
         if(birthday.isEmpty())
@@ -268,6 +350,12 @@ public class RegisteretionHelper extends AppCompatActivity {
         return (alartForUserName);
     }
 
+    /**
+     * בודקת תקינות של כינוי (nick name).
+     *
+     * @param nickName כינוי לבדיקה
+     * @return הודעת שגיאה אם יש שגיאה, אחרת ריק
+     */
     public static String checkAlertForNickName(String nickName) {
         String alartForNickName = "";
         if (nickName.isEmpty())
@@ -285,6 +373,12 @@ public class RegisteretionHelper extends AppCompatActivity {
         return alartForNickName;
     }
 
+    /**
+     * בודקת תקינות של סיסמה (אורך בלבד).
+     *
+     * @param password סיסמה לבדיקה
+     * @return מחרוזת עם הודעת שגיאה במקרה הצורך
+     */
     public static String checkAlertsForPassword(String password){
         String alartForPassword = "";
         if(password.isEmpty())
@@ -306,6 +400,12 @@ public class RegisteretionHelper extends AppCompatActivity {
         return alartForPassword;
     }
 
+    /**
+     * בודקת תקינות של כתובת מייל.
+     *
+     * @param email כתובת מייל לבדיקה
+     * @return מחרוזת עם הודעת שגיאה במקרה הצורך
+     */
     public static String checkAlertsForEmail(String email){
         String alartForEmail = "";
         if(email.isEmpty())
@@ -347,17 +447,34 @@ public class RegisteretionHelper extends AppCompatActivity {
         return (birthdayDate.getYear() + 1900) < year &&
                 (birthdayDate.getYear() + 1900) > 1900;
     }
-    //checks if username is stand at all the terms
-    public static boolean checkUserName(String userName){
+    /**
+     * בודקת אם שם המשתמש עומד בדרישות אורך ותווים.
+     *
+     * @param userName שם המשתמש לבדיקה
+     * @return true אם תקין, אחרת false
+     */    public static boolean checkUserName(String userName){
 
         return ((userName.length() >= 6) &&
                 (userName.length() <= 15) &&
                 (input_Validation(userName)));
     }
+
+    /**
+     * בודקת אם תנועת נוער נבחרה.
+     *
+     * @param organization תנועת נוער
+     * @return true אם לא ריק
+     */
     public static boolean checkOrganization(String organization){
         return !organization.isEmpty();
     }
 
+    /**
+     * בודקת אם הועלתה תמונת פרופיל.
+     *
+     * @param pic תמונת פרופיל
+     * @return true אם לא ריקה
+     */
     public static boolean checkPic(Bitmap pic){
         return !BitmapHelper.bitmapToString(pic).isEmpty();
 
@@ -374,13 +491,23 @@ public class RegisteretionHelper extends AppCompatActivity {
                 (nickName.length() <= 15));
     }
 
-    //checks if password is stand at all the terms
+    /**
+     * בודקת אם סיסמה באורך חוקי (6-10 תווים).
+     *
+     * @param password סיסמה לבדיקה
+     * @return true אם תקין, אחרת false
+     */
     public static boolean checkPassword(String password){
         return ((password.length() >= 6) &&
                 (password.length() <= 10));
     }
 
-    //checks if email is stand at all the terms
+    /**
+     * בודקת אם מייל תקין בהתאם לתבנית בסיסית.
+     *
+     * @param email כתובת מייל
+     * @return true אם תקין, אחרת false
+     */
     // TODO: המייל לא מקבל מסיבה כלשהי מספרים ותויים מיוחדים
     public static boolean checkEmail(String email){
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";

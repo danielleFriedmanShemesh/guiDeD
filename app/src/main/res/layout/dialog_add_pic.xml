@@ -11,7 +11,7 @@
         android:id="@+id/titleDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="העלאת תמונה"
+        android:text="עריכת תמונה"
         android:textSize="20dp"
         android:layout_marginTop="5dp"
         android:layout_gravity="center"
@@ -21,10 +21,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="תרצו להעלות תמונה מהגלריה או לצלם תמונה במצלמה?"
+        android:text="תרצו להעלות תמונה מהגלריה או לצלם תמונה במצלמה או למחוק את התמונה?"
         android:textSize="15dp"
         android:layout_marginTop="5dp"
         android:layout_gravity="center"
+        android:gravity="center"
         android:fontFamily="@font/yardenregularalefalefalef"
         />
 
@@ -39,20 +40,22 @@
 
         <Button
             android:id="@+id/galery"
-            android:layout_width="150dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="1dp"
             android:backgroundTint="@color/grayeen2"
             android:fontFamily="@font/yardenboldalefalefalef"
             android:text="גלריה"
             android:textColor="@color/black"
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/camera"
+            app:layout_constraintStart_toEndOf="@id/delete"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/camera"
-            android:layout_width="150dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/grayeen2"
             android:fontFamily="@font/yardenboldalefalefalef"
@@ -62,5 +65,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/delete"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/grayeen2"
+            android:fontFamily="@font/yardenboldalefalefalef"
+            android:text="מחיקת תמונה"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

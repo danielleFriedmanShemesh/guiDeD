@@ -5,6 +5,8 @@ package com.example.guided.RecyclerAdapters;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +46,7 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
     public interface OnImagePickerRequestedListener {
         void onCameraRequested(int position, ImageView imageView);
         void onGalleryRequested(int position, ImageView imageView);
+        void onDeleteRequested(int position, ImageView imageView);
     }
 
     private OnImagePickerRequestedListener imagePickerListener;
@@ -186,8 +189,24 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
 
                             Button galery = dialog.findViewById(R.id.galery);
                             Button camera = dialog.findViewById(R.id.camera);
+                            Button delete = dialog.findViewById(R.id.delete);
                             TextView title = dialog.findViewById(R.id.titleDialog);
                             title.setText("העלאת תמונה");
+
+                            /*
+          מאזין ללחיצה בדיאלוג תמונה – מפעיל את המצלמה או הגלריה או מחיקה בהתאם ללחיצה.
+         */
+                            delete.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (imagePickerListener != null) {
+                                        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.add_image); // טוען את התמונה
+                                        pictureIV.setImageBitmap(bitmap); // מציג אותה בתוך ה-ImageView
+                                        dialog.dismiss();
+                                        imagePickerListener.onGalleryRequested(holder.getBindingAdapterPosition(),pictureIV);
+                                    }
+                                }
+                            });
 
                             galery.setOnClickListener(new View.OnClickListener() {
                                 @Override
