@@ -1,11 +1,9 @@
 package com.example.guided.Helpers;
 
-import static android.content.DialogInterface.BUTTON_NEGATIVE;
-import static android.content.DialogInterface.BUTTON_POSITIVE;
+
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.MediaStore;
 import android.view.View;
@@ -15,11 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.appcompat.app.AlertDialog;
 
-import com.example.guided.Activities.Add_operation;
 import com.example.guided.Activities.Add_trip;
 import com.example.guided.R;
+
+import java.util.ArrayList;
 
 public class OperationsAndTripsHelper {
     public interface ExitDialogCallback {
@@ -139,27 +137,6 @@ public class OperationsAndTripsHelper {
                 callback.onResult(false);
             }
         });
-
-
-//        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialog);
-//        builder.setTitle("סגירת חלון");
-//        builder.setMessage("תרצו לשמור את השינויים?");
-//        builder.setCancelable(true);
-//        builder.setPositiveButton("שמור",new AlartDialogLostenerSave());
-//        builder.setNegativeButton("אל תשמור", new AlartDialogLostenerSave());
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
     }
-//    public static class AlartDialogLostenerSave implements DialogInterface.OnClickListener {
-//        @Override
-//        public void onClick(DialogInterface dialog, int which) {
-//            if(which == BUTTON_POSITIVE){
-//                exitAndSave = true;
-//
-//            }
-//            else if(which == BUTTON_NEGATIVE){
-//                exitAndSave = false;
-//            }
-//        }
-//    }
+
 }

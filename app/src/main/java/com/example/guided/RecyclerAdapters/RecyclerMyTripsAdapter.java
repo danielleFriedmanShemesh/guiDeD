@@ -1,11 +1,13 @@
 package com.example.guided.RecyclerAdapters;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.guided.Activities.Add_trip;
+import com.example.guided.Classes.Operation;
 import com.example.guided.R;
 import com.example.guided.Classes.Trip;
 import com.example.guided.Classes.User;
@@ -75,36 +78,48 @@ public class RecyclerMyTripsAdapter extends RecyclerView.Adapter<RecyclerMyTrips
         holder.parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext(), R.style.AlertDialog);
-                builder.setMessage("תרצו למחוק את הטיול?");
-                builder.setCancelable(true);
 
-                builder.setPositiveButton("מחק", (dialog, which) -> {
-                    int position = holder.getBindingAdapterPosition();
-                    Trip deleteTr = tripArrayList.get(position);
-                    String tripId = deleteTr.getKey();
 
-                    FirebaseDatabase.getInstance()
-                            .getReference("trips")
-                            .child(tripId)
-                            .removeValue()
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    // Remove from RecyclerView
-
-                                    tripArrayList.remove(position);
-                                    notifyItemRemoved(position);
-                                    notifyItemRangeChanged(position, tripArrayList.size());
-                                    dialog.dismiss();
-                                }
-                            });
-                });
-                builder.setNegativeButton("שמור", null);
-                builder.show();
-                AlertDialog dialog = builder.create();
+                Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.dialog_delete_layout);
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 dialog.show();
-                dialog.dismiss();
+
+                TextView title = dialog.findViewById(R.id.titleDialog);
+                Button save = dialog.findViewById(R.id.save);
+                Button delete = dialog.findViewById(R.id.delete);
+
+                title.setText("תרצו למחוק את הטיול?");
+                delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int position = holder.getBindingAdapterPosition();
+                        Trip deleteTr = tripArrayList.get(position);
+                        String tripId = deleteTr.getKey();
+
+                        FirebaseDatabase.getInstance()
+                                .getReference("trips")
+                                .child(tripId)
+                                .removeValue()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        // Remove from RecyclerView
+
+                                        tripArrayList.remove(position);
+                                        notifyItemRemoved(position);
+                                        notifyItemRangeChanged(position, tripArrayList.size());
+                                        dialog.dismiss();
+                                    }
+                                });
+                    }
+                });
+                save.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
                 return false;
             }
         });
