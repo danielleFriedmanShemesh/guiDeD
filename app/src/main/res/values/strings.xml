@@ -5,8 +5,6 @@
         <item>English</item>
         <item>Hebrew</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string-array name="age_adjustment">
         <item>לכל גיל</item>
         <item>כיתה א\'</item>

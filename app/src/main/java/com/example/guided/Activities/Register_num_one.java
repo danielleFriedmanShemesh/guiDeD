@@ -24,15 +24,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Register_num_one extends BaseActivity implements View.OnClickListener {
-    ImageView continueBtn;
-    EditText userName;
-    EditText password;
-    EditText email;
-    TextView alartForUserName;
-    TextView alartForPassword;
-    TextView alartForEmail;
+    private ImageView continueBtn; //כפתור מעבר למסך הבא
+    private EditText userName; //שדה קלט לשם משתמש
+    private EditText password; //שדה קלט לסיסמה
+    private EditText email; //שדה קלט לאימייל
+    private TextView alartForUserName; // תיבת טקסט להתרעה על שגיאה בשם המשתמש
+    private TextView alartForPassword; //תיבת טקסט להתרעה על שגיאה בסיסמה
+    private TextView alartForEmail; //תיבת טקסט להתרעה על שגיאה באימייל
 
-    User newUser=new User();
+    private User newUser=new User(); //אובייקט User המייצג את המשתמש החדש בתהליך ההרשמה
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,6 @@ public class Register_num_one extends BaseActivity implements View.OnClickListen
             password.setText(newUser.getPassword());
             email.setText(newUser.getEmail());
         }
-
         continueBtn.setOnClickListener(this);
     }
 
@@ -78,31 +77,44 @@ public class Register_num_one extends BaseActivity implements View.OnClickListen
         // if you click on the 'next' button
         if(v==continueBtn){
 
-            alartForPassword.setText(checkAlertsForPassword(password.getText().toString()));
-            alartForEmail.setText(checkAlertsForEmail(email.getText().toString()));
-            alartForUserName.setText(checkAlertsForUserName(userName.getText().toString()));
+            alartForPassword.setText(
+                    checkAlertsForPassword(
+                            password.getText().toString()));
+            alartForEmail.setText(
+                    checkAlertsForEmail(
+                            email.getText().toString()));
+            alartForUserName.setText(
+                    checkAlertsForUserName(
+                            userName.getText().toString()));
 
 
             final boolean[] x = {false};
             FirebaseUserHelper firebaseUserHelper = new FirebaseUserHelper();
-            firebaseUserHelper.fetchUsers(new FirebaseUserHelper.DataStatus() {
+            firebaseUserHelper.fetchUsers(
+                    new FirebaseUserHelper.DataStatus() {
                 @Override
                 public void onDataLoaded(ArrayList<User> users) {
                     for(User user : users){
-                        if (user.getUserName().equals(userName.getText().toString())) {
-                            // Username is already taken
-                            x[0] = true;
+                        if (user.getUserName().equals(
+                                userName.getText().toString())) {
+                            x[0] = true; // שם המשתמש כבר קיים
                         }
                     }
 
                     if(!x[0]) {
-                        //final checks before moving to the second activity
-                        if (checkUserName(userName.getText().toString()) &&
-                                checkPassword(password.getText().toString()) &&
-                                checkEmail(email.getText().toString())) {
-                            newUser.setUserName(userName.getText().toString());
-                            newUser.setPassword(password.getText().toString());
-                            newUser.setEmail(email.getText().toString());
+                        // עדכון פרטי המשתמש
+                        if (checkUserName(
+                                userName.getText().toString()) &&
+                                checkPassword(
+                                        password.getText().toString()) &&
+                                checkEmail(
+                                        email.getText().toString())) {
+                            newUser.setUserName(
+                                    userName.getText().toString());
+                            newUser.setPassword(
+                                    password.getText().toString());
+                            newUser.setEmail(
+                                    email.getText().toString());
                             newUser.setProfileImage(
                                     BitmapHelper.
                                             bitmapToString(

@@ -100,7 +100,6 @@ public class LibraryOperationsFragment extends Fragment {
                 }
             );
         }
-
         return v;
     }
 }

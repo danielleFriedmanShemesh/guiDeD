@@ -3,11 +3,12 @@ package com.example.guided.Activities;
 import static com.example.guided.Helpers.RegisteretionHelper.*;
 
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -17,6 +18,10 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -39,36 +44,35 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 
 public class Edit_profile extends BaseActivity implements View.OnClickListener {
-    EditText userName;
-    TextView organization;
-    EditText birthday;
-    EditText nickName;
-    ImageView profile;
-    String[] listOrganizations;
-    Dialog dialog;
-    ImageView saveBTN;
-    ImageButton exitBTN;
-    TextView alartForUserName;
-    TextView alartForNickName;
-    TextView alartForOrganization;
-    TextView alartForBirthday;
-    DatabaseReference userRef;
+    // רכיבי תצוגה
+    private EditText userName;     // שדה להזנת שם המשתמש החדש
+    private TextView organization;     // מציג את תנועת הנוער שנבחרה
+    private EditText birthday;     // תאריך הלידה של המשתמש
+    private EditText nickName;    // שדה להזנת כינוי המשתמש
+    private ImageView profile;    // תמונת הפרופיל של המשתמש
+    private ImageView saveBTN;    // כפתור שמירת פרופיל
+    private ImageButton exitBTN;    // כפתור יציאה מהמסך
+    private TextView alartForUserName;    // מציג התראות לשם המשתמש
+    private TextView alartForNickName;    // מציג התראות לכינוי
+    private TextView alartForOrganization;    // מציג התראות למסגרת
+    private TextView alartForBirthday;    // מציג התראות לתאריך הלידה
 
-    String oldUsername;
-    String oldUserId;
+    private DatabaseReference userRef;     // הפנייה למסד הנתונים של המשתמשים
+    private String oldUsername;     // שם המשתמש הישן (לפני עריכה)
+    private String oldPicture; // תמונת הפרופיל הישנה(לפני עריכה)
 
-    ArrayList<Trip> tripsArrayList;
-    ArrayList<Operation> operationArrayList;
+    // רשימות פעולות וטיולים לשם עדכון שם המשתמש בהן
+    private ArrayList<Trip> tripsArrayList;
+    private ArrayList<Operation> operationArrayList;
 
-    ActivityResultLauncher<Intent> cameraLauncher;
-    ActivityResultLauncher<Intent> galleryLauncher;
-    //TODO: כשמשנית את השם משתמש צריך לשנות אותו גם בכל הפעולות וטיולים של המשתמש הזה!
+    private ActivityResultLauncher<Intent> cameraLauncher;
+    private ActivityResultLauncher<Intent> galleryLauncher;
 
-    User updatedUser = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +85,9 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
             return insets;
         });
 
-        userRef = FirebaseDatabase.getInstance().getReference("users");
+        userRef = FirebaseDatabase.
+                getInstance().
+                getReference("users");         // הפנייה למסד הנתונים של המשתמשים
 
 
         alartForUserName=findViewById(R.id.alartUserName);
@@ -91,25 +97,24 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
 
         userName = findViewById(R.id.userName);
         nickName = findViewById(R.id.nickName);
-
         profile = findViewById(R.id.profile);
-        profile.setOnClickListener(this);
-
         birthday = findViewById(R.id.birthday);
-        birthday.setOnClickListener(this);
-
-
-        saveBTN = findViewById(R.id.save);
-        saveBTN.setOnClickListener(this);
-
-        exitBTN = findViewById(R.id.exit);
-        exitBTN.setOnClickListener(this);
-
         organization = findViewById(R.id.organization);
+        saveBTN = findViewById(R.id.save);
+        exitBTN = findViewById(R.id.exit);
+
+        // מאזינים לאירועים
+        birthday.setOnClickListener(this);
+        profile.setOnClickListener(this);
+        saveBTN.setOnClickListener(this);
+        exitBTN.setOnClickListener(this);
         organization.setOnClickListener(this);
 
         FirebaseUserHelper firebaseUserHelper = new FirebaseUserHelper();
-        firebaseUserHelper.fetchUserData(new FirebaseUserHelper.UserDataCallback() {
+        firebaseUserHelper.
+                fetchUserData(
+                        new FirebaseUserHelper.
+                                UserDataCallback() {
             @Override
             public void onUserDataLoaded(User u) {
                 organization.setText(u.getOrganization());
@@ -132,12 +137,57 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
             }
         });
 
+        cameraLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult o) {
+
+                            if (o.getResultCode() == RESULT_OK) {
+                                Intent data = o.getData();
+                                if (data != null) {
+                                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                                    profile.setImageBitmap(bitmap);
+                                }
+                            }
+
+                    }
+                }
+        );
+
+        galleryLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult o) {
+
+                            if (o.getResultCode() == RESULT_OK) {
+                                Intent data = o.getData();
+                                if (data != null) {
+                                    Uri imageUri = data.getData();
+                                    try {
+                                        Bitmap bitmap = MediaStore.
+                                                Images.
+                                                Media.
+                                                getBitmap(
+                                                        Edit_profile.this.getContentResolver(),
+                                                        imageUri);
+                                        profile.setImageBitmap(bitmap);
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e); //מדפיס פרטי שגיאה
+                                    }
+                                }
+                            }
+
+                    }
+                }
+        );
+
     }
 
     @SuppressLint("SetTextI18n")
     @Override
     public void onClick(View v) {
-        //TODO: ליצור מחלקה של הרשמה שיש לה פונקציות שמתפלות בכל מה שקשור לרישום/ התחברות ושאני פשוטל אקרע לה גם פה וגם בהרשמה ובהתחברת כדי שלא יהיה כפילות של קוד
 
         alartForUserName.setText("");
         alartForNickName.setText("");
@@ -145,16 +195,26 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
         alartForBirthday.setText("");
 
         if (v == birthday){
-            birthday.setText(RegisteretionHelper.setBirthdate(Edit_profile.this));
+            RegisteretionHelper.setBirthdate(Edit_profile.this, new BirthdayCallback() {
+                @Override
+                public void onBirthdaySelected(String b) {
+                    birthday.setText(b);
+                }
+            });
 
         }
 
         if (v == organization){
-            organization.setText(RegisteretionHelper.setOrganization(Edit_profile.this));
+            RegisteretionHelper.setOrganization(Edit_profile.this, new OrganizationCallback(){
+                @Override
+                public void onOrganizationSelected(String o) {
+                    organization.setText(o);
+                }
+            });
         }
 
         if(v == profile){
-            profile.setImageBitmap(RegisteretionHelper.setPic(Edit_profile.this));
+            RegisteretionHelper.setPic(Edit_profile.this, cameraLauncher, galleryLauncher);
         }
 
         if (v == saveBTN){

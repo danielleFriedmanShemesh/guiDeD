@@ -5,29 +5,26 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.guided.R;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -85,15 +82,40 @@ public class RegisteretionHelper extends AppCompatActivity {
 
     public static Bitmap setPic(Context context){
         //creating a dialog for adding a profile picture from gallery or for taking a picture at the camera
-        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialog);
-        builder.setTitle("העלאת תמונת פרופיל");
-        builder.setMessage("תרצו להעלות תמונה מהגלריה או לצלם תמונה במצלמה?");
-        builder.setCancelable(true);
-        builder.setPositiveButton("מצלמה", new HandleAlartDialogLostener());
-        builder.setNegativeButton("גלריה", new HandleAlartDialogLostener());
-        AlertDialog dialog = builder.create();
+
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_add_pic);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.show();
-        return picture[0];
+
+        Button galery = dialog.findViewById(R.id.galery);
+        Button camera = dialog.findViewById(R.id.camera);
+        TextView title = dialog.findViewById(R.id.titleDialog);
+        title.setText("העלאת תמונת פרופיל");
+        /*
+          מאזין ללחיצה בדיאלוג תמונה – מפעיל את המצלמה או הגלריה בהתאם ללחיצה.
+         */
+        galery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent galleryIntent = new Intent(
+                        Intent.ACTION_PICK,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                // Intent.ACTION_PICK → Opens an app to let the user pick something.
+                //MediaStore.Images.Media.EXTERNAL_CONTENT_URI → Gets images from external storage (Gallery).
+                galleryLauncher.launch(galleryIntent);
+                dialog.dismiss();
+            }
+        });
+        camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cameraIntent = new Intent(
+                        MediaStore.ACTION_IMAGE_CAPTURE);
+                cameraLauncher.launch(cameraIntent);
+                dialog.dismiss();
+            }
+        });
     }
 
     public static String setOrganization(Context context){
@@ -121,27 +143,40 @@ public class RegisteretionHelper extends AppCompatActivity {
 
         // set adapter
         listView.setAdapter(adapter);
-        editText.addTextChangedListener(new TextWatcher() {
+        editText.addTextChangedListener(
+                new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(
+                    CharSequence s,
+                    int start,
+                    int count,
+                    int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(
+                    CharSequence s,
+                    int start,
+                    int before,
+                    int count) {
                 adapter.getFilter().filter(s);
             }
 
             @Override
             public void afterTextChanged(Editable s) {}
         });
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // when item selected from list
                 // set selected item on textView
-                organization[0] = adapter.getItem(position);
+                String organization = adapter.getItem(position);
 
                 // Dismiss dialog
                 dialog.dismiss();
+                callback.onOrganizationSelected(
+                        organization); // נקרא לפונקציה
+
             }
         });
         return organization[0];
@@ -156,21 +191,23 @@ public class RegisteretionHelper extends AppCompatActivity {
 
         //open a Date Picker Dialog
         DatePickerDialog datePickerDialog = new DatePickerDialog(
-                context
-                , new DatePickerDialog.OnDateSetListener() {
+                context,
+                new DatePickerDialog.OnDateSetListener() {
             @SuppressLint("SetTextI18n")
             @Override
             //show the date that the user chose at the birthday edit text
-            public void onDateSet(DatePicker view, int year,
-                                  int monthOfYear, int dayOfMonth) {
+            public void onDateSet(
+                    DatePicker view,
+                    int year,
+                    int monthOfYear,
+                    int dayOfMonth) {
                 // on below line we are setting date to our edit text.
-                date[0] = DateConverter.convertFullFormatToDate(
-                        dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-
+                String date =
+                        dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+                callback.onBirthdaySelected(date);
             }
         }, year, month, day);
         datePickerDialog.show();
-        return date[0];
     }
 
     public static String checkAlertsForOrganization(String organization){
@@ -297,7 +334,8 @@ public class RegisteretionHelper extends AppCompatActivity {
         int year = c.get(Calendar.YEAR);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "dd/MM/yyyy", Locale.getDefault());
+                "dd/MM/yyyy",
+                Locale.getDefault());
         Date birthdayDate;
         try {
             birthdayDate = dateFormat.parse(birthday);
@@ -312,7 +350,9 @@ public class RegisteretionHelper extends AppCompatActivity {
     //checks if username is stand at all the terms
     public static boolean checkUserName(String userName){
 
-        return ((userName.length() >= 6) && (userName.length() <= 15) && (input_Validation(userName)));
+        return ((userName.length() >= 6) &&
+                (userName.length() <= 15) &&
+                (input_Validation(userName)));
     }
     public static boolean checkOrganization(String organization){
         return !organization.isEmpty();
@@ -330,19 +370,22 @@ public class RegisteretionHelper extends AppCompatActivity {
      * @return true אם חוקי, אחרת false
      */
     public static boolean checkNickName(String nickName){
-        return ((nickName.length() >= 2) && (nickName.length() <= 15));
+        return ((nickName.length() >= 2) &&
+                (nickName.length() <= 15));
     }
 
     //checks if password is stand at all the terms
     public static boolean checkPassword(String password){
-        return ((password.length() >= 6) && (password.length() <= 10));
+        return ((password.length() >= 6) &&
+                (password.length() <= 10));
     }
 
     //checks if email is stand at all the terms
     // TODO: המייל לא מקבל מסיבה כלשהי מספרים ותויים מיוחדים
     public static boolean checkEmail(String email){
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-        return (email.matches(emailPattern) && (!email.isEmpty()));
+        return (email.matches(emailPattern) &&
+                (!email.isEmpty()));
     }
 
     /**
@@ -354,34 +397,19 @@ public class RegisteretionHelper extends AppCompatActivity {
      */
     public static boolean input_Validation(String input)
     {
-        Pattern letter = Pattern.compile("[a-zA-Z]");
-        Pattern digit = Pattern.compile("[0-9]");
-        Pattern special = Pattern.compile ("[^A-Za-z0-9]");
+        Pattern letter = Pattern.
+                compile("[a-zA-Z]");
+        Pattern digit = Pattern.
+                compile("[0-9]");
+        Pattern special = Pattern.
+                compile ("[^A-Za-z0-9]");
 
         Matcher hasLetter = letter.matcher(input);
         Matcher hasDigit = digit.matcher(input);
         Matcher hasSpecial = special.matcher(input);
 
-        return hasLetter.find() && hasDigit.find() && hasSpecial.find();
-    }
-
-    public static class HandleAlartDialogLostener implements DialogInterface.OnClickListener {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            //camera
-            if (which == -1) {
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                cameraLauncher.launch(cameraIntent);
-            }
-            //gallery
-            else if (which == -2) {
-                Intent galleryIntent = new Intent(
-                        Intent.ACTION_PICK,
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                // Intent.ACTION_PICK → Opens an app to let the user pick something.
-                //MediaStore.Images.Media.EXTERNAL_CONTENT_URI → Gets images from external storage (Gallery).
-                galleryLauncher.launch(galleryIntent);
-            }
-        }
+        return hasLetter.find() &&
+                hasDigit.find() &&
+                hasSpecial.find();
     }
 }

@@ -32,16 +32,16 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 
 public class Log_in extends BaseActivity implements View.OnClickListener {
-    ImageView submmitBTN;
-    EditText userName;
-    EditText password;
-    EditText email;
-    TextView alartForUserName;
-    TextView alartForPassword;
-    TextView alartForEmail;
-    TextView alartForAll;
+    private ImageView submmitBTN; //כפתור שליחה להתחברות
+    private EditText userName; //שדה קלט לשם משתמש
+    private EditText password; //שדה קלט לסיסמה
+    private EditText email; //שדה קלט לאימייל
+    private TextView alartForUserName; // תיבת טקסט להתרעה על שגיאה בשם המשתמש
+    private TextView alartForPassword; //תיבת טקסט להתרעה על שגיאה בסיסמה
+    private TextView alartForEmail; //תיבת טקסט להתרעה על שגיאה באימייל
+    private TextView alartForAll; // תיבת טקסט להתרעה כללית במקרה של שגיאה
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth; //אובייקט Firebase לאימות משתמשים
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,43 +88,53 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
 
             final boolean[] x = {false};
             FirebaseUserHelper firebaseUserHelper = new FirebaseUserHelper();
-            firebaseUserHelper.fetchUsers(new FirebaseUserHelper.DataStatus() {
+            firebaseUserHelper.fetchUsers(
+                    new FirebaseUserHelper.DataStatus() {
                 @Override
                 public void onDataLoaded(ArrayList<User> users) {
                     for(User user : users){
-                        if (user.getUserName().equals(userName.getText().toString())) {
-                            // Username is already taken
+                        if (user.getUserName().equals(
+                                userName.getText().toString())) {
+                            // שם משתמש קיים כבר
                             x[0] = true;
                         }
                     }
                     if (x[0]){
-                        // Username is in the dataBase
+                        // שם משתמש קיים - ממשיכים לבדוק
+                        if (checkUserName(
+                                userName.getText().toString()) &&
+                                checkPassword(
+                                        password.getText().toString()) &&
+                                checkEmail(
+                                        email.getText().toString())) {
 
-                        //final checks before moving to the second activity
-                        if (checkUserName(userName.getText().toString()) &&
-                                checkPassword(password.getText().toString()) &&
-                                checkEmail(email.getText().toString())) {
-
-                            mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
-                                    .addOnCompleteListener(Log_in.this, new OnCompleteListener<AuthResult>() {
+                            mAuth.signInWithEmailAndPassword(
+                                    email.getText().toString(),
+                                            password.getText().toString())
+                                    .addOnCompleteListener(Log_in.this,
+                                            new OnCompleteListener<AuthResult>() {
                                         @Override
                                         public void onComplete(@NonNull Task<AuthResult> task) {
                                             if (task.isSuccessful()) {
-                                                // Sign in success, update UI with the signed-in user's information
-                                                Log.d(TAG, "signInWithEmail:success");
+                                                // התחברות הצליחה
+                                                Log.d(TAG, "התחברות הצליחה!");
                                                 FirebaseUser user = mAuth.getCurrentUser();
                                                 updateUI(user);
-                                                //go to the second register activity and transport the User object as an extra
-                                                Intent intent = new Intent(Log_in.this, Home_page.class);
-                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                //עובר לדף הבית
+                                                Intent intent = new Intent(
+                                                        Log_in.this,
+                                                        Home_page.class);
+                                                intent.addFlags(
+                                                        Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                                                Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 // FLAG_ACTIVITY_CLEAR_TOP- מנקה את הדרך חזרה ומונע מהמשתמש לחזור למסכים קודמים עם כפתור Back.
                                                 // FLAG_ACTIVITY_NEW_TASK - פותח את האקטיביטי החדשה בתוך טסק חדש. ועוזר "לנתק" את המסך החדש מהקודמים.
                                                 startActivity(intent);
                                                 finish();
                                             } else {
-                                                // If sign in fails, display a message to the user.
-                                                Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                                Toast.makeText(Log_in.this, "Authentication failed.",
+                                                // התחברות נכשלה
+                                                Log.w(TAG, "התחברות נכשלה", task.getException());
+                                                Toast.makeText(Log_in.this, "התחברות נכשלה",
                                                         Toast.LENGTH_SHORT).show();
                                                 updateUI(null);
                                             }
@@ -132,17 +142,17 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
                                     });
                         }
                         else {
-                            alartForAll.setText("אחד או יותר מהפרטי ההזדהות שהוכנסו שגויים! ");
+                            alartForAll.setText(
+                                    "אחד או יותר מהפרטי ההזדהות שהוכנסו שגויים! ");
                             alartForAll.setVisibility(View.VISIBLE);
                         }
                     }
 
                     if(!x[0]) {
-                        alartForUserName.setText("* שם המשתמש שבחרת לא קיים " +
+                        alartForUserName.setText(
+                                "* שם המשתמש שבחרת לא קיים " +
                                 '\n' +
                                 alartForUserName.getText().toString());
-
-
                     }
                 }
             });

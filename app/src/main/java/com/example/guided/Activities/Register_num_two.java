@@ -1,7 +1,7 @@
 package com.example.guided.Activities;
 
+import static com.example.guided.Helpers.RegisteretionHelper.*;
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +18,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -34,6 +38,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.text.ParseException;
@@ -42,26 +48,24 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Register_num_two extends BaseActivity implements View.OnClickListener {
-    TextView organization;
-    EditText birthday;
-    EditText nickName;
-    ImageView profile;
-    String[] listOrganizations;
-    ImageView backBTN;
-    ImageView saveBTN;
-    TextView alartForNickName;
-    TextView alartForOrganization;
-    TextView alartForBirthday;
-    TextView alartForProfile;
-    User newUser;
-    String userName;
-    String password;
-    String email;
+    private TextView organization; // שדה לבחירת תנועת נוער
+    private EditText birthday; // שדה להזנת תאריך לידה
+    private EditText nickName; // שדה להזנת כינוי
+    private ImageView profile; // תצוגת תמונה של פרופיל
+    private ImageView backBTN; // כפתור חזור
+    private ImageView saveBTN; // כפתור שמירה
+    private TextView alartForNickName; //טקסט שגיאה לכינוי
+    private TextView alartForOrganization; // טקסט שגיאה לתנועת נוער
+    private TextView alartForBirthday; // טקסט שגיאה לתאריך לידה
+    private User newUser; // אובייקט User שעובר מהמסך הקודם
+    private String password; // סיסמה מהמסך הקודם
+    private String email; //אימייל מהשלב הקודם
 
-    private FirebaseAuth mAuth;
-    ProgressBar progressBar;
+    private FirebaseAuth mAuth; // מופע Firebase Authentication
+    private ProgressBar progressBar; //  תצוגת עיגול טעינה
 
-
+    private ActivityResultLauncher<Intent> cameraLauncher; // לאונצ'ר להפעלת המצלמה
+    private ActivityResultLauncher<Intent> galleryLauncher; //  לאונצ'ר לפתיחת גלריה
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,20 +97,18 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
 
         organization = findViewById(R.id.organization);
         organization.setOnClickListener(this);
-        //crating a list of youth organizations in israel
-        listOrganizations = getResources().getStringArray(R.array.organization_adjustment);
+
         alartForOrganization = findViewById(R.id.alartOrganization);
         alartForBirthday = findViewById(R.id.alartBirthday);
         alartForNickName = findViewById(R.id.alartNickName);
-        alartForProfile = findViewById(R.id.alartProfile);
 
-
-        //set fields with data from User object that returned from the first register activity as an extra
-        Intent intent = getIntent();
-        Serializable user = intent.getSerializableExtra("newUser");
+        //מגדיר שדות עם נתונים מאובייקט User  שחזרו ממסך ההרשמה הראשון כאקסטרה
+        Serializable user = getIntent().
+                getSerializableExtra("newUser");
         if (user instanceof User){
             newUser = (User) user;
-            organization.setText(newUser.getOrganization());
+            organization.setText(
+                    newUser.getOrganization());
             Date currentDate = new Date();
             Date thisDate = newUser.getBirthday();
             if((thisDate.getDate() == currentDate.getDate()) &&
@@ -126,12 +128,67 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
                     BitmapHelper.stringToBitmap(profileImageStr));
             }
             nickName.setText(newUser.getNickName());
-            userName = newUser.getUserName();
             password = newUser.getPassword();
             email = newUser.getEmail();
         }
+
+        cameraLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult o) {
+                        if (o.getResultCode() == RESULT_OK) {
+                            Intent data = o.getData();
+                            if (data != null) {
+                                Bitmap bitmap = (Bitmap) data.
+                                        getExtras().
+                                        get("data");
+                                profile.setImageBitmap(bitmap);
+                                saveImageToGallery(bitmap,
+                                        Register_num_two.this);
+                            }
+                        }
+                    }
+                }
+        );
+
+        galleryLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult o) {
+                        if (o.getResultCode() == RESULT_OK) {
+                            Intent data = o.getData();
+                            if (data != null) {
+                                Uri imageUri = data.getData();
+                                try {
+                                    Bitmap bitmap = MediaStore.
+                                            Images.
+                                            Media.
+                                            getBitmap(
+                                                    Register_num_two.this.getContentResolver(),
+                                                    imageUri);
+                                    profile.setImageBitmap(bitmap);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e); //מדפיס פרטי שגיאה
+                                }
+                            }
+                        }
+                    }
+                }
+        );
     }
 
+    /**
+     * מאזין ללחיצות על כל אחד מהאלמנטים הגרפיים:
+     * - כפתור תמונה: מאפשר לבחור תמונת פרופיל.
+     * - תאריך לידה: מציג דיאלוג לבחירת תאריך.
+     * - תנועת נוער: מציג דיאלוג לבחירת תנועה.
+     * - כפתור 'שמירה': מבצע ולידציה, שומר את המשתמש ב-Firebase, ופותח את דף הבית.
+     * - כפתור 'חזור': שומר את הנתונים המקומיים וחוזר למסך ההרשמה הראשון.
+     *
+     * @param v ה-View שעליו נלחץ
+     */
     @SuppressLint("SuspiciousIndentation")
     @Override
     public void onClick(View v) {
@@ -141,23 +198,52 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
 
         // if user click on the profile image view
         if (v == profile) {
-            profile.setImageBitmap(RegisteretionHelper.setPic(Register_num_two.this));
+            RegisteretionHelper.setPic(
+                    Register_num_two.this,
+                    cameraLauncher, galleryLauncher);
         }
 
         //if user click on the birthday edit text
         if (v == birthday){
-            birthday.setText(RegisteretionHelper.setBirthdate(Register_num_two.this));
+            if (birthday != null) {
+                RegisteretionHelper.setBirthdate(
+                        Register_num_two.this,
+                        new BirthdayCallback() {
+                    @Override
+                    public void onBirthdaySelected(String b) {
+                        birthday.setText(b);
+                    }
+                });
+            }
         }
 
         if (v == organization){
-            organization.setText(RegisteretionHelper.setOrganization(Register_num_two.this));
+            if (organization != null) {
+                RegisteretionHelper.setOrganization(
+                        Register_num_two.this,
+                        new OrganizationCallback() {
+                    @Override
+                    public void onOrganizationSelected(String o) {
+                        organization.setText(o);
+                    }
+                });
+            }
         }
 
         // if you click on the 'finish' button
         if (v == saveBTN) {
-            alartForNickName.setText(RegisteretionHelper.checkAlertForNickName(nickName.getText().toString()));
-            alartForBirthday.setText(RegisteretionHelper.checkAlertsForBirthday(birthday.getText().toString()));
-            alartForOrganization.setText(RegisteretionHelper.checkAlertsForOrganization(organization.getText().toString()));
+            alartForNickName.setText(
+                    RegisteretionHelper.
+                            checkAlertForNickName(
+                                    nickName.getText().toString()));
+            alartForBirthday.setText(
+                    RegisteretionHelper.
+                            checkAlertsForBirthday(
+                                    birthday.getText().toString()));
+            alartForOrganization.setText(
+                    RegisteretionHelper.
+                            checkAlertsForOrganization(
+                                    organization.getText().toString()));
 
             //final checks of creating a new user at the database
             if (RegisteretionHelper.checkOrganization(organization.getText().toString()) &&
@@ -170,8 +256,12 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
                 saveUser();
 
                 //open the home page after the user had been saved in the database
-                Intent intent = new Intent(this, Home_page.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                Intent intent = new Intent(
+                        this,
+                        Home_page.class);
+                intent.setFlags(
+                        Intent.FLAG_ACTIVITY_NEW_TASK |
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
             }
@@ -181,8 +271,10 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
         if(v == backBTN){
 
             //saving the inputs that the user entered at an User object
-            newUser.setNickName(nickName.getText().toString());
-            newUser.setOrganization(organization.getText().toString());
+            newUser.setNickName(
+                    nickName.getText().toString());
+            newUser.setOrganization(
+                    organization.getText().toString());
 
             SimpleDateFormat dateFormat = new SimpleDateFormat(
                     "dd/MM/yyyy", Locale.getDefault());
@@ -200,7 +292,9 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
                                     .getBitmap()));
 
             //returns to the first register activity and transport the User object as an extra
-            Intent intent = new Intent(this, Register_num_one.class);
+            Intent intent = new Intent(
+                    this,
+                    Register_num_one.class);
             intent.putExtra("newUser",  newUser);
             startActivity(intent);
             finish();
@@ -212,7 +306,6 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
     public void saveUser() {
         // Write a message to the database
 
-
         mAuth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -223,37 +316,49 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
                                     newUser.getEmail(),
                                     nickName.getText().toString(),
                                     organization.getText().toString(),
-                                    DateConverter.convertStringToDate(birthday.getText().toString()),
+                                    DateConverter.
+                                            convertStringToDate(
+                                                    birthday.getText().toString()),
                                     BitmapHelper.bitmapToString(
                                             ((BitmapDrawable)profile.getDrawable())
                                                     .getBitmap()));
 
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            DatabaseReference myRef = database.getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                            myRef.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            DatabaseReference myRef = database.
+                                    getReference(
+                                            "users").
+                                    child(FirebaseAuth.
+                                            getInstance().
+                                            getCurrentUser().
+                                            getUid());
+                            myRef.setValue(user).addOnCompleteListener(
+                                    new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
-                                        Toast.makeText(Register_num_two.this, "User Registered", Toast.LENGTH_LONG).show();
                                         progressBar.setVisibility(View.GONE);
-
                                     }
                                 }
                             });
                         }
-                        else
-                            Toast.makeText(Register_num_two.this, "XXXX" + task.toString(), Toast.LENGTH_SHORT).show();
-
                     }
                 });
     }
 
     private void saveImageToGallery(Bitmap bitmap, Context context) {
-        ContentValues values = new ContentValues(); //a container (values) that store information (metadata) about the image, such as its name, type, and location.
+        ContentValues values = new ContentValues(); //משתנה(values) ששומר בתוכו מידע(metadata) על התמונה כגון שם התמונה, סוגה, ומיקומה
 
-        values.put(MediaStore.Images.Media.DISPLAY_NAME, "IMG_" + System.currentTimeMillis() + ".jpg"); // Unique image name
-        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg"); // Image type (JPEG)
-        values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/MyApp"); // Save inside Pictures/MyApp
+        values.put(
+                MediaStore.Images.Media.DISPLAY_NAME,
+                "IMG_" +
+                        System.currentTimeMillis() +
+                        ".jpg"); // שם תמונה ייחודי
+        values.put(MediaStore.Images.Media.MIME_TYPE,
+                "image/jpeg"); // סוג התמונה (JPEG)
+        values.put(
+                MediaStore.Images.Media.RELATIVE_PATH,
+                Environment.DIRECTORY_PICTURES +
+                        "/MyApp"); // נשמר בתוך Pictures/MyApp
 
         //Insert the image metadata into MediaStore and get the Uri
         Uri imageUri = context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
@@ -267,7 +372,10 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
             Toast.makeText(context, "נשמר בהצלחה!", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, "שמירה נכשלה!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,
+                    "שמירה בגלריה נכשלה!",
+                    Toast.LENGTH_SHORT).
+                    show();
         }
     }
 }

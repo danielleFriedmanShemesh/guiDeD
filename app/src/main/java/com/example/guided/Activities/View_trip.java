@@ -114,6 +114,7 @@ public class View_trip extends BaseActivity implements View.OnClickListener {
             finish();
         } else if (v == pictureBTN) {
             String image = trip.getPicture();
+
             Dialog dialog = new Dialog( View_trip.this);
             dialog.setContentView(R.layout.trip_pic_dialog_layout);
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
