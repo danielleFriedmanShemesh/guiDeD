@@ -4,6 +4,7 @@ package com.example.guided.Helpers;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.MediaStore;
 import android.view.View;
@@ -13,22 +14,58 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.appcompat.app.AlertDialog;
 
 import com.example.guided.Activities.Add_trip;
+import com.example.guided.Classes.Operation;
+import com.example.guided.Classes.Trip;
 import com.example.guided.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
 public class OperationsAndTripsHelper {
+    private String ages = "";
+
+    private String[] listAgeAdjustments; // מערך גילאים לבחירה
+    private boolean[] checkedAgeAdjustments; //מערך בוליאני למעקב אחרי הבחירות של המשתמש בגילאים של החניכים
+    private ArrayList<Integer> userAgeAdjustments; //רשימת אינדקסים של גילאים שהמשתמש בחר
+    private String[] listArea; // מערך אזורים לבחירה
+    private boolean[] checkedArea; //מערך בוליאני למעקב אחרי הבחירות של המשתמש באזורי הטיול
+    private ArrayList<Integer> userArea; //רשימת אינדקסים של האזורים שהמשתמש בחר
+
+    private Context context;
+
+
+    public OperationsAndTripsHelper(Context context) {
+        this.context = context;
+
+        this.userAgeAdjustments = new ArrayList<>();
+        this.listAgeAdjustments = context.getResources().getStringArray(R.array.age_adjustment);
+        this.checkedAgeAdjustments = new boolean[listAgeAdjustments.length];
+
+        this.userArea = new ArrayList<>();
+        this.listArea = context.getResources().getStringArray(R.array.area_adjustment);
+        this.checkedArea = new boolean[listArea.length];
+    }
+
+
+
     public interface ExitDialogCallback {
         void onResult(boolean exitAndSave);
     }
     public interface PicDialogCallback {
         void onResult(ImageView pic);
     }
+    public interface AgeDialogCallback {
+        void onResult(String age);
+    }
+    public interface AreaDialogCallback {
+        void onResult(String area);
+    }
 
-    public static void showTripPic(
-                Context context,
+    public void showTripPic(
                 ActivityResultLauncher< Intent > cameraLauncher,
                 ActivityResultLauncher<Intent> galleryLauncher, PicDialogCallback callback){
             //creating a dialog for adding a profile picture from gallery or for taking a picture at the camera
@@ -70,49 +107,87 @@ public class OperationsAndTripsHelper {
             });
     }
 
-//    public static String showAgeAdjustmentsDialog(Context context){
-//
-//            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialog);
-//            builder.setTitle("בחר את גיל החניכים: ");
-//            builder.setMultiChoiceItems(listAgeAdjustments, checkedAgeAdjustments, new DialogInterface.OnMultiChoiceClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-//                    if(isChecked){
-//                        if(! userAgeAdjustments.contains(which)){
-//                            userAgeAdjustments.add(which);
-//                        }
-//                    }
-//                    else if (userAgeAdjustments.contains(which)){
-//                        userAgeAdjustments.remove(Integer.valueOf(which));
-//                    }
-//                }
-//            });
-//            builder.setCancelable(false);
-//            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    String age = "";
-//                    for(int i = 0; i < userAgeAdjustments.size(); i++){
-//                        age = age + listAgeAdjustments[userAgeAdjustments.get(i)];
-//                        if (i != userAgeAdjustments.size() - 1){
-//                            age = age + ", ";
-//                        }
-//                    }
-//                    ageAdjustments.setText(age);
-//                }
-//            });
-//            builder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    dialog.dismiss();
-//                }
-//            });
-//            AlertDialog dialog = builder.create();
-//            dialog.show();
-//
-//    }
-    public static void showExitDialog(Context context,
-                                         ExitDialogCallback callback){
+    public void showAgeAdjustmentsDialog(AgeDialogCallback callback){
+            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialog);
+            builder.setTitle("בחר את גיל החניכים: ");
+            builder.setMultiChoiceItems(listAgeAdjustments, checkedAgeAdjustments, new DialogInterface.OnMultiChoiceClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                    if(isChecked){
+                        if(! userAgeAdjustments.contains(which)){
+                            userAgeAdjustments.add(which);
+                        }
+                    }
+                    else if (userAgeAdjustments.contains(which)){
+                        userAgeAdjustments.remove(Integer.valueOf(which));
+                    }
+                }
+            });
+            builder.setCancelable(false);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String age = "";
+                    for(int i = 0; i < userAgeAdjustments.size(); i++){
+                        age = age + listAgeAdjustments[userAgeAdjustments.get(i)];
+                        if (i != userAgeAdjustments.size() - 1){
+                            age = age + ", ";
+                        }
+                    }
+                    callback.onResult(age);
+                }
+            });
+            builder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+    }
+
+    public void shoeAreaDialog(AreaDialogCallback callback){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialog);
+        builder.setTitle("בחר את אזור הטיול: ");
+        builder.setMultiChoiceItems(listArea, checkedArea, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if(isChecked){
+                    if(! userArea.contains(which)){
+                        userArea.add(which);
+                    }
+                }
+                else if (userArea.contains(which)){
+                    userArea.remove(Integer.valueOf(which));
+                }
+            }
+        });
+        builder.setCancelable(false);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String a = "";
+                for(int i = 0; i < userArea.size(); i++){
+                    a = a + listArea[userArea.get(i)];
+                    if (i != userArea.size() - 1){
+                        a = a + ", ";
+                    }
+                }
+                callback.onResult(a);
+            }
+        });
+        builder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void showExitDialog(ExitDialogCallback callback){
 
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.exit_activity_dialog_layout);
@@ -139,4 +214,29 @@ public class OperationsAndTripsHelper {
         });
     }
 
+
+    public void saveTrip(Trip t,String keyTrip){
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("trips");
+                String key;
+                if(keyTrip == null)
+                    key = myRef.push().getKey();
+                else
+                    key = keyTrip;
+                t.setKey(key);
+                myRef.child(key).setValue(t);
+    }
+
+    public void saveOperation(Operation operation, String operationKey){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("operations");
+
+        String key;
+        if(operationKey == null)
+            key = myRef.push().getKey();
+        else key = operationKey;
+        operation.setKey(key);
+        myRef.child(key).setValue(operation);
+    }
 }

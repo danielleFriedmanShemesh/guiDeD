@@ -6,7 +6,6 @@ import static com.example.guided.R.*;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -39,8 +37,6 @@ import com.example.guided.Helpers.OperationsAndTripsHelper;
 import com.example.guided.R;
 import com.example.guided.RecyclerAdapters.RecyclerAdapterOperation;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -95,6 +91,8 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
         equipments = findViewById(R.id.equipments);
         privateORpublic = findViewById(R.id.publicORpivate);
 
+        operationsAndTripsHelper = new OperationsAndTripsHelper(Add_operation.this);
+        setAdapter();
         privateORpublic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -119,84 +117,9 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
 
         addMetodaBTN= findViewById(R.id.addMetoda);
         addMetodaBTN.setOnClickListener(this);
+        ageAdjustments.setOnClickListener(this);
 
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
-
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        metodotArr = new ArrayList<Metoda>();
-
-        recyclerAdapter = new RecyclerAdapterOperation(metodotArr, Add_operation.this);
-
-        recyclerAdapter.setOnMetodaListChangedListener(new RecyclerAdapterOperation.OnMetodaListChangedListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onMetodaListChanged(ArrayList<Metoda> metodot) {
-                lengthCount = 0;
-                for (Metoda m : metodot) {
-                    lengthCount += m.getLength();
-                }
-                length.setText(lengthCount + " דקות ");
-            }
-        });
-
-
-        recyclerView.setAdapter(recyclerAdapter);
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-
-
-        ageAdjustments = findViewById(R.id.age);
-        listAgeAdjustments = getResources().getStringArray(R.array.age_adjustment);
-        checkedAgeAdjustments = new boolean[listAgeAdjustments.length];
-
-
-        ageAdjustments.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(Add_operation.this, R.style.AlertDialog);
-                builder.setTitle("בחר את גיל החניכים: ");
-                builder.setMultiChoiceItems(listAgeAdjustments, checkedAgeAdjustments, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if(isChecked){
-                            if(! userAgeAdjustments.contains(which)){
-                                userAgeAdjustments.add(which);
-                            }
-                        }
-                        else if (userAgeAdjustments.contains(which)){
-                            userAgeAdjustments.remove(Integer.valueOf(which));
-                        }
-                    }
-                });
-                builder.setCancelable(false);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String age = "";
-                        for(int i = 0; i < userAgeAdjustments.size(); i++){
-                            age = age + listAgeAdjustments[userAgeAdjustments.get(i)];
-                            if (i != userAgeAdjustments.size() - 1){
-                                age = age + ", ";
-                            }
-                        }
-                        ageAdjustments.setText(age);
-                    }
-                });
-                builder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
-
+        // קבלת פעולה לעריכה (אם נשלחה כ-intent extra)
         Intent intent = getIntent();
         if (intent != null) {
             operationKey = intent.getStringExtra("operationKey");
@@ -222,20 +145,9 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
                                     drawable.baseline_person_24));
                         }
                         metodotArr = operation.getMetodotArr();
+                        id = metodotArr.size();
+                        setAdapter();
                         //TODO: לשנות את הגיל למערך?
-                        recyclerAdapter = new RecyclerAdapterOperation(metodotArr, Add_operation.this);
-                        recyclerAdapter.setOnMetodaListChangedListener(new RecyclerAdapterOperation.OnMetodaListChangedListener() {
-                            @Override
-                            public void onMetodaListChanged(ArrayList<Metoda> metodot) {
-                                lengthCount = 0;
-                                for (Metoda m : metodot) {
-                                    lengthCount += m.getLength();
-                                }
-                                length.setText(lengthCount + " דקות ");
-                            }
-                        });
-                        recyclerView.setAdapter(recyclerAdapter);
-                        //age
                     }
                 }, operationKey);
             }
@@ -255,9 +167,9 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
             finish();
         }
         else if (v == exitBTN) {
-            OperationsAndTripsHelper
+            operationsAndTripsHelper
                     .showExitDialog(
-                            Add_operation.this, new OperationsAndTripsHelper.ExitDialogCallback() {
+                            new OperationsAndTripsHelper.ExitDialogCallback() {
                                 @Override
                                 public void onResult(boolean exitAndSave) {
                                     if (exitAndSave)
@@ -266,50 +178,16 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
                                 }
                             });
         }
-        if( v == ageAdjustments)
-            showAgeDialog();
-
-    }
-
-    /** מציג דיאלוג לבחירת גילאי חניכים */
-    private void showAgeDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(Add_operation.this, R.style.AlertDialog);
-        builder.setTitle("בחר את גיל החניכים: ");
-        builder.setMultiChoiceItems(listAgeAdjustments, checkedAgeAdjustments, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                if(isChecked){
-                    if(! userAgeAdjustments.contains(which)){
-                        userAgeAdjustments.add(which);
-                    }
+        if( v == ageAdjustments){
+            operationsAndTripsHelper
+                    .showAgeAdjustmentsDialog(
+                            new OperationsAndTripsHelper.AgeDialogCallback() {
+                @Override
+                public void onResult(String age) {
+                    ageAdjustments.setText(age);
                 }
-                else if (userAgeAdjustments.contains(which)){
-                    userAgeAdjustments.remove(Integer.valueOf(which));
-                }
-            }
-        });
-        builder.setCancelable(false);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String age = "";
-                for(int i = 0; i < userAgeAdjustments.size(); i++){
-                    age = age + listAgeAdjustments[userAgeAdjustments.get(i)];
-                    if (i != userAgeAdjustments.size() - 1){
-                        age = age + ", ";
-                    }
-                }
-                ageAdjustments.setText(age);
-            }
-        });
-        builder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+            });
+        }
     }
 
     /**
@@ -354,21 +232,13 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
             Toast.makeText(this, "לא כל השדות מלאים!", Toast.LENGTH_LONG).show();
 
         Metoda newMetoda = new Metoda(titleStr, metodaLengthInt, descriptionStr, equipmentStr, id);
-
         metodotArr.add(newMetoda);
         id++;
 
         recyclerAdapter.notifyDataSetChanged();
-        recyclerAdapter.setOnMetodaListChangedListener(new RecyclerAdapterOperation.OnMetodaListChangedListener() {
-            @Override
-            public void onMetodaListChanged(ArrayList<Metoda> metodot) {
-                lengthCount = 0;
-                for (Metoda m : metodot) {
-                    lengthCount += m.getLength();
-                }
-                length.setText(lengthCount + " דקות ");
-            }
-        });
+        lengthCount = lengthCount + metodaLengthInt;
+        length.setText(lengthCount + " דקות ");
+
         addNewMetodaDialog.dismiss();
     }
 
@@ -444,8 +314,6 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
         String goalsSTR = goals.getText().toString();
         String equipmentsSTR = equipments.getText().toString();
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("operations");
         FirebaseUserHelper firebaseUserHelper = new FirebaseUserHelper();
         firebaseUserHelper.fetchUserData(new FirebaseUserHelper.UserDataCallback() {
             @Override
@@ -464,12 +332,7 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
                         organizationSTR,
                         userNameSTR);
 
-                String key;
-                if(operationKey == null)
-                key = myRef.push().getKey();
-                else key = operationKey;
-                operation.setKey(key);
-                myRef.child(key).setValue(operation);
+                operationsAndTripsHelper.saveOperation(operation, operationKey);
             }
             @Override
             public void onError(String errorMessage) {}
@@ -498,7 +361,6 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
                         recyclerAdapter.notifyItemInserted(position);
 
                         lengthCount = lengthCount + deletedMetoda.getLength();
-                        ;
                         length.setText(lengthCount + " דקות ");
                     }
                 }).show();
@@ -520,4 +382,27 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
+
+    private void setAdapter(){
+        recyclerAdapter = new RecyclerAdapterOperation(
+                metodotArr,
+                Add_operation.this);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        // מאזין לשינויי רשימת מטודות
+        recyclerAdapter.setOnMetodaListChangedListener(new RecyclerAdapterOperation.OnMetodaListChangedListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onMetodaListChanged(ArrayList<Metoda> metodot) {
+                lengthCount = 0;
+                for (Metoda m : metodot)
+                    lengthCount += m.getLength();
+                length.setText(lengthCount + " דקות ");
+            }
+        });
+
+
+        recyclerView.setAdapter(recyclerAdapter);
+    }
 }

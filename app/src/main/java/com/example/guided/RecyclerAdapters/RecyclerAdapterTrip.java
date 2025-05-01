@@ -1,17 +1,11 @@
 package com.example.guided.RecyclerAdapters;
 
-import static android.app.Activity.RESULT_OK;
-import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
 //import static androidx.appcompat.graphics.drawable.DrawableContainerCompat.Api21Impl.getResources;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,10 +86,10 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
             public void onClick(View v) {
                 if(partsArrayList != null){
                     int id;
-                    Part part = null;
+                    Part part;
                     //Edit the part
                     part = partsArrayList.get(holder.getBindingAdapterPosition());
-                    id = part.getId();
+                    id = holder.getBindingAdapterPosition();
 
                     Dialog partDialog;
                     partDialog = new Dialog(context);

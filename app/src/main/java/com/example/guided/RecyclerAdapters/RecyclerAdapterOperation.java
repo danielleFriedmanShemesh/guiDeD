@@ -61,10 +61,10 @@ public class RecyclerAdapterOperation extends RecyclerView.Adapter<RecyclerAdapt
             public void onClick(View v) {
                 if(metodaArrayList != null){
                     int id;
-                    Metoda metoda = null;
+                    Metoda metoda;
                     //Edit the metoda
                     metoda = metodaArrayList.get(holder.getBindingAdapterPosition());
-                    id = metoda.getId();
+                    id = holder.getBindingAdapterPosition();
 
                     Dialog metodaDialog;
                     metodaDialog = new Dialog(context);
