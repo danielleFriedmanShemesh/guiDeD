@@ -19,11 +19,18 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
-    Button register;
-    Button logIn;
+    private Button register; //כפתור להרשמה
+    private Button logIn; //כפתור להתחברות
 
 
 
+    /**
+     * הפעולה onCreate מופעלת בעת יצירת האקטיביטי.
+     * היא בודקת אם המשתמש כבר מחובר, ואם כן מעבירה אותו לדף הבית.
+     * אחרת, היא מציגה את המסך עם כפתורי התחברות והרשמה.
+     *
+     * @param savedInstanceState מצב שמור של האקטיביטי (אם קיים)
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +53,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         FirebaseUser user = auth.getCurrentUser();
 
         if (user != null) {
-            // המשתמש מחובר, המשיכי לאפליקציה
+            // המשתמש מחובר, ממשיך לאפליקציה
             String userId = user.getUid();
             String email = user.getEmail();
             Log.e("MainActivity", "id ="+ userId+" email= "+ email);
@@ -61,14 +68,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         logIn.setOnClickListener(this);
     }
 
+    /**
+     * פעולה שמופעלת כאשר לוחצים על אחד הכפתורים.
+     * אם נלחץ כפתור ההרשמה, עוברים למסך Register_num_one.
+     * אם נלחץ כפתור ההתחברות, עוברים למסך Log_in.
+     *
+     * @param v ה־View שנלחץ (register או logIn)
+     */
     @Override
     public void onClick(View v) {
         Intent intent;
         if (v == register) {
-            intent = new Intent(this, Register_num_one.class);
+            intent = new Intent(this,
+                    Register_num_one.class);
             startActivity(intent);
         } else if (v == logIn) {
-            intent = new Intent(this, Log_in.class);
+            intent = new Intent(this,
+                    Log_in.class);
             startActivity(intent);
         }
     }

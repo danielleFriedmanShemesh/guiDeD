@@ -33,92 +33,124 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class Home_page extends BaseActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
+/**
+        * מחלקה זו מייצגת את מסך הבית של האפליקציה לאחר שהמשתמש התחבר.
+ * מציג את המסך הראשי ומאפשר ניווט דרך התפריט העליון ותפריט התחתון (BottomNavigationView).
+ * המחלקה מטפלת בלחיצות בתפריט, מציגה תפריטים קופצים, ומחליפה פרגמנטים בהתאם.
+ * בנוסף, מוודאת שלא ניתן לחזור אחורה במסכים אם המשתמש כבר מחובר.
+ */
+public class Home_page extends BaseActivity implements View.OnClickListener,
+        PopupMenu.OnMenuItemClickListener,
+        BottomNavigationView.OnNavigationItemSelectedListener {
 
-    ImageView menuBTN;
-    BottomNavigationView navView;
+    private ImageView menuBTN; //כפתור התפריט שנמצא בפינה העליונה
+    private BottomNavigationView navView; //תפריט ניווט תחתון - האלמנט שמאפשר לעבור בין אזורים שונים
 
+    /**
+     * מופעלת בעת יצירת המסך. אחראית על אתחול התצוגה והרכיבים הגרפיים,
+     * כולל הטענת פרגמנט הבית כברירת מחדל, קישור כפתורים והאזנה ללחיצות.
+     *
+     * @param savedInstanceState מצב שמור של הפעילות (אם קיים).
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        EdgeToEdge.enable(this); // גורם לתצוגה להימתח עד קצה המסך (כולל מתחת לסטטוס בר)
         setContentView(R.layout.activity_home_page);
+        // מאזין ל-Insets (כמו שולי סטטוס בר וניווט) כדי להוסיף Padding לרכיב הראשי
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        // נטען כברירת מחדל את הפרגמנט הראשי
         replaceFragment(new HomeFragment());
 
-
+        // איתחול כפתור התפריט העליון
         menuBTN = findViewById(R.id.option_btn);
-        menuBTN.setOnClickListener(this);
+        menuBTN.setOnClickListener(this); // מאזין ללחיצה
 
+        // איתחול התפריט התחתון
         navView = findViewById(R.id.bottomNavigationView);
-        navView.setItemIconTintList(null);
+        navView.setItemIconTintList(null);  // נותן אייקונים בצבע מקורי ולא אפור
 
-        navView.setOnNavigationItemSelectedListener(this);
+        navView.setOnNavigationItemSelectedListener(this); //האזנה לאירועים
 
 
     }
 
+    /**
+     * פעולה שמופעלת כאשר נלחץ אחד מהכפתורים במסך.
+     * משמשת כאן לזיהוי לחיצה על כפתור התפריט (menuBTN).
+     *
+     * @param v הרכיב שעליו נלחץ.
+     */
     @Override
     public void onClick(View v) {
         if(v == menuBTN){
             showMenu(v);
         }
-
     }
+
+    /**
+     * מציג תפריט קופץ (PopupMenu) עבור המשתמש עם אפשרויות ניווט שונות.
+     *
+     * @param v הרכיב שלחיצה עליו מפעילה את התפריט.
+     */
     public void showMenu(View v) {
         PopupMenu popup = new PopupMenu(this, v);
 
         // This activity implements OnMenuItemClickListener.
         popup.setOnMenuItemClickListener(this);
         popup.inflate(R.menu.menu_main);
+
         popup.show();
     }
 
-
+    /**
+     * פעולה שמופעלת כאשר נבחר פריט מתפריט הקונטקסט.
+     * מבצעת פעולות ניווט בהתאם לבחירת המשתמש.
+     *
+     * @param item הפריט שנבחר בתפריט.
+     * @return true אם הבחירה טופלה, אחרת false.
+     */
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         Intent intent;
         int id= item.getItemId();
         if(id == R.id.action_profile){
-            Toast.makeText(this, "action_profile", Toast.LENGTH_SHORT).show();
             return true;
         }
         else if(id ==  R.id.action_add_operation){
-            Toast.makeText(this, "action_add_operation", Toast.LENGTH_SHORT).show();
             intent = new Intent(this, Add_operation.class);
             startActivity(intent);
             return true;
         }
         else if(id ==  R.id.action_add_trip){
-            Toast.makeText(this, "action_add_trip", Toast.LENGTH_SHORT).show();
             intent = new Intent(this, Add_trip.class);
             startActivity(intent);
             return true;
         }
         else if(id ==  R.id.action_library_operations){
-            Toast.makeText(this, "action_library_operations", Toast.LENGTH_SHORT).show();
             replaceFragment(new LibraryOperationsFragment());
             return true;
         }
         else if(id ==  R.id.action_library_trips){
-            Toast.makeText(this, "action_library_trips", Toast.LENGTH_SHORT).show();
             replaceFragment(new LibraryTripsFragment());
             return true;
         }
         else if(id ==  R.id.action_home){
-            Toast.makeText(this, "action_home", Toast.LENGTH_SHORT).show();
             replaceFragment(new HomeFragment());
             return true;
         }
         else if (id == R.id.log_out){
             FirebaseAuth.getInstance().signOut();
 
-            Intent intent1 = new Intent(this, MainActivity.class);
-            intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            Intent intent1 = new Intent(this,
+                    MainActivity.class);
+            intent1.addFlags(
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                            Intent.FLAG_ACTIVITY_NEW_TASK);
             // FLAG_ACTIVITY_CLEAR_TOP- מנקה את הדרך חזרה ומונע מהמשתמש לחזור למסכים קודמים עם כפתור Back.
             // FLAG_ACTIVITY_NEW_TASK - פותח את האקטיביטי החדשה בתוך טסק חדש. ועוזר "לנתק" את המסך החדש מהקודמים.
             startActivity(intent1);
@@ -127,14 +159,26 @@ public class Home_page extends BaseActivity implements View.OnClickListener, Pop
         }
         return false;
     }
-    private void replaceFragment(Fragment fragment) {
 
+    /**
+            * מחליף את הפרגמנט המוצג בפריים הראשי בפרגמנט חדש.
+            *
+            * @param fragment הפרגמנט החדש שצריך להציג.
+     */
+    private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment);
         fragmentTransaction.commit();
     }
 
+    /**
+     * פעולה המופעלת בעת בחירה בפריט מתפריט הניווט התחתון.
+     * מציגה דיאלוג מותאם לבחירה או מחליפה פרגמנט בהתאם.
+     *
+     * @param item פריט שנבחר בניווט התחתון.
+     * @return true אם הבחירה טופלה, אחרת false.
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
@@ -157,7 +201,8 @@ public class Home_page extends BaseActivity implements View.OnClickListener, Pop
                 @Override
                 public void onClick(View v) {
                     Intent intent;
-                    intent = new Intent(Home_page.this, Add_operation.class);
+                    intent = new Intent(Home_page.this,
+                            Add_operation.class);
                     startActivity(intent);
                     dialog.dismiss();
                 }
@@ -167,15 +212,21 @@ public class Home_page extends BaseActivity implements View.OnClickListener, Pop
                 @Override
                 public void onClick(View v) {
                     Intent intent;
-                    intent = new Intent(Home_page.this, Add_trip.class);
+                    intent = new Intent(Home_page.this,
+                            Add_trip.class);
                     startActivity(intent);
                     dialog.dismiss();
                 }
             });
             dialog.show();
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().setGravity(Gravity.BOTTOM);
+            dialog.getWindow().setLayout(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawable(
+                    new ColorDrawable(
+                            Color.TRANSPARENT));
+            dialog.getWindow().setGravity(
+                    Gravity.BOTTOM);
             return true;
         }
 
@@ -188,46 +239,57 @@ public class Home_page extends BaseActivity implements View.OnClickListener, Pop
             libraryOpTv.setText("מאגר פעולות");
 
             LinearLayout libraryOP = dialog.findViewById(R.id.opLl);
-            libraryOP.setOnClickListener(new View.OnClickListener() {
+            libraryOP.setOnClickListener(
+                    new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    replaceFragment(new LibraryOperationsFragment());
+                    replaceFragment(
+                            new LibraryOperationsFragment());
                     dialog.dismiss();
                 }
             });
             LinearLayout libraryTR = dialog.findViewById(R.id.trLl);
-            libraryTR.setOnClickListener(new View.OnClickListener() {
+            libraryTR.setOnClickListener(
+                    new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    replaceFragment(new LibraryTripsFragment());
+                    replaceFragment(
+                            new LibraryTripsFragment());
                     dialog.dismiss();
                 }
             });
             dialog.show();
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().setGravity(Gravity.BOTTOM);
+            dialog.getWindow().setLayout(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawable(
+                    new ColorDrawable(
+                            Color.TRANSPARENT));
+            dialog.getWindow().setGravity(
+                    Gravity.BOTTOM);
 
             return true;
         }
 
         else if(id ==  R.id.home){
-            replaceFragment(new HomeFragment());
+            replaceFragment(
+                    new HomeFragment());
             return true;
         }
         return false;
     }
 
+    /**
+     * פעולה שמטפלת בלחיצה על כפתור החזרה (Back).
+     * אם המשתמש מחובר - לא מאפשרת חזרה למסכים קודמים.
+     */
     @Override
     public void onBackPressed() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // אם יש משתמש מחובר, לא נחזור אחורה
-            Toast.makeText(this, "אתה כבר מחובר!", Toast.LENGTH_SHORT).show();
-        } else {
+        FirebaseUser user = FirebaseAuth.
+                getInstance().
+                getCurrentUser();
+        if (user == null) {
             super.onBackPressed();  // במידה ואין משתמש מחובר, נשאיר את ההתנהגות הרגילה
         }
     }
-
-
 }
