@@ -26,7 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 
 public class OperationsAndTripsHelper {
-    private String ages = "";
 
     private String[] listAgeAdjustments; // מערך גילאים לבחירה
     private boolean[] checkedAgeAdjustments; //מערך בוליאני למעקב אחרי הבחירות של המשתמש בגילאים של החניכים
@@ -34,7 +33,9 @@ public class OperationsAndTripsHelper {
     private String[] listArea; // מערך אזורים לבחירה
     private boolean[] checkedArea; //מערך בוליאני למעקב אחרי הבחירות של המשתמש באזורי הטיול
     private ArrayList<Integer> userArea; //רשימת אינדקסים של האזורים שהמשתמש בחר
-
+    private String[] listActivityTypeAdjustments; // מערך פעילויות לבחירה
+    private boolean[] checkedActivityTypeAdjustments; //מערך בוליאני למעקב אחרי הבחירות של המשתמש בסוג הפעילות במקטע
+    private ArrayList<Integer> userActivityTypeAdjustments; //רשימת אינדקסים של הפעילויות שהמשתמש בחר
     private Context context;
 
 
@@ -48,9 +49,11 @@ public class OperationsAndTripsHelper {
         this.userArea = new ArrayList<>();
         this.listArea = context.getResources().getStringArray(R.array.area_adjustment);
         this.checkedArea = new boolean[listArea.length];
+
+        this.userActivityTypeAdjustments = new ArrayList<>();
+        this.listActivityTypeAdjustments = context.getResources().getStringArray(R.array.activity_type_adjustment);
+        this.checkedActivityTypeAdjustments = new boolean[listActivityTypeAdjustments.length];
     }
-
-
 
     public interface ExitDialogCallback {
         void onResult(boolean exitAndSave);
@@ -63,6 +66,9 @@ public class OperationsAndTripsHelper {
     }
     public interface AreaDialogCallback {
         void onResult(String area);
+    }
+    public interface ActivityTypeDialogCallback {
+        void onResult(String ActivityType);
     }
 
     public void showTripPic(
@@ -147,7 +153,54 @@ public class OperationsAndTripsHelper {
             dialog.show();
     }
 
-    public void shoeAreaDialog(AreaDialogCallback callback){
+    public void showActivityDialog(ActivityTypeDialogCallback callback){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialog);
+        builder.setTitle("בחר את סוג הפעילות ");
+        builder.setMultiChoiceItems(listActivityTypeAdjustments, checkedActivityTypeAdjustments, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if(isChecked){
+                    if(! userActivityTypeAdjustments.contains(which)){
+                        userActivityTypeAdjustments.add(which);
+                        if (listActivityTypeAdjustments.equals("אחר")){
+                            //לתת אפשרות לכתוב משהו שלא מופיע כאחד מהאופציות
+                        }
+                    }
+
+                }
+                else if (userActivityTypeAdjustments.contains(which)){
+                    userActivityTypeAdjustments.remove(Integer.valueOf(which));
+                }
+            }
+        });
+        builder.setCancelable(false);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String type = "";
+                for(int i = 0; i < userActivityTypeAdjustments.size(); i++){
+                    type = type + listActivityTypeAdjustments[userActivityTypeAdjustments.get(i)];
+                    if (i != userActivityTypeAdjustments.size() - 1){
+                        type = type + ", ";
+                    }
+                }
+                callback.onResult(type);
+            }
+        });
+        builder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
+    public void showAreaDialog(AreaDialogCallback callback){
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialog);
         builder.setTitle("בחר את אזור הטיול: ");
         builder.setMultiChoiceItems(listArea, checkedArea, new DialogInterface.OnMultiChoiceClickListener() {

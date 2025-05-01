@@ -2,7 +2,6 @@ package com.example.guided.Activities;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -27,7 +26,6 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -159,6 +157,9 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
 
 
         recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
         partsArr = new ArrayList<Part>();
 
@@ -319,7 +320,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         }
         else if(v == area){
            operationsAndTripsHelper
-                   .shoeAreaDialog(
+                   .showAreaDialog(
                            new OperationsAndTripsHelper.AreaDialogCallback() {
                @Override
                public void onResult(String a) {
@@ -356,56 +357,17 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
             }
         });
 
-        String[] listActivityTypeAdjustments = getResources().getStringArray(R.array.activity_type_adjustment);;
-        boolean[] checkedActivityTypeAdjustments = new boolean[listActivityTypeAdjustments.length];;
-        ArrayList<Integer> userActivityTypeAdjustments = new ArrayList<>();
         activityType.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(Add_trip.this, R.style.AlertDialog);
-                builder.setTitle("בחר את סוג הפעילות ");
-                builder.setMultiChoiceItems(listActivityTypeAdjustments, checkedActivityTypeAdjustments, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if(isChecked){
-                            if(! userActivityTypeAdjustments.contains(which)){
-                                userActivityTypeAdjustments.add(which);
-                                if (listActivityTypeAdjustments.equals("אחר")){
-                                    //לתת אפשרות לכתוב משהו שלא מופיע כאחד מהאופציות
-                                }
-                            }
-
-                        }
-                        else if (userActivityTypeAdjustments.contains(which)){
-                            userActivityTypeAdjustments.remove(Integer.valueOf(which));
-                        }
-                    }
-                });
-                builder.setCancelable(false);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String type = "";
-                        for(int i = 0; i < userActivityTypeAdjustments.size(); i++){
-                            type = type + listActivityTypeAdjustments[userActivityTypeAdjustments.get(i)];
-                            if (i != userActivityTypeAdjustments.size() - 1){
-                                type = type + ", ";
-                            }
-                        }
-                        activityType.setText(type);
-                    }
-                });
-                builder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
+                operationsAndTripsHelper
+                        .showActivityDialog(
+                                new OperationsAndTripsHelper.ActivityTypeDialogCallback() {
+                                    @Override
+                                    public void onResult(String type) {
+                                        activityType.setText(type);
+                                    }
+                                });
             }
         });
 
@@ -597,9 +559,6 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         recyclerAdapter = new RecyclerAdapterTrip(
                 partsArr,
                 Add_trip.this);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
         recyclerAdapter.setOnPartListChangedListener(new RecyclerAdapterTrip.OnPartListChangedListener() {
             @SuppressLint("SetTextI18n")
             @Override

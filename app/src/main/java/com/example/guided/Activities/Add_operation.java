@@ -1,7 +1,5 @@
 package com.example.guided.Activities;
 
-import static android.content.DialogInterface.BUTTON_NEGATIVE;
-import static android.content.DialogInterface.BUTTON_POSITIVE;
 import static com.example.guided.R.*;
 
 import android.annotation.SuppressLint;
@@ -92,6 +90,7 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
         privateORpublic = findViewById(R.id.publicORpivate);
 
         operationsAndTripsHelper = new OperationsAndTripsHelper(Add_operation.this);
+
         setAdapter();
         privateORpublic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
             @Override
@@ -350,7 +349,6 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
                 recyclerAdapter.notifyItemRemoved(position);
 
                 lengthCount = lengthCount - deletedMetoda.getLength();
-                ;
                 length.setText(lengthCount + " דקות ");
 
                 Snackbar.make(recyclerView, deletedMetoda.toString(), Snackbar.LENGTH_LONG).setAction("undo", new View.OnClickListener() {
@@ -387,9 +385,7 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
         recyclerAdapter = new RecyclerAdapterOperation(
                 metodotArr,
                 Add_operation.this);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
+
         // מאזין לשינויי רשימת מטודות
         recyclerAdapter.setOnMetodaListChangedListener(new RecyclerAdapterOperation.OnMetodaListChangedListener() {
             @SuppressLint("SetTextI18n")
@@ -401,7 +397,6 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
                 length.setText(lengthCount + " דקות ");
             }
         });
-
 
         recyclerView.setAdapter(recyclerAdapter);
     }
