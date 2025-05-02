@@ -75,7 +75,6 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapterTrip.ViewHolder holder, int position) {
-//TODO: לעשות אפשרות מחיקת תמונה
         Part part = partsArrayList.get(position);
         holder.activityType.setText(part.getActivityType());
         holder.lengthInMinute.setText(String.valueOf(part.getLengthInMinute()));
@@ -141,7 +140,6 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                                         if(! userActivityTypeAdjustments.contains(which)){
                                             userActivityTypeAdjustments.add(which);
                                             if (listActivityTypeAdjustments.equals("אחר")){
-                                                //TODO: לתת אפשרות לכתוב משהו שלא מופיע כאחד מהאופציות
                                             }
                                         }
 
