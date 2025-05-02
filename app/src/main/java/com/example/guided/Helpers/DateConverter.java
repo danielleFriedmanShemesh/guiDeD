@@ -5,53 +5,67 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * מחלקת עזר להמרת תאריכים בין מחרוזת לאובייקט Date ולהיפך, בהתאם לפורמטים שונים.
+ * עושה  טיפול בתאריכי לידה המוזנים או מתקבלים מהמשתמש או ממסדי נתונים.
+ */
 public class DateConverter {
-    public static String convertDateToFullFormat(String inputDateString) {
-        // Define the input and output date formats
-        SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-        SimpleDateFormat outputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
 
-        try {
-            // Parse the input date string to a Date object
-            Date date = inputFormat.parse(inputDateString);
-
-            // Format the Date object to the desired output format
-            return outputFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null; // Return null if parsing fails
-        }
-    }
-
+    /**
+     * ממירה מחרוזת תאריך בפורמט dd/MM/yyyy לאובייקט {@link Date}.
+     *
+     * @param birthday מחרוזת תאריך (למשל "25/04/2005")
+     * @return אובייקט Date המייצג את התאריך שהוזן
+     * @throws RuntimeException אם הפורמט של המחרוזת שגוי או לא ניתן לפענוח
+     *
+     * דוגמה:
+     * {@code Date d = DateConverter.convertStringToDate("01/01/2020");}
+     */
     public static Date convertStringToDate(String birthday){
-        // Write a message to the database
         SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "dd/MM/yyyy", Locale.getDefault());
+                "dd/MM/yyyy",
+                Locale.getDefault());
         Date birthdayDate;
-        //A try-catch block handles invalid input formats, ensuring the app doesn't crash if the user enters an incorrect date.
+        //A try-catch- מטפל בפורמטים לא חוקיים של קלט, ומבטיח שהאפליקציה לא תקרוס אם המשתמש מזין תאריך שגוי.
         try{
-            // dateFormat.parse(dateString) converts the string into a Date object.
-            birthdayDate = dateFormat.parse(birthday);}
+            // dateFormat.parse(dateString) ממיר את המחרוזת לאובייקט Date.
+            birthdayDate = dateFormat.parse(birthday);
+        }
         catch (ParseException e) {
             throw new RuntimeException(e);
         }
         return birthdayDate;
     }
 
+    /**
+     * ממירה מחרוזת תאריך בפורמט מלא (כמו שמתקבל מ-{@link Date#toString()})
+     * לפורמט פשוט יותר: dd/MM/yyyy.
+     *
+     * @param inputDateString מחרוזת תאריך בפורמט מלא לדוגמה: "Tue Apr 25 00:00:00 GMT+03:00 2023"
+     * @return מחרוזת תאריך בפורמט "dd/MM/yyyy" (למשל "25/04/2023"), או null במקרה של שגיאת עיבוד
+     *
+     * דוגמה:
+     * {@code String formatted = DateConverter.convertFullFormatToDate("Tue Apr 25 00:00:00 GMT+03:00 2023");}
+     */
     public static String convertFullFormatToDate(String inputDateString) {
-        // Define the input and output date formats
-        SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
-        SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        //מגדיר את תבניות תאריך הקלט והפלט
+        SimpleDateFormat inputFormat = new SimpleDateFormat(
+                "EEE MMM dd HH:mm:ss zzz yyyy",
+                Locale.ENGLISH);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(
+                "dd/MM/yyyy",
+                Locale.ENGLISH);
 
         try {
-            // Parse the input date string to a Date object
+            // מנתח את מחרוזת תאריך הקלט לאובייקט Date
             Date date = inputFormat.parse(inputDateString);
 
-            // Format the Date object to the desired output format
+            // מעצב את אובייקט ה-Date לפורמט הפלט הרצוי
             return outputFormat.format(date);
-        } catch (ParseException e) {
+        }
+        catch (ParseException e) {
             e.printStackTrace();
-            return null; // Return null if parsing fails
+            return null; // מחזיר null אם הניתוח נכשל
         }
     }
 }
