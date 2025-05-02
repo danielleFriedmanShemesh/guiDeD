@@ -43,6 +43,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * Register_num_two היא מחלקת Activity שמייצגת את החלק השני בתהליך ההרשמה של המשתמש.
+ * במסך זה המשתמש נדרש להזין כינוי, תאריך לידה, תנועת נוער, ולבחור תמונת פרופיל.
+ * הנתונים נשמרים ב-Firebase Authentication וב-Firebase Realtime Database.
+ *
+ * המחלקה תומכת בבחירת תאריך לידה, תנועת נוער, ותמונה מהמצלמה(ושמירתה בגלריה) או מהגלריה,
+ * מבצעת ולידציות לכל השדות, וממשיכה למסך הבית או חוזרת למסך הקודם.
+ *
+ * Extends: BaseActivity
+ * Implements: View.OnClickListener
+ */
 public class Register_num_two extends BaseActivity implements View.OnClickListener {
     private TextView organization; // שדה לבחירת תנועת נוער
     private EditText birthday; // שדה להזנת תאריך לידה
@@ -63,6 +74,13 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
     private ActivityResultLauncher<Intent> cameraLauncher; // לאונצ'ר להפעלת המצלמה
     private ActivityResultLauncher<Intent> galleryLauncher; //  לאונצ'ר לפתיחת גלריה
 
+    /**
+     * אתחול ראשוני של ה-Activity.
+     * קובע את ה-Layout, מאתחל את המשתנים הגרפיים, מאזינים לאירועים, טוען נתונים מהמסך הקודם,
+     * ומכין את ה-launchers למצלמה וגלריה.
+     *
+     * @param savedInstanceState מצב שמור של האקטיביטי (אם קיים)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,7 +158,8 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
                                         getExtras().
                                         get("data");
                                 profile.setImageBitmap(bitmap);
-                                saveImageToGallery(bitmap,
+                                RegisteretionHelper.saveImageToGallery(
+                                        bitmap,
                                         Register_num_two.this);
                             }
                         }
@@ -192,7 +211,7 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
         alartForOrganization.setText("");
         alartForBirthday.setText("");
 
-        // if user click on the profile image view
+        // האזנה ללחיצה על הIMAGEVIEW של הפרופיל
         if (v == profile) {
             RegisteretionHelper.setPic(
                     Register_num_two.this,
@@ -205,7 +224,7 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
                     });
         }
 
-        //if user click on the birthday edit text
+        // האזנה ללחיצה על הEDITTEXT של תאריך היומולדת
         if (v == birthday){
             if (birthday != null) {
                 RegisteretionHelper.setBirthdate(
@@ -219,6 +238,7 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
             }
         }
 
+        // האזנה ללחיצה על הTEXTVIEW של מסגרת הדרכה
         if (v == organization){
             if (organization != null) {
                 RegisteretionHelper.setOrganization(
@@ -232,7 +252,7 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
             }
         }
 
-        // if you click on the 'finish' button
+        // האזנה ללחיצה על כפתור השמירה
         if (v == saveBTN) {
             alartForNickName.setText(
                     RegisteretionHelper.
@@ -247,11 +267,20 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
                             checkAlertsForOrganization(
                                     organization.getText().toString()));
 
-            //final checks of creating a new user at the database
-            if (RegisteretionHelper.checkOrganization(organization.getText().toString()) &&
-                    RegisteretionHelper.checkBirthday(birthday.getText().toString()) &&
-                    RegisteretionHelper.checkNickName(nickName.getText().toString()) &&
-                    RegisteretionHelper.checkPic(((BitmapDrawable)profile.getDrawable()).getBitmap()))
+            //בדיקות אחרונות לפני הוספת משתמש חדש לדאטה בייס
+            if (RegisteretionHelper.
+                    checkOrganization(
+                            organization.getText().toString()) &&
+                    RegisteretionHelper.
+                            checkBirthday(
+                                    birthday.getText().toString()) &&
+                    RegisteretionHelper.
+                            checkNickName(
+                                    nickName.getText().toString()) &&
+                    RegisteretionHelper.
+                            checkPic(
+                                    ((BitmapDrawable)profile.getDrawable()).
+                                            getBitmap()))
             {
 
                 progressBar.setVisibility(View.VISIBLE);
@@ -304,7 +333,11 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
     }
 
 
-    //save user in data base
+    /**
+     * שומר את המשתמש במסד הנתונים של Firebase.
+     * יוצר חשבון חדש ב-Firebase Authentication עם האימייל והסיסמה שהוזנו במסך הקודם,
+     * ואז שומר את כל פרטי המשתמש (כולל כינוי, תאריך לידה, תנועה, ותמונה) ב-Firebase Realtime Database.
+     */
     public void saveUser() {
         // Write a message to the database
 
@@ -346,5 +379,4 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
                     }
                 });
     }
-
 }

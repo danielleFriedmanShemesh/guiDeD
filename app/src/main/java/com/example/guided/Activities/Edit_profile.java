@@ -43,11 +43,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 
 
+
+
+/**
+ * המחלקה Edit_profile מאפשרת למשתמש לערוך את פרטי הפרופיל שלו.
+ * היא כוללת ולידציה, העלאת תמונת פרופיל, עדכון נתונים ב-Firebase,
+ * ועדכון של הפעולות והטיולים הקשורים למשתמש.
+ */
 public class Edit_profile extends BaseActivity implements View.OnClickListener {
     // רכיבי תצוגה
     private EditText userName;     // שדה להזנת שם המשתמש החדש
@@ -73,7 +79,13 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
     private ActivityResultLauncher<Intent> cameraLauncher;
     private ActivityResultLauncher<Intent> galleryLauncher;
 
+    private User updatedUser = new User();    // האובייקט המעודכן של המשתמש
 
+    /**
+     * אתחול המסך, טעינת רכיבים גרפיים, ואתחול Firebase.
+     *
+     * @param savedInstanceState מצב השמירה של האקטיביטי
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,17 +96,19 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        // אתחול רכיבים, מאזינים וכו'...
 
         userRef = FirebaseDatabase.
                 getInstance().
                 getReference("users");         // הפנייה למסד הנתונים של המשתמשים
 
-
+        // אתחול הודעות של שגיאות
         alartForUserName=findViewById(R.id.alartUserName);
         alartForOrganization = findViewById(R.id.alartOrganization);
         alartForBirthday = findViewById(R.id.alartBirthday);
         alartForNickName = findViewById(R.id.alartNickName);
 
+        // אתחול שדות קלט
         userName = findViewById(R.id.userName);
         nickName = findViewById(R.id.nickName);
         profile = findViewById(R.id.profile);
@@ -110,6 +124,7 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
         exitBTN.setOnClickListener(this);
         organization.setOnClickListener(this);
 
+        // טעינת נתוני המשתמש הנוכחי מהמסד
         FirebaseUserHelper firebaseUserHelper = new FirebaseUserHelper();
         firebaseUserHelper.
                 fetchUserData(
@@ -133,7 +148,7 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onError(String errorMessage) {
-
+                // שגיאה בטעינת המשתמש (לא מטופלת כאן)
             }
         });
 
@@ -173,6 +188,9 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
                                                         Edit_profile.this.getContentResolver(),
                                                         imageUri);
                                         profile.setImageBitmap(bitmap);
+                                        RegisteretionHelper.saveImageToGallery(
+                                                bitmap,
+                                                Edit_profile.this);
                                     } catch (IOException e) {
                                         throw new RuntimeException(e); //מדפיס פרטי שגיאה
                                     }
@@ -185,6 +203,12 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
 
     }
 
+    /**
+     * מאזין לכל הלחיצות במסך – תאריך, מסגרת, תמונה, שמירה ויציאה.
+     * מטפל גם בדיאלוגים של תאריך ומסגרת, ודואג לבדוק תקינות של כל שדה.
+     *
+     * @param v הרכיב שנלחץ
+     */
     @SuppressLint("SetTextI18n")
     @Override
     public void onClick(View v) {
@@ -279,6 +303,12 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    /**
+     * מעדכן את פרטי המשתמש במסד הנתונים (Realtime Database).
+     * במידה והעדכון הצליח, גם מעדכן את שם המשתמש החדש בכל הטיולים והפעולות ששייכים לו.
+     * המטרה – לשמור עקביות בנתונים אם המשתמש שינה את שמו.
+     * מתבצע גם שימוש בעזרים חיצוניים: {@link FireBaseTripHelper} ו- {@link FireBaseOperationHelper}.
+     */
     private void setUser() {
 
         userRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(updatedUser).addOnCompleteListener(
@@ -286,7 +316,6 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(Edit_profile.this, "User Registered", Toast.LENGTH_LONG).show();
                            // progressBar.setVisibility(View.GONE);
                             if(!updatedUser.getUserName().equals(oldUsername)){
                             FireBaseTripHelper fireBaseTripHelper = new FireBaseTripHelper();
@@ -329,6 +358,5 @@ public class Edit_profile extends BaseActivity implements View.OnClickListener {
                     }
                     }
                 });
-
     }
 }

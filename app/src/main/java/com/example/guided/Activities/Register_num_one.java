@@ -34,6 +34,12 @@ public class Register_num_one extends BaseActivity implements View.OnClickListen
 
     private User newUser=new User(); //אובייקט User המייצג את המשתמש החדש בתהליך ההרשמה
 
+    /**
+     * פונקציית onCreate - מאותחלת בעת יצירת האקטיביטי.
+     * מאתחלת את רכיבי הממשק, מאזינה ללחיצה על כפתור, ובודקת אם הועבר אובייקט משתמש מהמשך תהליך ההרשמה.
+     *
+     * @param savedInstanceState מצב שמור של האקטיביטי (אם קיים)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +51,7 @@ public class Register_num_one extends BaseActivity implements View.OnClickListen
             return insets;
         });
 
+        // אתחול רכיבי ממשק
         continueBtn=findViewById(R.id.continueBTN);
         userName=findViewById(R.id.userName);
         password=findViewById(R.id.password);
@@ -54,9 +61,10 @@ public class Register_num_one extends BaseActivity implements View.OnClickListen
         alartForPassword=findViewById(R.id.alartPassword);
         alartForEmail=findViewById(R.id.alartEmail);
 
-
-        //set fields with data from User object that returned from the second register activity as an extra
-        Serializable user=  getIntent().getSerializableExtra("newUser");
+        //מגדיר שדות עם נתונים מאובייקט User  שחזרו ממסך ההרשמה השני כאקסטרה
+        Serializable user=  getIntent().
+                getSerializableExtra(
+                        "newUser");
         if (user instanceof User){
             newUser= (User) user;
             userName.setText(newUser.getUserName());
@@ -66,6 +74,13 @@ public class Register_num_one extends BaseActivity implements View.OnClickListen
         continueBtn.setOnClickListener(this);
     }
 
+    /**
+     * מאזין ללחיצה על כפתור "המשך".
+     * מבצע בדיקות תקינות לשדות ההזדהות, ובודק אם שם המשתמש פנוי.
+     * אם כן, ממשיך למסך ההרשמה הבא ומעביר את המשתמש כ-extra.
+     *
+     * @param v הרכיב עליו התבצעה הלחיצה
+     */
     @SuppressLint("SetTextI18n")
     @Override
     public void onClick(View v) {
@@ -74,7 +89,6 @@ public class Register_num_one extends BaseActivity implements View.OnClickListen
         alartForPassword.setText("");
         alartForEmail.setText("");
 
-        // if you click on the 'next' button
         if(v==continueBtn){
 
             alartForPassword.setText(
@@ -123,7 +137,7 @@ public class Register_num_one extends BaseActivity implements View.OnClickListen
                                                                     getResources(),
                                                                     R.drawable.profile)));
 
-                            //go to the second register activity and transport the User object as an extra
+                            // מעבר למסך ההרשמה השני ומעביר את האובייקט מסוג USER כEXTRA
                             Intent intent = new Intent(
                                     Register_num_one.this,
                                     Register_num_two.class);
@@ -133,8 +147,9 @@ public class Register_num_one extends BaseActivity implements View.OnClickListen
                         }
                     }
                     else{
-                        // Username is already taken
-                        alartForUserName.setText("* שם המשתמש שבחרת תפוס בחר שם משתמש אחר " +
+                        // שם המשתמש כבר קיים
+                        alartForUserName.setText(
+                                "* שם המשתמש שבחרת תפוס בחר שם משתמש אחר " +
                                 '\n' +
                                 alartForUserName.getText().toString());
                     }

@@ -31,6 +31,11 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
+/**
+ * מחלקת Log_in אחראית על מסך ההתחברות של המשתמש.
+ * במסך זה המשתמש מזין שם משתמש, אימייל וסיסמה – ואם המידע תקין, הוא מועבר לעמוד הבית.
+ * מתבצעות בדיקות תקינות מקומיות ולאחר מכן גם אימות דרך Firebase Authentication.
+ */
 public class Log_in extends BaseActivity implements View.OnClickListener {
     private ImageView submmitBTN; //כפתור שליחה להתחברות
     private EditText userName; //שדה קלט לשם משתמש
@@ -43,6 +48,13 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
 
     private FirebaseAuth mAuth; //אובייקט Firebase לאימות משתמשים
 
+    /**
+     * הפעולה onCreate מופעלת כאשר האקטיביטי נוצר.
+     * היא מאתחלת את רכיבי הממשק, מאזינה ללחיצה על כפתור ההתחברות,
+     * ומכינה את Firebase לאימות משתמשים.
+     *
+     * @param savedInstanceState מצב שמור של האקטיביטי (אם קיים)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +68,7 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
 
         mAuth = FirebaseAuth.getInstance();
 
-
+        // אתחול רכיבי הממשק
         userName = findViewById(R.id.userName);
         password = findViewById(R.id.password);
         email = findViewById(R.id.email);
@@ -72,9 +84,17 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
 
     }
 
+    /**
+     * פעולה שמופעלת כאשר נלחץ כפתור ההתחברות(submmitBTN).
+     * מבצעת בדיקה לשדות הקלט, בודקת האם המשתמש קיים במסד הנתונים,
+     * ואם כן, מתחברת ל־Firebase ומעבירה את המשתמש לעמוד הבית.
+     *
+     * @param v הרכיב שנלחץ (במקרה הזה – כפתור ההתחברות)
+     */
     @SuppressLint("SetTextI18n")
     @Override
     public void onClick(View v) {
+        // איפוס הודעות שגיאה
         alartForUserName.setText("");
         alartForPassword.setText("");
         alartForEmail.setText("");
@@ -82,9 +102,16 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
         alartForAll.setVisibility(View.INVISIBLE);
 
         if(v == submmitBTN){
-            alartForPassword.setText(checkAlertsForPassword(password.getText().toString()));
-            alartForEmail.setText(checkAlertsForEmail(email.getText().toString()));
-            alartForUserName.setText(checkAlertsForUserName(userName.getText().toString()));
+            // הצגת שגיאות ולידציה
+            alartForPassword.setText(
+                    checkAlertsForPassword(
+                            password.getText().toString()));
+            alartForEmail.setText(
+                    checkAlertsForEmail(
+                            email.getText().toString()));
+            alartForUserName.setText(
+                    checkAlertsForUserName(
+                            userName.getText().toString()));
 
             final boolean[] x = {false};
             FirebaseUserHelper firebaseUserHelper = new FirebaseUserHelper();
@@ -134,8 +161,7 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
                                             } else {
                                                 // התחברות נכשלה
                                                 Log.w(TAG, "התחברות נכשלה", task.getException());
-                                                Toast.makeText(Log_in.this, "התחברות נכשלה",
-                                                        Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(Log_in.this, "התחברות נכשלה", Toast.LENGTH_SHORT).show();
                                                 updateUI(null);
                                             }
                                         }
@@ -159,10 +185,13 @@ public class Log_in extends BaseActivity implements View.OnClickListener {
         }
     }
 
-
+    /**
+     * פעולה זו אחראית על עדכון ממשק המשתמש לאחר התחברות.
+     * (כרגע לא ממומשת – אפשר להוסיף פעולות במידת הצורך)
+     *
+     * @param user המשתמש שהתחבר, או null במקרה של כישלון
+     */
     private void updateUI(FirebaseUser user) {
-
+        //  לממש בעתיד אם נרצה לעדכן את המסך לפי המשתמש
     }
-
-
 }
