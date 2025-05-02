@@ -20,7 +20,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,13 +62,15 @@ public class RegisteretionHelper extends AppCompatActivity {
         void onBirthdaySelected(String birthday);
     }
 
-
+    /**
+     * ממשק Callback לדיאלוג תמונה
+     */
     public interface PicDialogCallback {
         void onResult(int pic);
     }
 
     /**
-     * פותחת דיאלוג לבחירת תמונת פרופיל – מצלמה או גלריה.
+     * פותחת דיאלוג לבחירת תמונת פרופיל – מצלמה או גלריה או מחיקת תמונה קיימת.
      *
      * @param context ההקשר של האקטיביטי הנוכחי
      * @param cameraLauncher משגר הפעולה למצלמה
@@ -78,12 +79,13 @@ public class RegisteretionHelper extends AppCompatActivity {
     public static void setPic(
             Context context,
             ActivityResultLauncher<Intent> cameraLauncher,
-            ActivityResultLauncher<Intent> galleryLauncher, PicDialogCallback callback){
-        //creating a dialog for adding a profile picture from gallery or for taking a picture at the camera
-
-        Dialog dialog = new Dialog(context);
+            ActivityResultLauncher<Intent> galleryLauncher,
+            PicDialogCallback callback){
+         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_add_pic);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.show();
 
         Button galery = dialog.findViewById(R.id.galery);
@@ -94,15 +96,16 @@ public class RegisteretionHelper extends AppCompatActivity {
         /*
           מאזין ללחיצה בדיאלוג תמונה – מפעיל את המצלמה או הגלריה או מחיקה בהתאם ללחיצה.
          */
-        delete.setOnClickListener(new View.OnClickListener() {
+        delete.setOnClickListener(
+                new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
                 callback.onResult(R.drawable.profile);
             }
         });
-
-        galery.setOnClickListener(new View.OnClickListener() {
+        galery.setOnClickListener(
+                new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent galleryIntent = new Intent(
@@ -114,7 +117,8 @@ public class RegisteretionHelper extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-        camera.setOnClickListener(new View.OnClickListener() {
+        camera.setOnClickListener(
+                new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent cameraIntent = new Intent(
@@ -134,28 +138,23 @@ public class RegisteretionHelper extends AppCompatActivity {
     public static void setOrganization(
             Context context,
             OrganizationCallback callback){
-        String[] listOrganizations = context.
-                getResources().
-                getStringArray(
+        String[] listOrganizations = context
+                .getResources()
+                .getStringArray(
                         R.array.organization_adjustment);
         Dialog dialog = new Dialog(context);
 
-        // set custom dialog
         dialog.setContentView(R.layout.dialog_searchable_spinner);
-
-        // show dialog
         dialog.show();
 
-        // Initialize and assign variable
         EditText editText = dialog.findViewById(R.id.search);
         ListView listView = dialog.findViewById(R.id.list_view);
 
-        // Initialize array adapter
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                context,
                 R.layout.list_item,
                 listOrganizations);
 
-        // set adapter
         listView.setAdapter(adapter);
         editText.addTextChangedListener(
                 new TextWatcher() {
@@ -181,16 +180,16 @@ public class RegisteretionHelper extends AppCompatActivity {
         listView.setOnItemClickListener(
                 new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // when item selected from list
-                // set selected item on textView
+            public void onItemClick(
+                    AdapterView<?> parent,
+                    View view,
+                    int position,
+                    long id) {
                 String organization = adapter.getItem(position);
 
-                // Dismiss dialog
                 dialog.dismiss();
                 callback.onOrganizationSelected(
-                        organization); // נקרא לפונקציה
-
+                        organization);
             }
         });
     }
@@ -209,21 +208,24 @@ public class RegisteretionHelper extends AppCompatActivity {
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-        //open a Date Picker Dialog
+        //פתיחת דיאלוג בחירת תאריך
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 context,
                 new DatePickerDialog.OnDateSetListener() {
             @SuppressLint("SetTextI18n")
             @Override
-            //show the date that the user chose at the birthday edit text
+            //הצגת התאריך שהמשתמש בחר edit text יום ההולדת
             public void onDateSet(
                     DatePicker view,
                     int year,
                     int monthOfYear,
                     int dayOfMonth) {
-                // on below line we are setting date to our edit text.
-                String date =
-                        dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+                // הגדרת התאריך שיהיה מוצג בedit text
+                String date = dayOfMonth
+                        + "/"
+                        + (monthOfYear + 1)
+                        + "/"
+                        + year;
                 callback.onBirthdaySelected(date);
             }
         }, year, month, day);
@@ -236,7 +238,9 @@ public class RegisteretionHelper extends AppCompatActivity {
      * @param bitmap התמונה לשמירה
      * @param context ההקשר של האקטיביטי
      */
-    public static void saveImageToGallery(Bitmap bitmap, Context context) {
+    public static void saveImageToGallery(
+            Bitmap bitmap,
+            Context context) {
         ContentValues values = new ContentValues(); //משתנה(values) ששומר בתוכו מידע(metadata) על התמונה כגון שם התמונה, סוגה, ומיקומה
 
         values.put(
@@ -447,13 +451,14 @@ public class RegisteretionHelper extends AppCompatActivity {
         return (birthdayDate.getYear() + 1900) < year &&
                 (birthdayDate.getYear() + 1900) > 1900;
     }
+
     /**
      * בודקת אם שם המשתמש עומד בדרישות אורך ותווים.
      *
      * @param userName שם המשתמש לבדיקה
      * @return true אם תקין, אחרת false
-     */    public static boolean checkUserName(String userName){
-
+     */
+    public static boolean checkUserName(String userName){
         return ((userName.length() >= 6) &&
                 (userName.length() <= 15) &&
                 (input_Validation(userName)));
@@ -477,7 +482,6 @@ public class RegisteretionHelper extends AppCompatActivity {
      */
     public static boolean checkPic(Bitmap pic){
         return !BitmapHelper.bitmapToString(pic).isEmpty();
-
     }
 
     /**
@@ -522,8 +526,7 @@ public class RegisteretionHelper extends AppCompatActivity {
      * @param input מחרוזת לבדיקה
      * @return true אם הקלט כולל את שלושת הסוגים, אחרת false
      */
-    public static boolean input_Validation(String input)
-    {
+    public static boolean input_Validation(String input) {
         Pattern letter = Pattern.
                 compile("[a-zA-Z]");
         Pattern digit = Pattern.
