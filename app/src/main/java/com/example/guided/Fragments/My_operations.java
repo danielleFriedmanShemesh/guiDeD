@@ -20,45 +20,44 @@ import com.example.guided.Classes.User;
 
 import java.util.ArrayList;
 
-
+/**
+ * מחלקה המציגה את רשימת הפעולות של המשתמש הנוכחי מתוך Firebase.
+ */
 public class My_operations extends Fragment implements View.OnClickListener {
-    View v;
+    private View v; // תצוגה (View) של ה-Fragment. משמשת לאחסון ה-View הראשי של ה-Fragment.
 
-    ImageView backBTN;
-    RecyclerView recyclerView;
-    RecyclerMyOperationsAdapter recyclerAdapter;
-    RecyclerView.LayoutManager layoutManager;
-    FireBaseOperationHelper fireBaseOperationHelper;
-    ArrayList<Operation> operationArrayList;
+    private ImageView backBTN; // כפתור החרה למסך הקודם
+    /**
+     * RecyclerView להצגת רשימת הפעולות (Operations).
+     * משתמשים בו להציג את הנתונים ב-RecyclerView, עם אפשרות לגלול בין פריטים.
+     */
+    private RecyclerView recyclerView;
+    /**
+     * Adapter המתווך בין הנתונים המתקבלים ממסד הנתונים לבין רכיבי ה-RecyclerView.
+     * אחראי להצגת הפעולות (Operations) ברשימה ולהגיב לשינויים בנתונים.
+     */
+    private RecyclerMyOperationsAdapter recyclerAdapter;
+    private ArrayList<Operation> operationArrayList; // רשימה של פעולות (Operations) שהתקבלו ממסד הנתונים Firebase
 
-
-
+    /**
+     * בנאי ברירת מחדל נדרש עבור Fragment.
+     * נדרש על ידי מערכת אנדרואיד לצורך יצירת מופע של המחלקה בעת שחזור מצב (כמו בסיבוב מסך).
+     */
     public My_operations() {
-        // Required empty public constructor
     }
 
-
-    public static My_operations newInstance(String param1, String param2) {
-        My_operations fragment = new My_operations();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
-    }
-
+    /**
+     * פעולה זו יוצרת את ממשק המשתמש של ה-Fragment, ומאתחלת את רשימת הפעולות,
+     * @param inflater משתנה ליצירת תצוגה מתוך קובץ XML
+     * @param container הקונטיינר של ה-Fragment
+     * @param savedInstanceState מידע שמור (אם קיים)
+     * @return התצוגה הראשית של ה-Fragment
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_my_operations, container, false);
         if (v != null){
-            //operationArrayList = new ArrayList<>();
 
             backBTN = v.findViewById(R.id.back);
             backBTN.setOnClickListener(this);
@@ -66,17 +65,19 @@ public class My_operations extends Fragment implements View.OnClickListener {
             recyclerView = v.findViewById(R.id.recyclerView);
             recyclerView.setHasFixedSize(true);
 
-            layoutManager = new GridLayoutManager(getContext(), 2);
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
             recyclerView.setLayoutManager(layoutManager);
 
+            // הבאת נתוני משתמש והצגת פעולות
             FirebaseUserHelper firebaseUserHelper = new FirebaseUserHelper();
             firebaseUserHelper.fetchUserData(new FirebaseUserHelper.UserDataCallback() {
                 @Override
                 public void onUserDataLoaded(User u) {
-                    fireBaseOperationHelper = new FireBaseOperationHelper();
+                    FireBaseOperationHelper fireBaseOperationHelper = new FireBaseOperationHelper();
                     fireBaseOperationHelper.fetchOperations(
                             new FireBaseOperationHelper.DataStatus()
                             {
+
                                 @Override
                                 public void onDataLoaded(ArrayList<Operation> operations) {
                                     operationArrayList = operations;
@@ -87,7 +88,6 @@ public class My_operations extends Fragment implements View.OnClickListener {
                             }
                     );
                 }
-
                 @Override
                 public void onError(String errorMessage) {
 
@@ -98,6 +98,10 @@ public class My_operations extends Fragment implements View.OnClickListener {
         return v;
     }
 
+    /**
+     * מאזין ללחיצה על כפתור החזרה – חוזר לפרגמנט הקודם.
+     * @param v הרכיב שנלחץ.
+     */
     @Override
     public void onClick(View v) {
         requireActivity().getSupportFragmentManager().popBackStack();
