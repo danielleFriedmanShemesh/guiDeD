@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
@@ -47,10 +46,10 @@ import java.util.Locale;
  * Register_num_two היא מחלקת Activity שמייצגת את החלק השני בתהליך ההרשמה של המשתמש.
  * במסך זה המשתמש נדרש להזין כינוי, תאריך לידה, תנועת נוער, ולבחור תמונת פרופיל.
  * הנתונים נשמרים ב-Firebase Authentication וב-Firebase Realtime Database.
- *
+
  * המחלקה תומכת בבחירת תאריך לידה, תנועת נוער, ותמונה מהמצלמה(ושמירתה בגלריה) או מהגלריה,
  * מבצעת ולידציות לכל השדות, וממשיכה למסך הבית או חוזרת למסך הקודם.
- *
+
  * Extends: BaseActivity
  * Implements: View.OnClickListener
  */

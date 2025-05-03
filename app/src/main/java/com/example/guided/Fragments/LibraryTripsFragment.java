@@ -17,11 +17,14 @@ import com.example.guided.Classes.Trip;
 
 import java.util.ArrayList;
 
-
+/**
+ * Fragment זה מציג את רשימת הטיולים השמורים מה-Firebase.
+ * כולל תמיכה בחיפוש לפי שם הטיול או תוכן.
+ */
 public class LibraryTripsFragment extends Fragment {
     private View v; // תצוגה (View) של ה-Fragment. משמשת לאחסון ה-View הראשי של ה-Fragment.
     /**
-     * RecyclerView להצגת רשימת הפעולות (Operations).
+     * RecyclerView להצגת רשימת הטיולים (Trips).
      * משתמשים בו להציג את הנתונים ב-RecyclerView, עם אפשרות לגלול בין פריטים.
      */
     private RecyclerView recyclerView;
@@ -45,18 +48,6 @@ public class LibraryTripsFragment extends Fragment {
     }
 
     /**
-     * מופעל כאשר ה-Fragment נוצר.
-     * ניתן להשתמש בה לאתחול רכיבים כלליים שאינם תלויים בתצוגה (View),
-     * אך במקרה זה לא מתבצעת לוגיקה מיוחדת.
-     *
-     * @param savedInstanceState מידע שמור משחזור קודם של ה-Fragment, אם קיים.
-     */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    /**
      * פעולה זו יוצרת את ממשק המשתמש של ה-Fragment, מאתחלת את רשימת הטיולים,
      * ומגדירה את יכולת החיפוש.
      * @param inflater משתנה ליצירת תצוגה מתוך קובץ XML
@@ -76,7 +67,6 @@ public class LibraryTripsFragment extends Fragment {
 
         if ( v != null)
         {
-
             search = v.findViewById(R.id.search);
 
             recyclerView = v.findViewById(R.id.recyclerView);

@@ -34,29 +34,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         // Required empty public constructor
     }
 
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_home, container, false);
 
-//        //לנסות להוסיף את הצפיה הראשונית בפעולה\טיול באופן דינאמי
+        //  TODO: לנסות להוסיף את הצפייה הראשונית בפעולה\טיול באופן דינאמי
 //        for(int i=1; i<=5;i++){
 //            ConstraintLayout constraintLayoutOp;
 //            constraintLayoutOp = v.findViewById(R.id.one_operation_for_home_page);

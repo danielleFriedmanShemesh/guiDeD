@@ -48,18 +48,6 @@ public class LibraryOperationsFragment extends Fragment {
     }
 
     /**
-     * מופעל כאשר ה-Fragment נוצר.
-     * ניתן להשתמש בה לאתחול רכיבים כלליים שאינם תלויים בתצוגה (View),
-     * אך במקרה זה לא מתבצעת לוגיקה מיוחדת.
-     *
-     * @param savedInstanceState מידע שמור משחזור קודם של ה-Fragment, אם קיים.
-     */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    /**
      * פעולה זו יוצרת את ממשק המשתמש של ה-Fragment, מאתחלת את רשימת הפעולות,
      * ומגדירה את יכולת החיפוש.
      * @param inflater משתנה ליצירת תצוגה מתוך קובץ XML
