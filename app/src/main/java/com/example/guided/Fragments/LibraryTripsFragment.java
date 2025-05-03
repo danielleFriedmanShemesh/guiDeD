@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.example.guided.Helpers.FireBaseTripHelper;
 import com.example.guided.R;
@@ -20,39 +19,60 @@ import java.util.ArrayList;
 
 
 public class LibraryTripsFragment extends Fragment {
-    View v;
-    RecyclerView recyclerView;
-    RecyclerAdapterLibraryTrip recyclerAdapter;
-    RecyclerView.LayoutManager layoutManager;
-    FireBaseTripHelper fireBaseTripHelper;
-    ArrayList<Trip> tripsArrayList;
-    android.widget.SearchView search;
-    ImageView filter;
+    private View v; // תצוגה (View) של ה-Fragment. משמשת לאחסון ה-View הראשי של ה-Fragment.
+    /**
+     * RecyclerView להצגת רשימת הפעולות (Operations).
+     * משתמשים בו להציג את הנתונים ב-RecyclerView, עם אפשרות לגלול בין פריטים.
+     */
+    private RecyclerView recyclerView;
+    /**
+     * Adapter המתווך בין הנתונים המתקבלים ממסד הנתונים לבין רכיבי ה-RecyclerView.
+     * אחראי להצגת הטיולים (Trips) ברשימה ולהגיב לשינויים בנתונים.
+     */
+    private RecyclerAdapterLibraryTrip recyclerAdapter;
+    private ArrayList<Trip> tripsArrayList; // רשימה של טיולים (Trips) שהתקבלו ממסד הנתונים Firebase
+    /**
+     * רכיב חיפוש (SearchView) המאפשר למשתמש לחפש טיולים ברשימה.
+     * מחפש טקסט בתוך רשימת הטיולים ומסנן את התוצאות.
+     */
+    private android.widget.SearchView search;
 
+    /**
+     * בנאי ברירת מחדל נדרש עבור Fragment.
+     * נדרש על ידי מערכת אנדרואיד לצורך יצירת מופע של המחלקה בעת שחזור מצב (כמו בסיבוב מסך).
+     */
     public LibraryTripsFragment() {
-        // Required empty public constructor
     }
 
-
-    public static LibraryTripsFragment newInstance(String param1, String param2) {
-        LibraryTripsFragment fragment = new LibraryTripsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    /**
+     * מופעל כאשר ה-Fragment נוצר.
+     * ניתן להשתמש בה לאתחול רכיבים כלליים שאינם תלויים בתצוגה (View),
+     * אך במקרה זה לא מתבצעת לוגיקה מיוחדת.
+     *
+     * @param savedInstanceState מידע שמור משחזור קודם של ה-Fragment, אם קיים.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
+    /**
+     * פעולה זו יוצרת את ממשק המשתמש של ה-Fragment, מאתחלת את רשימת הטיולים,
+     * ומגדירה את יכולת החיפוש.
+     * @param inflater משתנה ליצירת תצוגה מתוך קובץ XML
+     * @param container הקונטיינר של ה-Fragment
+     * @param savedInstanceState מידע שמור (אם קיים)
+     * @return התצוגה הראשית של ה-Fragment
+     */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_library_trips, container, false);
+    public View onCreateView(
+            LayoutInflater inflater,
+            ViewGroup container,
+            Bundle savedInstanceState) {
+        v = inflater.inflate(
+                R.layout.fragment_library_trips,
+                container,
+                false);
 
         if ( v != null)
         {
@@ -62,22 +82,31 @@ public class LibraryTripsFragment extends Fragment {
             recyclerView = v.findViewById(R.id.recyclerView);
             recyclerView.setHasFixedSize(true);
 
-            layoutManager = new LinearLayoutManager(getContext());
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(layoutManager);
 
-            fireBaseTripHelper = new FireBaseTripHelper();
+            FireBaseTripHelper fireBaseTripHelper = new FireBaseTripHelper();
             fireBaseTripHelper.fetchTrips(
                     new FireBaseTripHelper.DataStatus()
                     {
+                        /**
+                         * פעולה זו מופעלת לאחר טעינת הנתונים מה-Database.
+                         * מאתחלת את הרשימה והמתאם ומפעילה חיפוש.
+                         * @param trips רשימת טיולים שהתקבלה מה-Database
+                         */
                         @Override
                         public void onDataLoaded(ArrayList<Trip> trips) {
-                            tripsArrayList = trips;
-                            recyclerAdapter = new RecyclerAdapterLibraryTrip(getContext(), tripsArrayList);
+                            tripsArrayList = new ArrayList<>();
+                            for (int i = trips.size()-1; i>=0; i--){
+                                tripsArrayList.add(trips.get(i));
+                            }
+                            recyclerAdapter = new RecyclerAdapterLibraryTrip(
+                                    getContext(),
+                                    tripsArrayList);
                             recyclerView.setAdapter(recyclerAdapter);
-                            // TODO: לעשות שהטיול הכי עליון שמוצג זה הטיול האחרון שעלה לאתר
-                            //recyclerAdapter.notifyItemRangeInserted(0, tripsArrayList.size());
 
-                            search.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
+                            search.setOnQueryTextListener(
+                                    new android.widget.SearchView.OnQueryTextListener() {
                                 @Override
                                 public boolean onQueryTextSubmit(String query) {
                                     recyclerAdapter.filterSearch(query);
@@ -94,7 +123,6 @@ public class LibraryTripsFragment extends Fragment {
                     }
             );
         }
-
         return v;
     }
 }

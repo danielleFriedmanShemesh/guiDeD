@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.example.guided.Helpers.FireBaseOperationHelper;
 import com.example.guided.Classes.Operation;
@@ -18,70 +17,95 @@ import com.example.guided.RecyclerAdapters.RecyclerAdapterLibraryOperation;
 
 import java.util.ArrayList;
 
-
+/**
+ * Fragment זה מציג את רשימת הפעולות השמורות מה-Firebase.
+ * כולל תמיכה בחיפוש לפי שם הפעולה או תוכן.
+ */
 public class LibraryOperationsFragment extends Fragment {
-    View v;
+    private View v; // תצוגה (View) של ה-Fragment. משמשת לאחסון ה-View הראשי של ה-Fragment.
+    /**
+     * RecyclerView להצגת רשימת הפעולות (Operations).
+     * משתמשים בו להציג את הנתונים ב-RecyclerView, עם אפשרות לגלול בין פריטים.
+     */
+    private RecyclerView recyclerView;
+    /**
+     * Adapter המתווך בין הנתונים המתקבלים ממסד הנתונים לבין רכיבי ה-RecyclerView.
+     * אחראי להצגת הפעולות (Operations) ברשימה ולהגיב לשינויים בנתונים.
+     */
+    private RecyclerAdapterLibraryOperation recyclerAdapter;
+    private ArrayList<Operation> operationArrayList; // רשימה של פעולות (Operations) שהתקבלו ממסד הנתונים Firebase
+    /**
+     * רכיב חיפוש (SearchView) המאפשר למשתמש לחפש פעולות ברשימה.
+     * מחפש טקסט בתוך רשימת הפעולות ומסנן את התוצאות.
+     */
+    private android.widget.SearchView search;
 
-    RecyclerView recyclerView;
-    RecyclerAdapterLibraryOperation recyclerAdapter;
-    RecyclerView.LayoutManager layoutManager;
-    FireBaseOperationHelper fireBaseOperationHelper;
-    ArrayList<Operation> operationArrayList;
-
-    android.widget.SearchView search;
-    ImageView filter;
-
-
+    /**
+     * בנאי ברירת מחדל נדרש עבור Fragment.
+     * נדרש על ידי מערכת אנדרואיד לצורך יצירת מופע של המחלקה בעת שחזור מצב (כמו בסיבוב מסך).
+     */
     public LibraryOperationsFragment() {
-        // Required empty public constructor
     }
 
-
-    public static LibraryOperationsFragment newInstance(String param1, String param2) {
-        LibraryOperationsFragment fragment = new LibraryOperationsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    /**
+     * מופעל כאשר ה-Fragment נוצר.
+     * ניתן להשתמש בה לאתחול רכיבים כלליים שאינם תלויים בתצוגה (View),
+     * אך במקרה זה לא מתבצעת לוגיקה מיוחדת.
+     *
+     * @param savedInstanceState מידע שמור משחזור קודם של ה-Fragment, אם קיים.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-        }
-
-
     }
 
+    /**
+     * פעולה זו יוצרת את ממשק המשתמש של ה-Fragment, מאתחלת את רשימת הפעולות,
+     * ומגדירה את יכולת החיפוש.
+     * @param inflater משתנה ליצירת תצוגה מתוך קובץ XML
+     * @param container הקונטיינר של ה-Fragment
+     * @param savedInstanceState מידע שמור (אם קיים)
+     * @return התצוגה הראשית של ה-Fragment
+     */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_library_operations, container, false);
-        if ( v != null)
-        {
-
-
+    public View onCreateView(
+            LayoutInflater inflater,
+            ViewGroup container,
+            Bundle savedInstanceState) {
+        v = inflater.inflate(
+                R.layout.fragment_library_operations,
+                container,
+                false);
+        if ( v != null) {
             recyclerView = v.findViewById(R.id.recyclerView);
             recyclerView.setHasFixedSize(true);
 
-
-            layoutManager = new LinearLayoutManager(getContext());
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(layoutManager);
 
-            fireBaseOperationHelper = new FireBaseOperationHelper();
+            FireBaseOperationHelper fireBaseOperationHelper = new FireBaseOperationHelper();
             fireBaseOperationHelper.fetchOperations(
                     new FireBaseOperationHelper.DataStatus()
                     {
+                        /**
+                         * פעולה זו מופעלת לאחר טעינת הנתונים מה-Database.
+                         * מאתחלת את הרשימה והמתאם ומפעילה חיפוש.
+                         * @param operations רשימת פעולות שהתקבלה מה-Database
+                         */
                     @Override
                     public void onDataLoaded(ArrayList<Operation> operations) {
-                        operationArrayList = operations;
-                        recyclerAdapter = new RecyclerAdapterLibraryOperation(getContext(), operationArrayList);
+                        operationArrayList = new ArrayList<>();
+                        for (int i = operations.size()-1; i>=0; i--){
+                            operationArrayList.add(operations.get(i));
+                        }
+                        recyclerAdapter = new RecyclerAdapterLibraryOperation(
+                                getContext(),
+                                operationArrayList);
                         recyclerView.setAdapter(recyclerAdapter);
 
                         search = v.findViewById(R.id.search);
-                        search.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
+                        search.setOnQueryTextListener(
+                                new android.widget.SearchView.OnQueryTextListener() {
                             @Override
                             public boolean onQueryTextSubmit(String query) {
                                 recyclerAdapter.filterSearch(query);
@@ -94,8 +118,6 @@ public class LibraryOperationsFragment extends Fragment {
                                 return false;
                             }
                         });
-
-                        //recyclerAdapter.notifyItemRangeInserted(0, operationArrayList.size());
                     }
                 }
             );
