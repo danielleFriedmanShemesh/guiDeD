@@ -30,27 +30,34 @@ import java.util.ArrayList;
 
 public class View_trip extends BaseActivity implements View.OnClickListener {
 
-    TextView title;
-    TextView writer;
-    TextView age;
-    TextView length;
-    TextView organization;
-    TextView goals;
-    TextView equipments;
-    TextView area;
-    TextView place;
-    Button pictureBTN;
+    private TextView title; //שם הטיול
+    private TextView writer; //שם המשתמש של כותב הטיול
+    private TextView age; // התאמת גיל החניכים
+    private TextView length; //שדה המציג את האורך הכולל של הטיול (בק"מ)
+    private TextView organization; // תנועת הנוער בה נמצא כותב הטיול
+    private TextView goals;// מטרות הטיול
+    private TextView equipments; // ציוד נדרש
+    private TextView area; // אזור הטיול
+    private TextView place; // מקום ספציפי של הטיול
+    private Button pictureBTN; // כפתור להצגת תמונת הטיול
 
-    ImageButton exit;
+    private ImageButton exit; // כפתור סגירת המסך
 
-    ListView parts;
-    PartsListViewAdapter partsListViewAdapter;
-    FireBaseTripHelper fireBaseTripHelper;
+    private ListView parts; //ListView להצגת מקטעי הטיול
+    private PartsListViewAdapter partsListViewAdapter; // מתאם להצגת המקטעים ב-ListView
+    private FireBaseTripHelper fireBaseTripHelper; //עוזר לשליפת נתוני טיול מ-Firebase
 
-    ArrayList<Part> partArrayList;
+    private ArrayList<Part> partArrayList; //רשימת מקטעי הטיול
 
-    Trip trip;
+    private Trip trip; //האובייקט שמכיל את פרטי הטיול
 
+    /**
+     * פעולה זו מופעלת בעת פתיחת המסך.
+     * היא מאתחלת את כל הרכיבים, שולפת את מפתח הטיול מה-Intent,
+     * ומציגה את הנתונים מהFirebase במסך.
+     *
+     * @param savedInstanceState שמירת מצב קודם אם קיים
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,11 +86,19 @@ public class View_trip extends BaseActivity implements View.OnClickListener {
 
         parts = findViewById(R.id.list_view);
 
+        // שליפת tripKey והצגת הטיול
         Intent intent = getIntent();
         String tripKey = intent.getStringExtra("tripKey");
 
         fireBaseTripHelper = new FireBaseTripHelper();
-        fireBaseTripHelper.fetchOneTrip(new FireBaseTripHelper.DataStatusT() {
+        fireBaseTripHelper.fetchOneTrip(
+                new FireBaseTripHelper.DataStatusT() {
+            /**
+             * פעולה זו מופעלת כאשר נתוני הטיול התקבלו מהFirebase.
+             * היא מציגה את הנתונים במסך, ומאתחלת את רשימת המקטעים.
+             *
+             * @param t אובייקט הטיול שהתקבל
+             */
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataLoaded(Trip t) {
@@ -100,7 +115,11 @@ public class View_trip extends BaseActivity implements View.OnClickListener {
                 equipments.setText(trip.getEquipments());
 
                 partArrayList = trip.getPartsArr();
-                partsListViewAdapter = new PartsListViewAdapter(View_trip.this, 0, 0, partArrayList);
+                partsListViewAdapter = new PartsListViewAdapter(
+                        View_trip.this,
+                        0,
+                        0,
+                        partArrayList);
                 parts.setAdapter(partsListViewAdapter);
             }
 
@@ -108,34 +127,43 @@ public class View_trip extends BaseActivity implements View.OnClickListener {
 
     }
 
+    /**
+     * טיפול בלחיצות על כפתורים: סגירה או הצגת תמונה.
+     *
+     * @param v הרכיב שנלחץ
+     */
     @Override
     public void onClick(View v) {
         if (v == exit){
             finish();
-        } else if (v == pictureBTN) {
+        }
+        else if (v == pictureBTN) {
             String image = trip.getPicture();
 
             Dialog dialog = new Dialog( View_trip.this);
             dialog.setContentView(R.layout.trip_pic_dialog_layout);
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
             dialog.show();
 
             ImageView tripPic = dialog.findViewById(R.id.pic);
             TextView noPic = dialog.findViewById(R.id.noPic);
             Button close = dialog.findViewById(R.id.closeBtn);
-            close.setOnClickListener(new View.OnClickListener() {
+            close.setOnClickListener(
+                    new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dialog.dismiss();
                 }
             });
             if(image != null){
-                tripPic.setImageBitmap(BitmapHelper.stringToBitmap(image));
+                tripPic.setImageBitmap(
+                        BitmapHelper.stringToBitmap(image));
                 noPic.setVisibility(View.GONE);
             }
-            else {
+            else
                 tripPic.setVisibility(View.GONE);
-            }
         }
     }
 }

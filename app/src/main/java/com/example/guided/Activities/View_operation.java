@@ -22,23 +22,29 @@ import com.example.guided.R;
 import java.util.ArrayList;
 
 public class View_operation extends BaseActivity implements View.OnClickListener {
-    TextView title;
-    TextView writer;
-    TextView age;
-    TextView length;
-    TextView organization;
-    TextView goals;
-    TextView equipments;
+    private TextView title; //שם הפעולה
+    private TextView writer; //שם המשתמש של כותב הפעולה
+    private TextView age; // התאמת גיל החניכים
+    private TextView length; //שדה המציג את האורך הכולל של הפעולה (בדקות)
+    private TextView organization; // תנועת הנוער בה נמצא כותב הפעולה
+    private TextView goals;// מטרות הפעולה
+    private TextView equipments; // ציוד נדרש
 
-    ImageButton exit;
-    ListView metodot;
-    MetodotListViewAdapter metodotListViewAdapter;
-    FireBaseOperationHelper fireBaseOperationHelper;
+    ImageButton exit; // כפתור סגירת המסך
+    ListView metodot; //ListView להצגת מתודות הפעולה
+    MetodotListViewAdapter metodotListViewAdapter; // מתאם להצגת המתודות ב-ListView
+    FireBaseOperationHelper fireBaseOperationHelper; //עוזר לשליפת נתוני טיול מ-Firebase
 
-    ArrayList<Metoda> metodaArrayList;
-    Operation operation;
+    ArrayList<Metoda> metodaArrayList; //רשימת מתודות הפעולה
+    Operation operation; //האובייקט שמכיל את פרטי הפעולה
 
-
+    /**
+     * פעולה זו מופעלת בעת פתיחת המסך.
+     * היא מאתחלת את כל הרכיבים, שולפת את מפתח הפעולה מה-Intent,
+     * ומציגה את הנתונים מהFirebase במסך.
+     *
+     * @param savedInstanceState שמירת מצב קודם אם קיים
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +72,14 @@ public class View_operation extends BaseActivity implements View.OnClickListener
         String operationKey = intent.getStringExtra("operationKey");
 
         fireBaseOperationHelper = new FireBaseOperationHelper();
-        fireBaseOperationHelper.fetchOneOperation(new FireBaseOperationHelper.DataStatusM() {
+        fireBaseOperationHelper.fetchOneOperation(
+                new FireBaseOperationHelper.DataStatusM() {
+            /**
+             * פעולה זו מופעלת כאשר נתוני הפעולה התקבלו מהFirebase.
+             * היא מציגה את הנתונים במסך, ומאתחלת את רשימת המתודות.
+             *
+             * @param o אובייקט הפעולה שהתקבלה
+             */
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataLoaded(Operation o) {
@@ -81,68 +94,24 @@ public class View_operation extends BaseActivity implements View.OnClickListener
                 equipments.setText(operation.getEquipment());
 
                 metodaArrayList = operation.getMetodotArr();
-                metodotListViewAdapter = new MetodotListViewAdapter(View_operation.this, 0, 0, metodaArrayList);
+                metodotListViewAdapter = new MetodotListViewAdapter(
+                        View_operation.this,
+                        0,
+                        0,
+                        metodaArrayList);
                 metodot.setAdapter(metodotListViewAdapter);
             }
         },operationKey);
+    }
 
-
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference myRef = database.getReference("operations").child(id);
-//
-//
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                operation = snapshot.getValue(Operation.class);
-//
-//                if (operation!= null){
-//                    title.setText(operation.getNameOfOperation());
-//                    writer.setText(operation.getUserName());
-//                    age.setText(operation.getAge());
-//                    length.setText(operation.getLengthOfOperation());
-//                    organization.setText(operation.getOrganization());
-//                    goals.setText(operation.getGoals());
-//                    equipments.setText(operation.getEquipment());
-//
-//                    metodaArrayList = operation.getMetodotArr();
-//                    metodotListViewAdapter = new MetodotListViewAdapter(View_operation.this, 0, 0, metodaArrayList);
-//                    metodot.setAdapter(metodotListViewAdapter);
-//
-//
-
-                    //הערכים לא נכנסים מהדאטא בייס למקום כי זה דאטאבייס חיצוני מריך לסדר את זה
-//                }
-//                metodaArrayList = new ArrayList<>();
-//                for (DataSnapshot methodSnapshot : snapshot.child("metodotArr").getChildren()) {
-//                    Metoda metoda = methodSnapshot.getValue(Metoda.class);
-//                    if (metoda != null) {
-//                        metodaArrayList.add(metoda);
-//                    }
-//                }
-//                if (metodaArrayList != null) {
-//                    metodotListViewAdapter = new MetodotListViewAdapter(View_operation.this, 0, 0, metodaArrayList);
-//                    metodot.setAdapter(metodotListViewAdapter);
-//                }
-            }
-
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-
-
-
-
-
-//    }
-
+    /**
+     * טיפול בלחיצות על כפתורים: סגירה .
+     *
+     * @param v הרכיב שנלחץ
+     */
     @Override
     public void onClick(View v) {
-        if (v == exit){
+        if (v == exit)
             finish();
-        }
-
     }
 }
