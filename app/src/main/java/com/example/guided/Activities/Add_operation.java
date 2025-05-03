@@ -41,40 +41,60 @@ import java.util.Collections;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
+/**
+ * מחלקה המאפשרת יצירה ועריכה של פעולה חינוכית הכוללת מטודות.
+ * כוללת שדות קלט, RecyclerView להצגת המטודות, ממשק לשמירה למסד נתונים (Firebase),
+ * וממשק גרפי לניהול המטודות (הוספה, מחיקה, גרירה).
+ */
+
 public class Add_operation extends BaseActivity implements View.OnClickListener {
+    // שדות ממשק משתמש, משתנים פנימיים, מתאמים ונתונים...
 
-    EditText topic;//שם פעולה
-    TextView length;//אורך הפעולה
-    int lengthCount = 0;
-    Switch privateORpublic;
-    EditText goals;//מטרות הפעולה
-    EditText equipments;// עזרים לפעולה
-    TextView ageAdjustments;//גיל החניכים
-    String[] listAgeAdjustments;
-    boolean[] checkedAgeAdjustments;
-    ArrayList<Integer> userAgeAdjustments = new ArrayList<>();
-    Button addMetodaBTN;
-    EditText metodaLength;//אורך המטודה
-    EditText title;//כותרת המתודה
-    EditText description;//תוכן המתודה
-    EditText equipment;//עזרים למתודה
-    ArrayList<Metoda> metodotArr;
-    int id = 0;
-    RecyclerView recyclerView;
-    RecyclerAdapterOperation recyclerAdapter;
-    RecyclerView.LayoutManager layoutManager;
-    Dialog addNewMetodaDialog;
-    Button saveMetoda;
-    ImageButton exitBTN;
-    Button saveOperationBTN;
-    Operation operation;
-    String operationKey = "";
-    FireBaseOperationHelper fireBaseOperationHelper;
+    // שדות כלליים למסך הפעולה
+    private EditText topic;// שדה להזנת שם פעולה
+    private TextView length;//שדה המציג את האורך הכולל של הפעולה (בדקות)
+    private int lengthCount = 0; // משתנה הסופר את אורך הפעולה הכולל
+    private Switch privateORpublic; // Switch לבחירת פעולה פרטית או ציבורית
+    private EditText goals;// שדה להזנת מטרות הפעולה
+    private EditText equipments;// שדה להזנת עזרים לפעולה
+    private TextView ageAdjustments;//שדה לבחירת גיל החניכים
+
+    /** שדות לדיאלוג הוספת מטודה להזנת פרטי המתודה */
+    private Button addMetodaBTN; //כפתור להוספת מתודה חדשה
+    private EditText metodaLength;//אורך המטודה
+    private EditText title;//כותרת המתודה
+    private EditText description;//תוכן המתודה
+    private EditText equipment;//עזרים למתודה
+    private Dialog addNewMetodaDialog; //דיאלוג להזנת מתודה חדשה
+    private Button saveMetoda; // כפתור לשמירת מתודה מהדיאלוג
+
+    // מערך מטודות ורשימה
+    private ArrayList<Metoda> metodotArr; //רשימת המתודות בפעולה
+    private int id = 0; // מזהה ייחודי לכל מתודה
+    private RecyclerView recyclerView; //תצוגת RecyclerView להצגת המתודות
+    private RecyclerAdapterOperation recyclerAdapter; //אדפטר לרשימת המתודות
+
+    // כפתורים כלליים
+    private ImageButton exitBTN; //כפתור יציאה
+    private Button saveOperationBTN; //כפתור שמירת פעולה
+
+    // מידע על פעולה
+    private Operation operation; //האובייקט של הפעולה עצמה
+    private String operationKey = ""; //מפתח הפעולה (אם מדובר בעריכה)
+    private OperationsAndTripsHelper operationsAndTripsHelper; //אובייקט עזר לדיאלוגים ופעולות הקשורות לטיולים ולפעולות.
 
 
+    /**
+     * מופעל בעת יצירת הפעולה.
+     * מאתחל את כל רכיבי הממשק, מקבל פעולה קיימת במידת הצורך ומציב מאזינים.
+     *
+     * @param savedInstanceState מצב שמור של האקטיביטי
+     */
     @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // אתחול רכיבים, מאזינים, טיפול בעריכה של פעולה קיימת
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_operation);
@@ -83,38 +103,59 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // אתחול רכיבים מה-XML
+
         topic = findViewById(R.id.topic);
         length = findViewById(R.id.length);
         goals = findViewById(R.id.goals);
         equipments = findViewById(R.id.equipments);
         privateORpublic = findViewById(R.id.publicORpivate);
+        ageAdjustments = findViewById(R.id.age);
+
+        exitBTN = findViewById(R.id.exit);
+        saveOperationBTN = findViewById(R.id.save);
+        addMetodaBTN= findViewById(R.id.addMetoda);
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        metodotArr = new ArrayList<>();
 
         operationsAndTripsHelper = new OperationsAndTripsHelper(Add_operation.this);
 
         setAdapter();
-        privateORpublic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+        // שינוי אייקון לפי סטטוס פרטי/ציבורי
+        privateORpublic.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener(){
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(
+                    CompoundButton buttonView,
+                    boolean isChecked) {
                 if(!privateORpublic.isChecked()){
-                    privateORpublic.setThumbDrawable(ContextCompat.getDrawable(Add_operation.this,
-                            drawable.baseline_person_24));
+                    privateORpublic.setThumbDrawable(
+                            ContextCompat.getDrawable(
+                                    Add_operation.this,
+                                    drawable.baseline_person_24));
                 }
                 else {
-                    privateORpublic.setThumbDrawable(ContextCompat.getDrawable(Add_operation.this,
-                            drawable.baseline_groups_24));
+                    privateORpublic.setThumbDrawable(
+                            ContextCompat.getDrawable(
+                                    Add_operation.this,
+                                    drawable.baseline_groups_24));
                 }
             }
         } );
 
-
-        exitBTN = findViewById(R.id.exit);
+        // מאזינים
         exitBTN.setOnClickListener(this);
-
-        saveOperationBTN = findViewById(R.id.save);
         saveOperationBTN.setOnClickListener(this);
-
-
-        addMetodaBTN= findViewById(R.id.addMetoda);
         addMetodaBTN.setOnClickListener(this);
         ageAdjustments.setOnClickListener(this);
 
@@ -123,8 +164,9 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
         if (intent != null) {
             operationKey = intent.getStringExtra("operationKey");
             if (operationKey != null) {
-                fireBaseOperationHelper = new FireBaseOperationHelper();
-                fireBaseOperationHelper.fetchOneOperation(new FireBaseOperationHelper.DataStatusM() {
+                FireBaseOperationHelper fireBaseOperationHelper = new FireBaseOperationHelper();
+                fireBaseOperationHelper.fetchOneOperation(
+                        new FireBaseOperationHelper.DataStatusM() {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onDataLoaded(Operation o) {
@@ -137,11 +179,15 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
                         equipments.setText(operation.getEquipment());
                         if (operation.getPrivateORpublic().equals("isPublic")) {
                             privateORpublic.setChecked(true);
-                            privateORpublic.setThumbDrawable(ContextCompat.getDrawable(Add_operation.this,
-                                    drawable.baseline_groups_24));
+                            privateORpublic.setThumbDrawable(
+                                    ContextCompat.getDrawable(
+                                            Add_operation.this,
+                                            drawable.baseline_groups_24));
                         } else if (operation.getPrivateORpublic().equals("isPrivate")) {
-                            privateORpublic.setThumbDrawable(ContextCompat.getDrawable(Add_operation.this,
-                                    drawable.baseline_person_24));
+                            privateORpublic.setThumbDrawable(
+                                    ContextCompat.getDrawable(
+                                            Add_operation.this,
+                                            drawable.baseline_person_24));
                         }
                         metodotArr = operation.getMetodotArr();
                         id = metodotArr.size();
@@ -153,14 +199,20 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
         }
     }
 
+    /**
+     * מאזין לכל הלחצנים במסך.
+     * מבצע פעולה שונה בהתאם ללחצן שנלחץ: הוספת מטודה, שמירת מתודה, שמירת פעולה, דיאלוג יציאה עם או בלי שמירה, ופתיחת דיאלוג התאמת גיל.
+     *
+     * @param v רכיב ה-View שנלחץ
+     */
     @Override
     public void onClick(View v) {
-        if(v == addMetodaBTN){
+        // טיפול בלחיצות
+
+        if (v == addMetodaBTN)
             addMetoda();
-        }
-        else if (v ==saveMetoda) {
+        else if (v == saveMetoda)
             saveMetoda();
-        }
         else if(v == saveOperationBTN){
             saveOperation();
             finish();
@@ -194,6 +246,7 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
      * שומר את ההתייחסות לדיאלוג ולשדות הקלט שבו מתוך ממשק המשתמש (ה־XML של הדיאלוג)..
      */
     private void addMetoda(){
+        // פתיחת דיאלוג והצגת שדות הזנת מטודה
 
         addNewMetodaDialog = new Dialog(Add_operation.this);
         addNewMetodaDialog.setContentView(R.layout.metoda_layout);
@@ -208,8 +261,15 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
 
         addNewMetodaDialog.show();
     }
+
+    /**
+     * שומר את המטודה החדשה שהוזנה בדיאלוג, ומעדכן את רשימת המטודות.
+     * מחשב מחדש את האורך הכולל של הפעולה.
+     */
     @SuppressLint("SetTextI18n")
     public void saveMetoda(){
+        // בדיקת קלט, יצירת אובייקט מטודה, הוספה לרשימה, עדכון RecyclerView
+
         int metodaLengthInt = 0;
         if(!metodaLength.getText().toString().isEmpty()){
             metodaLengthInt = Integer.parseInt(metodaLength.getText().toString());
@@ -230,7 +290,12 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
                 metodaLengthInt == 0)
             Toast.makeText(this, "לא כל השדות מלאים!", Toast.LENGTH_LONG).show();
 
-        Metoda newMetoda = new Metoda(titleStr, metodaLengthInt, descriptionStr, equipmentStr, id);
+        Metoda newMetoda = new Metoda(
+                titleStr,
+                metodaLengthInt,
+                descriptionStr,
+                equipmentStr,
+                id);
         metodotArr.add(newMetoda);
         id++;
 
@@ -241,66 +306,12 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
         addNewMetodaDialog.dismiss();
     }
 
-    Metoda deletedMetoda = null;
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
-        @Override
-        //להזיז את הפריט
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-
-            int fromPosition = viewHolder.getAdapterPosition();
-            int toPosition = target.getAdapterPosition();
-            Collections.swap(metodotArr, fromPosition, toPosition);
-            recyclerAdapter.notifyItemMoved(fromPosition,toPosition);
-
-            return true;
-        }
-
-        @SuppressLint("SetTextI18n")
-        @Override
-        //להחליק לצדדים
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-
-            int position = viewHolder.getAdapterPosition();
-
-            switch (direction){
-                case ItemTouchHelper.LEFT:
-                    deletedMetoda = metodotArr.get(position);
-                    metodotArr.remove(position);
-                    recyclerAdapter.notifyItemRemoved(position);
-
-                    lengthCount = lengthCount - deletedMetoda.getLength();;
-                    length.setText(lengthCount + " דקות ");
-
-                    Snackbar.make(recyclerView, deletedMetoda.toString(),Snackbar.LENGTH_LONG).setAction("undo", new View.OnClickListener(){
-                        @SuppressLint("SetTextI18n")
-                        @Override
-                        public void onClick(View v) {
-                            metodotArr.add(position, deletedMetoda);
-                            recyclerAdapter.notifyItemInserted(position);
-
-                            lengthCount = lengthCount + deletedMetoda.getLength();;
-                            length.setText(lengthCount + " דקות ");
-                        }
-                    }).show();
-                    break;
-            }
-        }
-
-        @Override
-        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-
-            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(Add_operation.this, R.color.red))
-                    .addSwipeLeftActionIcon(drawable.trash)
-                    .create()
-                    .decorate();
-
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-        }
-    };
-
-
+    /**
+     * שומר את הפעולה כולה למסד הנתונים Firebase.
+     * מאחזר פרטי משתמש כדי לצרף אותם לפעולה לפני השמירה.
+     */
     public void saveOperation() {
+        // בניית אובייקט Operation, שמירה ל-Firebase
 
         String nameSTR = topic.getText().toString();
         String ageSTR = ageAdjustments.getText().toString();
@@ -314,7 +325,8 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
         String equipmentsSTR = equipments.getText().toString();
 
         FirebaseUserHelper firebaseUserHelper = new FirebaseUserHelper();
-        firebaseUserHelper.fetchUserData(new FirebaseUserHelper.UserDataCallback() {
+        firebaseUserHelper.fetchUserData(
+                new FirebaseUserHelper.UserDataCallback() {
             @Override
             public void onUserDataLoaded(User user) {
                 String organizationSTR = user.getOrganization();
@@ -331,15 +343,42 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
                         organizationSTR,
                         userNameSTR);
 
-                operationsAndTripsHelper.saveOperation(operation, operationKey);
+                operationsAndTripsHelper.saveOperation(
+                        operation,
+                        operationKey);
             }
             @Override
             public void onError(String errorMessage) {}
         });
     }
 
+    /**
+     * ממשק גרירה והחלקה של פריטים ב-RecyclerView.
+     * מאפשר הזזת מטודות וסידור מחדש, או מחיקה עם אפשרות ביטול.
+     */
+    Metoda deletedMetoda = null;
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.
+            SimpleCallback(
+                    ItemTouchHelper.UP |
+                            ItemTouchHelper.DOWN,
+            ItemTouchHelper.LEFT) {
         @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+        public boolean onMove(@NonNull RecyclerView recyclerView,
+                              @NonNull RecyclerView.ViewHolder viewHolder,
+                              @NonNull RecyclerView.ViewHolder target) {
+            // הזזת פריט
+            int fromPosition = viewHolder.getAdapterPosition();
+            int toPosition = target.getAdapterPosition();
+            Collections.swap(metodotArr, fromPosition, toPosition);
+            recyclerAdapter.notifyItemMoved(fromPosition,toPosition);
+            return true;
+        }
+
+        @SuppressLint("SetTextI18n")
+        @Override
+        public void onSwiped(
+                @NonNull RecyclerView.ViewHolder viewHolder,
+                int direction) {
             // החלקה לצדדים ומחיקת פריט עם אפשרות undo
 
             int position = viewHolder.getAdapterPosition();
@@ -351,7 +390,12 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
                 lengthCount = lengthCount - deletedMetoda.getLength();
                 length.setText(lengthCount + " דקות ");
 
-                Snackbar.make(recyclerView, deletedMetoda.toString(), Snackbar.LENGTH_LONG).setAction("undo", new View.OnClickListener() {
+                Snackbar.make(
+                        recyclerView,
+                        deletedMetoda.toString(),
+                        Snackbar.LENGTH_LONG).setAction(
+                                "undo",
+                        new View.OnClickListener() {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onClick(View v) {
@@ -369,25 +413,51 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
         public void onChildDraw(@NonNull Canvas c,
                                 @NonNull RecyclerView recyclerView,
                                 @NonNull RecyclerView.ViewHolder viewHolder,
-                                float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                                float dX,
+                                float dY,
+                                int actionState,
+                                boolean isCurrentlyActive) {
             // ציור רקע ואייקון מחיקה
 
-            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(Add_operation.this, R.color.red))
+            new RecyclerViewSwipeDecorator.Builder(c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive)
+                    .addSwipeLeftBackgroundColor(
+                            ContextCompat.getColor(
+                                    Add_operation.this,
+                                    R.color.red))
                     .addSwipeLeftActionIcon(drawable.trash)
                     .create()
                     .decorate();
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            super.onChildDraw(c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive);
         }
     };
 
+    /**
+     * מאתחלת את ה־RecyclerView עם מתאם מסוג {@link RecyclerAdapterOperation}
+     * עבור רשימת המטודות (metodotArr).
+     *
+     * בנוסף, מגדירה מאזין לשינויים ברשימת המטודות כדי לעדכן את הסכום הכולל של הדקות
+     * ולהציגו ב־TextView.
+     */
     private void setAdapter(){
         recyclerAdapter = new RecyclerAdapterOperation(
                 metodotArr,
                 Add_operation.this);
 
         // מאזין לשינויי רשימת מטודות
-        recyclerAdapter.setOnMetodaListChangedListener(new RecyclerAdapterOperation.OnMetodaListChangedListener() {
+        recyclerAdapter.setOnMetodaListChangedListener(
+                new RecyclerAdapterOperation.OnMetodaListChangedListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onMetodaListChanged(ArrayList<Metoda> metodot) {
@@ -397,7 +467,6 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
                 length.setText(lengthCount + " דקות ");
             }
         });
-
         recyclerView.setAdapter(recyclerAdapter);
     }
 }

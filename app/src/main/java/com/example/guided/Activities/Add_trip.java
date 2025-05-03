@@ -51,59 +51,59 @@ import java.util.Collections;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
+/**
+ * מחלקה זו אחראית על יצירת טיול חדש או עריכת טיול קיים.
+ * מאפשרת הזנת פרטי טיול, הוספת מקטעים (Part), תמונה, גיל מתאים, אזור ועוד.
+ * הנתונים נשמרים ב-Firebase.
+ */
 public class Add_trip extends BaseActivity implements View.OnClickListener {
-    // TODO: להוסיף אפשרות לשמור מקטע וטיול בכללי שלא כל השדות מלאים מבלי שיקרוס
-    EditText topic;//שם הטיול
-    TextView length;//אורך הטיול
-    double lengthCount = 0;
-    int timeCount = 0;
-    Switch privateORpublic; //פרטי או ציבורי
-    EditText goals;//מטרות הטיול
-    EditText equipments;// עזרים לטיול
-    EditText place; //מיקום מדוייק
-    TextView area;//אזור בארץ
-    String[] listArea;
-    boolean[] checkedArea;
-    ArrayList<Integer> userArea = new ArrayList<>();
+    private EditText topic;//שם הטיול
+    private TextView length;//שדה המציג את האורך הכולל של הטיול (בק"מ)
+    private double lengthCount = 0; // משתנה הסופר את אורך מסלול הטיול הכולל
+    private int timeCount = 0; // משתנה הסופר את אורך הטיול הכולל(בדקות)
+    private Switch privateORpublic;  // Switch לבחירת פעולה פרטית או ציבורית
+    private EditText goals;// שדה להזנת מטרות הפעולה
+    private EditText equipments;// שדה להזנת עזרים לפעולה
+    private EditText place; //מיקום מדוייק
+    private TextView area;//שדה לבחירת אזור בארץ
+    private ImageView tripPicture;// תמונה של המסלול
+    private TextView ageAdjustments;//שדה לבחירת גיל החניכים
 
-    ImageView tripPicture;// תמונה של המסלול
-    TextView ageAdjustments;//גיל החניכים
-    String[] listAgeAdjustments;
-    boolean[] checkedAgeAdjustments;
-    ArrayList<Integer> userAgeAdjustments = new ArrayList<>();
+    /** שדות לדיאלוג הוספת מקטע להזנת פרטי המקטע */
+    private Button addPartBTN; //כפתור להוספת מקטע חדש
+    private TextView activityType; // שדה לבחירת סוג הפעילות שנעשת במקטע
+    private EditText lengthInMinute;//אורך המקטע בדקות
+    private EditText lengthInKM; //אורך המקטע בקמ
+    private EditText description;//תוכן המקטע
+    private EditText equipment;//עזרים המקטע
+    private ImageView picture; // תמונה של המקטע
+    private ArrayList<Part> partsArr; //רשימת המקטעים בטיול
+    private int id = 0; // מזהה ייחודי לכל מקטע
 
-    Button addPartBTN;
-    TextView activityType;
-    EditText lengthInMinute;
-    EditText lengthInKM;
-    EditText description;
-    EditText equipment;
-    ImageView picture;
+    private RecyclerView recyclerView;//תצוגת RecyclerView להצגת המקטעים
+    private RecyclerAdapterTrip recyclerAdapter; //אדפטר לרשימת המקטעים
+    private Dialog addNewPartDialog; //דיאלוג להזנת מקטע חדש
 
-    ArrayList<Part> partsArr;
-    int id = 0;
+    private ActivityResultLauncher<Intent> cameraLauncher; //לאונצ'ר להפעלת מצלמה
+    private ActivityResultLauncher<Intent> galleryLauncher; // לאונצ'ר לפתיחת גלריה
+    private int selectedPartPosition = -1;  // נשתמש כדי לדעת עבור איזה פריט לבחור תמונה
+    public ImageView currentDialogImageView; //שומר את ImageView הנוכחי לדיאלוג תמונה.
 
-    RecyclerView recyclerView;
-    RecyclerAdapterTrip recyclerAdapter;
-    RecyclerView.LayoutManager layoutManager;
-    Dialog addNewPartDialog;
+    private Button savePartBTN; // כפתור לשמירת מקטע מהדיאלוג
+    private ImageButton exitBTN; //כפתור יציאה
+    private Button saveTrip; //כפתור שמירת טיול
 
-    ActivityResultLauncher<Intent> cameraLauncher;
-    ActivityResultLauncher<Intent> galleryLauncher;
-    int selectedPartPosition = -1;  // נשתמש כדי לדעת עבור איזה פריט לבחור תמונה
-    public ImageView currentDialogImageView; // משתנה ברמת המחלקה
+    private String tripKey = ""; //מפתח הטיול (אם מדובר בעריכה)
+    private Trip trip;//האובייקט של טיול עצמו
 
-    Button savePartBTN;
-    ImageButton exitBTN;
-    Button saveTrip;
+    private OperationsAndTripsHelper operationsAndTripsHelper; //אובייקט עזר לדיאלוגים ופעולות הקשורות לטיולים ולפעולות.
 
-    String tripKey = "";
-
-    FireBaseTripHelper fireBaseTripHelper;
-
-    private OperationsAndTripsHelper operationsAndTripsHelper;
-
-
+    /**
+     * מופעל בעת יצירת הטיול.
+     * מאתחל את כל רכיבי הממשק, מציב מאזינים, ואם מתקבל מזהה של טיול (tripKey), הטיול נטען מפיירבייס ומוצג .
+     *
+     * @param savedInstanceState מצב שמור של האקטיביטי
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,40 +121,16 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         equipments = findViewById(R.id.equipments);
         place = findViewById(R.id.place);
         // TODO: לעשות שהמיקום הספציפי מתחבר לגוגל מאפ
-
-        tripPicture = findViewById(R.id.picture);
-        tripPicture.setOnClickListener(this);
-
-
         privateORpublic = findViewById(R.id.publicORpivate);
+        tripPicture = findViewById(R.id.picture);
+        area = findViewById(R.id.area);
+        ageAdjustments = findViewById(R.id.age);
 
-        privateORpublic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!privateORpublic.isChecked()){
-                    privateORpublic.setThumbDrawable(ContextCompat.getDrawable(Add_trip.this,
-                            R.drawable.baseline_person_24));
-                }
-                else {
-                    privateORpublic.setThumbDrawable(ContextCompat.getDrawable(Add_trip.this,
-                            R.drawable.baseline_groups_24));
-                }
-            }
-        } );
 
 
         exitBTN = findViewById(R.id.exit);
-        exitBTN.setOnClickListener(this);
-
         saveTrip = findViewById(R.id.save);
-        saveTrip.setOnClickListener(this);
-
-
         addPartBTN= findViewById(R.id.addPart);
-        addPartBTN.setOnClickListener(this);
-
-        operationsAndTripsHelper = new OperationsAndTripsHelper(Add_trip.this);
-
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -163,26 +139,49 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
 
         partsArr = new ArrayList<Part>();
 
+        operationsAndTripsHelper = new OperationsAndTripsHelper(Add_trip.this);
+
         setAdapter();
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
+        privateORpublic.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(
+                    CompoundButton buttonView,
+                    boolean isChecked) {
+                if(!privateORpublic.isChecked()){
+                    privateORpublic.setThumbDrawable(
+                            ContextCompat.
+                                    getDrawable(
+                                            Add_trip.this,
+                                            R.drawable.baseline_person_24));
+                }
+                else {
+                    privateORpublic.setThumbDrawable(
+                            ContextCompat.getDrawable(
+                                    Add_trip.this,
+                                    R.drawable.baseline_groups_24));
+                }
+            }
+        } );
 
-        area = findViewById(R.id.area);
+        tripPicture.setOnClickListener(this);
         area.setOnClickListener(this);
-
-
-        ageAdjustments = findViewById(R.id.age);
         ageAdjustments.setOnClickListener(this);
+        exitBTN.setOnClickListener(this);
+        saveTrip.setOnClickListener(this);
+        addPartBTN.setOnClickListener(this);
 
         cameraLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult o) {
-                        if (o.getResultCode() == RESULT_OK && currentDialogImageView != null) {
-
+                        if (o.getResultCode() == RESULT_OK &&
+                                currentDialogImageView != null) {
                             Intent data = o.getData();
                             if (data != null) {
                                 Bitmap bitmap = (Bitmap) data.getExtras().get("data");
@@ -198,9 +197,8 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult o) {
-
-
-                        if (o.getResultCode() == RESULT_OK && currentDialogImageView != null) {
+                        if (o.getResultCode() == RESULT_OK &&
+                                currentDialogImageView != null) {
                             Intent data = o.getData();
                             if (data != null) {
                                 Uri imageUri = data.getData();
@@ -212,8 +210,8 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
                                                     Add_trip.this.getContentResolver(),
                                                     imageUri);
                                     currentDialogImageView.setImageBitmap(bitmap);
-
-                                } catch (IOException e) {
+                                }
+                                catch (IOException e) {
                                     throw new RuntimeException(e); //מדפיס פרטי שגיאה
                                 }
                             }
@@ -228,7 +226,8 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
             if (tripKey != null) {
 
                 FireBaseTripHelper fireBaseTripHelper = new FireBaseTripHelper();
-                fireBaseTripHelper.fetchOneTrip(new FireBaseTripHelper.DataStatusT() {
+                fireBaseTripHelper.fetchOneTrip(
+                        new FireBaseTripHelper.DataStatusT() {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onDataLoaded(Trip t) {
@@ -251,14 +250,22 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
 //                                                            getResources(),
 //                                                            R.drawable.add_image));
  //                       else
-                            tripPicture.setImageBitmap(BitmapHelper.stringToBitmap(trip.getPicture()));
+                            tripPicture.setImageBitmap(
+                                    BitmapHelper.
+                                            stringToBitmap(
+                                                    trip.getPicture()));
                         if (trip.getPublicORprivate().equals("isPublic")) {
                             privateORpublic.setChecked(true);
-                            privateORpublic.setThumbDrawable(ContextCompat.getDrawable(Add_trip.this,
-                                    R.drawable.baseline_groups_24));
-                        } else if (trip.getPublicORprivate().equals("isPrivate")) {
-                            privateORpublic.setThumbDrawable(ContextCompat.getDrawable(Add_trip.this,
-                                    R.drawable.baseline_person_24));
+                            privateORpublic.setThumbDrawable(
+                                    ContextCompat.getDrawable(
+                                            Add_trip.this,
+                                            R.drawable.baseline_groups_24));
+                        }
+                        else if (trip.getPublicORprivate().equals("isPrivate")) {
+                            privateORpublic.setThumbDrawable(
+                                    ContextCompat.getDrawable(
+                                            Add_trip.this,
+                                            R.drawable.baseline_person_24));
                         }
                         partsArr = trip.getPartsArr();
                         id = partsArr.size();
@@ -270,9 +277,14 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    /**
+     * מאזין לכל הלחצנים במסך.
+     * מבצע פעולה שונה בהתאם ללחצן שנלחץ: הוספת מקטע, שמירת מקטע, שמירת טיול, דיאלוג יציאה עם או בלי שמירה, ופתיחת דיאלוג הוספת תמונה, בחירת התאמת גיל או אזור.
+     *
+     * @param v רכיב ה-View שנלחץ
+     */
     @Override
     public void onClick(View v) {
-
         if(v == addPartBTN){
             addPart();
         }
@@ -330,6 +342,10 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    /**
+     * מציג דיאלוג המאפשר למשתמש להזין פרטי מקטע חדש.
+     *כולל בחירת סוג פעילות, אורך, תיאור, ציוד ותמונה
+     */
     private void addPart(){
 
         addNewPartDialog = new Dialog(Add_trip.this);
@@ -344,11 +360,15 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         equipment = addNewPartDialog.findViewById(R.id.equipment);
         currentDialogImageView = picture;
 
-        picture.setOnClickListener(new View.OnClickListener() {
+        picture.setOnClickListener(
+                new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 currentDialogImageView = picture;
-                operationsAndTripsHelper.showTripPic(cameraLauncher, galleryLauncher, new OperationsAndTripsHelper.PicDialogCallback() {
+                operationsAndTripsHelper.showTripPic(
+                        cameraLauncher,
+                        galleryLauncher,
+                        new OperationsAndTripsHelper.PicDialogCallback() {
                     @Override
                     public void onResult(ImageView pic) {
                         picture = pic;
@@ -357,7 +377,8 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
             }
         });
 
-        activityType.setOnClickListener(new View.OnClickListener(){
+        activityType.setOnClickListener(
+                new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 operationsAndTripsHelper
@@ -370,16 +391,19 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
                                 });
             }
         });
-
         savePartBTN = addNewPartDialog.findViewById(R.id.savePart);
         savePartBTN.setOnClickListener(this);
 
         addNewPartDialog.show();
-
     }
+
+    /**
+     * שומר את המקטע החדש שהוזן בדיאלוג, ומעדכן את רשימת המקטעים.
+     * מחשב מחדש את האורך(בק"מ) והזמן(בדקות) הכולל של הפעולה.
+     *       אם שדה כלשהו חסר – מציג הודעת שגיאה.
+     */
     @SuppressLint("SetTextI18n")
     public void savePart(){
-
 
         int partLengthInMinuteInt = 0;
         if(!lengthInMinute.getText().toString().isEmpty()){
@@ -438,61 +462,10 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         addNewPartDialog.dismiss();
     }
 
-    Part deletedPart = null;
-
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
-
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            int fromPosition = viewHolder.getAdapterPosition();
-            int toPosition = target.getAdapterPosition();
-            Collections.swap(partsArr, fromPosition, toPosition);
-            recyclerAdapter.notifyItemMoved(fromPosition,toPosition);
-
-            return true;
-        }
-
-        @SuppressLint("SetTextI18n")
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            int position = viewHolder.getAdapterPosition();
-
-            switch (direction){
-                case ItemTouchHelper.LEFT:
-                    deletedPart = partsArr.get(position);
-                    partsArr.remove(position);
-                    recyclerAdapter.notifyItemRemoved(position);
-
-                    lengthCount = lengthCount - deletedPart.getLengthInKM();;
-                    length.setText(lengthCount + " ק''מ ");
-
-                    Snackbar.make(recyclerView, deletedPart.toString(),Snackbar.LENGTH_LONG).setAction("undo", new View.OnClickListener(){
-                        @Override
-                        public void onClick(View v) {
-                            partsArr.add(position, deletedPart);
-                            recyclerAdapter.notifyItemInserted(position);
-
-                            lengthCount = lengthCount + deletedPart.getLengthInKM();;
-                            length.setText(lengthCount + " ק''מ ");
-                        }
-                    }).show();
-                    break;
-            }
-        }
-
-        @Override
-        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-
-            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(Add_trip.this, R.color.red))
-                    .addSwipeLeftActionIcon(R.drawable.trash)
-                    .create()
-                    .decorate();
-
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-        }
-    };
-
+    /**
+     * שומר את הטיול כולו למסד הנתונים Firebase.
+     * מאחזר פרטי משתמש כדי לצרף אותם לטיול לפני השמירה.
+     */
     public void saveTrip(){
 
         String nameSTR = topic.getText().toString();
@@ -527,39 +500,146 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
 
         FirebaseUserHelper firebaseUserHelper = new FirebaseUserHelper();
         String finalPicSTR = picSTR;
-        firebaseUserHelper.fetchUserData(new FirebaseUserHelper.UserDataCallback() {
-            @Override
-            public void onUserDataLoaded(User user) {
-                String organizationSTR = user.getOrganization();
-                String userNameSTR = user.getUserName();
-                trip = new Trip(nameSTR,
-                        ageSTR,
-                        publicORprivateSRT,
-                        lengthInKmINT,
-                        lengthInMinutesINT,
-                        goalsSTR,
-                        equipmentsSTR,
-                        areaSTR,
-                        placeSTR,
-                        partsArr,
-                        userNameSTR,
-                        organizationSTR,
-                        finalPicSTR);
-                operationsAndTripsHelper.saveTrip(trip, tripKey);
-            }
+        firebaseUserHelper.fetchUserData(
+                new FirebaseUserHelper.UserDataCallback() {
+                    @Override
+                    public void onUserDataLoaded(User user) {
+                        String organizationSTR = user.getOrganization();
+                        String userNameSTR = user.getUserName();
+                        trip = new Trip(nameSTR,
+                                ageSTR,
+                                publicORprivateSRT,
+                                lengthInKmINT,
+                                lengthInMinutesINT,
+                                goalsSTR,
+                                equipmentsSTR,
+                                areaSTR,
+                                placeSTR,
+                                partsArr,
+                                userNameSTR,
+                                organizationSTR,
+                                finalPicSTR);
+                        operationsAndTripsHelper.saveTrip(
+                                trip,
+                                tripKey);
+                    }
 
-            @Override
-            public void onError(String errorMessage) {
-
-            }
-        });
+                    @Override
+                    public void onError(String errorMessage) {
+                    }
+                });
     }
 
+    /**
+     * ממשק גרירה והחלקה של פריטים ב-RecyclerView.
+     * מאפשר הזזת מקטעים וסידור מחדש, או מחיקה עם אפשרות ביטול.
+     *   onMove - מאפשר גרירת חלקים כדי לשנות את הסדר שלהם.
+     *       onSwiped - מאפשר מחיקת חלק מהטיול על ידי החלקה שמאלה, עם אפשרות לשחזור באמצעות Snackbar.
+     *       onChildDraw - מצייר רקע אדום ואייקון פח בעת גרירת פריט שמאלה.
+     */
+    Part deletedPart = null;
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper
+            .SimpleCallback(
+                    ItemTouchHelper.UP |
+                            ItemTouchHelper.DOWN,
+            ItemTouchHelper.LEFT) {
+
+        @Override
+        public boolean onMove(
+                @NonNull RecyclerView recyclerView,
+                @NonNull RecyclerView.ViewHolder viewHolder,
+                @NonNull RecyclerView.ViewHolder target) {
+            int fromPosition = viewHolder.getAdapterPosition();
+            int toPosition = target.getAdapterPosition();
+            Collections.swap(partsArr, fromPosition, toPosition);
+            recyclerAdapter.notifyItemMoved(fromPosition,toPosition);
+
+            return true;
+        }
+
+        @SuppressLint("SetTextI18n")
+        @Override
+        public void onSwiped(
+                @NonNull RecyclerView.ViewHolder viewHolder,
+                int direction) {
+            int position = viewHolder.getAdapterPosition();
+
+            switch (direction){
+                case ItemTouchHelper.LEFT:
+                    deletedPart = partsArr.get(position);
+                    partsArr.remove(position);
+                    recyclerAdapter.notifyItemRemoved(position);
+
+                    lengthCount = lengthCount - deletedPart.getLengthInKM();;
+                    length.setText(lengthCount + " ק''מ ");
+
+                    Snackbar.make(
+                            recyclerView,
+                            deletedPart.toString(),
+                            Snackbar.LENGTH_LONG).setAction(
+                                    "undo",
+                            new View.OnClickListener(){
+                        @Override
+                        public void onClick(View v) {
+                            partsArr.add(position, deletedPart);
+                            recyclerAdapter.notifyItemInserted(position);
+
+                            lengthCount = lengthCount + deletedPart.getLengthInKM();;
+                            length.setText(lengthCount + " ק''מ ");
+                        }
+                    }).show();
+                    break;
+            }
+        }
+
+        @Override
+        public void onChildDraw(
+                @NonNull Canvas c,
+                @NonNull RecyclerView recyclerView,
+                @NonNull RecyclerView.ViewHolder viewHolder,
+                float dX,
+                float dY,
+                int actionState,
+                boolean isCurrentlyActive) {
+
+            new RecyclerViewSwipeDecorator.Builder(
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive)
+                    .addSwipeLeftBackgroundColor(
+                            ContextCompat.getColor(
+                                    Add_trip.this,
+                                    R.color.red))
+                    .addSwipeLeftActionIcon(R.drawable.trash)
+                    .create()
+                    .decorate();
+
+            super.onChildDraw(
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive);
+        }
+    };
+
+    /**
+     * אתחול ה־RecyclerView עם מתאם מתאים (RecyclerAdapterTrip) והגדרת שני מאזינים:
+     * 1. onPartListChanged – מחשב מחדש את סך כל הקילומטרים והזמן כשיש שינוי ברשימת החלקים.
+     * 2. onImagePickerRequested – מאזין לבקשות בחירת תמונה לחלק (מצלמה, גלריה, או מחיקה).
+     */
     private void setAdapter(){
         recyclerAdapter = new RecyclerAdapterTrip(
                 partsArr,
                 Add_trip.this);
-        recyclerAdapter.setOnPartListChangedListener(new RecyclerAdapterTrip.OnPartListChangedListener() {
+        recyclerAdapter.setOnPartListChangedListener(
+                new RecyclerAdapterTrip.OnPartListChangedListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onPartListChanged(ArrayList<Part> parts) {
@@ -572,30 +652,38 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
                 length.setText(lengthCount + " ק''מ ");
             }
         });
-        recyclerAdapter.setOnImagePickerRequestedListener(new RecyclerAdapterTrip.OnImagePickerRequestedListener() {
+        recyclerAdapter.setOnImagePickerRequestedListener(
+                new RecyclerAdapterTrip.OnImagePickerRequestedListener() {
             @Override
-            public void onCameraRequested(int position, ImageView imageView) {
+            public void onCameraRequested(
+                    int position,
+                    ImageView imageView) {
                 // שמרי את המיקום, ואז הפעלי את cameraLauncher
                 selectedPartPosition = position;
                 currentDialogImageView = imageView;
-                cameraLauncher.launch(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
+                cameraLauncher.launch(
+                        new Intent(
+                                MediaStore.ACTION_IMAGE_CAPTURE));
             }
-
             @Override
-            public void onGalleryRequested(int position, ImageView imageView) {
+            public void onGalleryRequested(
+                    int position,
+                    ImageView imageView) {
                 selectedPartPosition = position;
                 currentDialogImageView = imageView;
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                galleryLauncher.launch(galleryIntent);
+                galleryLauncher.launch(
+                        new Intent(
+                                Intent.ACTION_PICK,
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI));
             }
-
             @Override
-            public void onDeleteRequested(int position, ImageView imageView) {
+            public void onDeleteRequested(
+                    int position,
+                    ImageView imageView) {
                 selectedPartPosition = position;
                 currentDialogImageView = imageView;
             }
         });
-
         recyclerView.setAdapter(recyclerAdapter);
     }
 }
