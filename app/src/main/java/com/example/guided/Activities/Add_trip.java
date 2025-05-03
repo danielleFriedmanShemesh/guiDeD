@@ -61,9 +61,9 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
     private TextView length;//שדה המציג את האורך הכולל של הטיול (בק"מ)
     private double lengthCount = 0; // משתנה הסופר את אורך מסלול הטיול הכולל
     private int timeCount = 0; // משתנה הסופר את אורך הטיול הכולל(בדקות)
-    private Switch privateORpublic;  // Switch לבחירת פעולה פרטית או ציבורית
-    private EditText goals;// שדה להזנת מטרות הפעולה
-    private EditText equipments;// שדה להזנת עזרים לפעולה
+    private Switch privateORpublic;  // Switch לבחירת טיול פרטי או ציבורי
+    private EditText goals;// שדה להזנת מטרות הטיול
+    private EditText equipments;// שדה להזנת עזרים לטיול
     private EditText place; //מיקום מדוייק
     private TextView area;//שדה לבחירת אזור בארץ
     private ImageView tripPicture;// תמונה של המסלול
