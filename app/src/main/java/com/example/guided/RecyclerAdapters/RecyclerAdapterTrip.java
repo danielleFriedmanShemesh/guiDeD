@@ -30,14 +30,10 @@ import java.util.ArrayList;
 
 public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTrip.ViewHolder>{
 
-    private ArrayList<Part> partsArrayList;
-    private Context context;
-
-    private RecyclerAdapterTrip.OnPartListChangedListener listener;
-
-    public void setOnPartListChangedListener(RecyclerAdapterTrip.OnPartListChangedListener listener) {
-        this.listener = listener;
-    }
+    private ArrayList<Part> partsArrayList; //רשימת החלקים של הטיול. כל אובייקט מסוג Part מייצג מקטע מהטיול.
+    private Context context; //הקשר (Context) של האפליקציה, משמש לגישה למשאבים וליצירת דיאלוגים.
+    private RecyclerAdapterTrip.OnPartListChangedListener listener; // מאזין לשינויים ברשימת המקטעים, מאפשר לעדכן את הממשק בהתאם לשינויים
+    private OnImagePickerRequestedListener imagePickerListener; // מאזין לבחירת תמונה, מאפשר פתיחת מצלמה, גלריה או מחיקת תמונה.
 
     public interface OnPartListChangedListener {
         void onPartListChanged(ArrayList<Part> parts);
@@ -49,30 +45,57 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
         void onDeleteRequested(int position, ImageView imageView);
     }
 
-    private OnImagePickerRequestedListener imagePickerListener;
+    /**
+     * מגדיר את המאזין לשינויים ברשימת המקטעים.
+     *
+     * @param listener המאזין לשינויים.
+     */
+    public void setOnPartListChangedListener(RecyclerAdapterTrip.OnPartListChangedListener listener) {
+        this.listener = listener;
+    }
 
+    /**
+     * מגדיר את המאזין לבחירת תמונה.
+     *
+     * @param listener המאזין לבחירת תמונה.
+     */
     public void setOnImagePickerRequestedListener(OnImagePickerRequestedListener listener) {
         this.imagePickerListener = listener;
     }
 
-
-
-
-    public RecyclerAdapterTrip(ArrayList<Part> partsArrayList, Context context) //, Map<Integer, Bitmap> tempImages
+    /**
+     * בנאי המחלקה.
+     *
+     * @param partsArrayList רשימת החלקים של הטיול.
+     * @param context        הקשר של האפליקציה.
+     */
+    public RecyclerAdapterTrip(ArrayList<Part> partsArrayList, Context context)
     {
         this.partsArrayList = partsArrayList;
         this.context = context;
     }
 
+    /**
+     * יוצר ViewHolder חדש עבור פריט ברשימה.
+     *
+     * @param parent   ההורה של ה-View.
+     * @param viewType סוג ה-View.
+     * @return ViewHolder חדש.
+     */
     @NonNull
     @Override
     public RecyclerAdapterTrip.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.one_part_layout, parent, false);
-        RecyclerAdapterTrip.ViewHolder viewHolder = new RecyclerAdapterTrip.ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
+    /**
+     * קושר את הנתונים של מקטע מסוים ל-ViewHolder.
+     *
+     * @param holder   ה-ViewHolder שאליו יקשרו הנתונים.
+     * @param position המיקום של הפריט ברשימה.
+     */
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapterTrip.ViewHolder holder, int position) {
         Part part = partsArrayList.get(position);
@@ -122,9 +145,6 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                     pictureIV.setImageBitmap(BitmapHelper.stringToBitmap(part.getPicture()));
                     ((Add_trip) context).currentDialogImageView = pictureIV;
 
-                    //       if (tempImages.containsKey(position))
-              //          pictureIV.setImageBitmap(tempImages.get(position));
-
                     String[] listActivityTypeAdjustments = context.getResources().getStringArray(R.array.activity_type_adjustment);;
                     boolean[] checkedActivityTypeAdjustments = new boolean[listActivityTypeAdjustments.length];;
                     ArrayList<Integer> userActivityTypeAdjustments = new ArrayList<>();
@@ -142,11 +162,9 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                                             if (listActivityTypeAdjustments.equals("אחר")){
                                             }
                                         }
-
                                     }
-                                    else if (userActivityTypeAdjustments.contains(which)){
+                                    else if (userActivityTypeAdjustments.contains(which))
                                         userActivityTypeAdjustments.remove(Integer.valueOf(which));
-                                    }
                                 }
                             });
                             builder.setCancelable(false);
@@ -171,10 +189,8 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                             });
                             AlertDialog dialog = builder.create();
                             dialog.show();
-
                         }
                     });
-
 
                     pictureIV.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -201,7 +217,7 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                                         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.add_image); // טוען את התמונה
                                         pictureIV.setImageBitmap(bitmap); // מציג אותה בתוך ה-ImageView
                                         dialog.dismiss();
-                                        imagePickerListener.onGalleryRequested(holder.getBindingAdapterPosition(),pictureIV);
+                                        imagePickerListener.onDeleteRequested(holder.getBindingAdapterPosition(),pictureIV);
                                     }
                                 }
                             });
@@ -227,9 +243,6 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                         }
                     });
 
-
-
-
                     savePartBTN.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -253,30 +266,33 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                             holder.equipment.setText(editPart.getEquipment());
                             holder.picture.setImageBitmap(BitmapHelper.stringToBitmap(editPart.getPicture()));
 
-                            if (listener != null) {
+                            if (listener != null)
                                 listener.onPartListChanged(partsArrayList);
-                            }
-
                             partDialog.dismiss();
                         }
                     });
                     partDialog.show();
                 }
-
             }
-
         });
     }
 
+    /**
+     * מחזיר את מספר הפריטים ברשימה.
+     *
+     * @return מספר הפריטים.
+     */
     @Override
     public int getItemCount() {
-        if(partsArrayList == null){
+        if(partsArrayList == null)
             return 0;
-        }
-        else{
-            return partsArrayList.size();}
+        else
+            return partsArrayList.size();
     }
 
+    /**
+     * מחזיק את ה-View עבור פריט ברשימה.
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder{
         TextView activityType;
         TextView lengthInMinute;
@@ -285,6 +301,12 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
         TextView equipment;
         ImageView picture;
         ConstraintLayout parentLayout;
+
+        /**
+         * בנאי המחלקה.
+         *
+         * @param itemView ה-View של הפריט.
+         */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -297,31 +319,23 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
             picture = itemView.findViewById(R.id.picture);
         }
 
-
         public TextView getActivityType() {
             return activityType;
         }
-
         public TextView getLengthInMinute() {
             return lengthInMinute;
         }
-
         public TextView getLengthInKM() {
             return lengthInKM;
         }
-
         public ImageView getPicture() {
             return picture;
         }
-
         public TextView getDescription() {
             return description;
         }
-
         public TextView getEquipment() {
             return equipment;
         }
-
-
     }
 }
