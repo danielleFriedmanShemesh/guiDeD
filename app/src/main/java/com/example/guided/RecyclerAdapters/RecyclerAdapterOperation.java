@@ -29,7 +29,8 @@ public class RecyclerAdapterOperation extends RecyclerView.Adapter<RecyclerAdapt
      *
      * @param listener המאזין לשינויים.
      */
-    public void setOnMetodaListChangedListener(OnMetodaListChangedListener listener) {
+    public void setOnMetodaListChangedListener(
+            OnMetodaListChangedListener listener) {
         this.listener = listener;
     }
 
@@ -43,7 +44,9 @@ public class RecyclerAdapterOperation extends RecyclerView.Adapter<RecyclerAdapt
      * @param metodaArrayList רשימת המתודות של הפעולה.
      * @param context        הקשר של האפליקציה.
      */
-    public RecyclerAdapterOperation(ArrayList<Metoda> metodaArrayList, Context context) {
+    public RecyclerAdapterOperation(
+            ArrayList<Metoda> metodaArrayList,
+            Context context) {
         this.metodaArrayList = metodaArrayList;
         this.context = context;
     }
@@ -70,20 +73,24 @@ public class RecyclerAdapterOperation extends RecyclerView.Adapter<RecyclerAdapt
      * @param position המיקום של הפריט ברשימה.
      */
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(
+            @NonNull ViewHolder holder,
+            int position) {
         Metoda metoda = metodaArrayList.get(position);
         holder.title.setText(metoda.getTitle());
         holder.length.setText(String.valueOf(metoda.getLength()));
         holder.description.setText(metoda.getDescription());
         holder.equipment.setText(metoda.getEquipment());
-        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+        holder.parentLayout.setOnClickListener(
+                new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(metodaArrayList != null){
                     int id;
                     Metoda metoda;
                     //Edit the metoda
-                    metoda = metodaArrayList.get(holder.getBindingAdapterPosition());
+                    metoda = metodaArrayList.get(
+                            holder.getBindingAdapterPosition());
                     id = holder.getBindingAdapterPosition();
 
                     Dialog metodaDialog;
@@ -108,19 +115,28 @@ public class RecyclerAdapterOperation extends RecyclerView.Adapter<RecyclerAdapt
                     descriptionET.setText(metoda.getDescription());
                     equipmentET.setText(metoda.getEquipment());
 
-                    saveMetodaBTN.setOnClickListener(new View.OnClickListener() {
+                    saveMetodaBTN.setOnClickListener(
+                            new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            int metodaLengthInt = Integer.parseInt(metodaLengthET.getText().toString());;
+                            int metodaLengthInt = Integer.parseInt(
+                                    metodaLengthET.getText().toString());;
                             String titleStr = titleET.getText().toString();
                             String descriptionStr = descriptionET.getText().toString();
                             String equipmentStr = equipmentET.getText().toString();
-                            Metoda editMetoda = new Metoda(titleStr, metodaLengthInt, descriptionStr, equipmentStr, id);
+                            Metoda editMetoda = new Metoda(
+                                    titleStr,
+                                    metodaLengthInt,
+                                    descriptionStr,
+                                    equipmentStr,
+                                    id);
 
                             metodaArrayList.set(id, editMetoda);
 
                             holder.title.setText(editMetoda.getTitle());
-                            holder.length.setText(String.valueOf(editMetoda.getLength()));
+                            holder.length.setText(
+                                    String.valueOf(
+                                            editMetoda.getLength()));
                             holder.description.setText(editMetoda.getDescription());
                             holder.equipment.setText(editMetoda.getEquipment());
 
@@ -173,7 +189,6 @@ public class RecyclerAdapterOperation extends RecyclerView.Adapter<RecyclerAdapt
             equipment = itemView.findViewById(R.id.equipment);
             parentLayout = itemView.findViewById(R.id.oneMetodaLayout);
         }
-
         public TextView getTitle() {
             return title;
         }

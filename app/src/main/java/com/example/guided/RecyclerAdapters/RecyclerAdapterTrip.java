@@ -50,7 +50,8 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
      *
      * @param listener המאזין לשינויים.
      */
-    public void setOnPartListChangedListener(RecyclerAdapterTrip.OnPartListChangedListener listener) {
+    public void setOnPartListChangedListener(
+            RecyclerAdapterTrip.OnPartListChangedListener listener) {
         this.listener = listener;
     }
 
@@ -59,7 +60,8 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
      *
      * @param listener המאזין לבחירת תמונה.
      */
-    public void setOnImagePickerRequestedListener(OnImagePickerRequestedListener listener) {
+    public void setOnImagePickerRequestedListener(
+            OnImagePickerRequestedListener listener) {
         this.imagePickerListener = listener;
     }
 
@@ -69,7 +71,9 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
      * @param partsArrayList רשימת החלקים של הטיול.
      * @param context        הקשר של האפליקציה.
      */
-    public RecyclerAdapterTrip(ArrayList<Part> partsArrayList, Context context)
+    public RecyclerAdapterTrip(
+            ArrayList<Part> partsArrayList,
+            Context context)
     {
         this.partsArrayList = partsArrayList;
         this.context = context;
@@ -97,7 +101,9 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
      * @param position המיקום של הפריט ברשימה.
      */
     @Override
-    public void onBindViewHolder(@NonNull RecyclerAdapterTrip.ViewHolder holder, int position) {
+    public void onBindViewHolder(
+            @NonNull RecyclerAdapterTrip.ViewHolder holder,
+            int position) {
         Part part = partsArrayList.get(position);
         holder.activityType.setText(part.getActivityType());
         holder.lengthInMinute.setText(String.valueOf(part.getLengthInMinute()));
@@ -105,15 +111,19 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
         holder.description.setText(part.getDescription());
         holder.equipment.setText(part.getEquipment());
         //if (part.getPicture() != null)
-            holder.picture.setImageBitmap(BitmapHelper.stringToBitmap(part.getPicture()));
-        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+            holder.picture.setImageBitmap(
+                    BitmapHelper.stringToBitmap(
+                            part.getPicture()));
+        holder.parentLayout.setOnClickListener(
+                new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(partsArrayList != null){
                     int id;
                     Part part;
                     //Edit the part
-                    part = partsArrayList.get(holder.getBindingAdapterPosition());
+                    part = partsArrayList.get(
+                            holder.getBindingAdapterPosition());
                     id = holder.getBindingAdapterPosition();
 
                     Dialog partDialog;
@@ -142,18 +152,29 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                     lengthInKM_ET.setText(String.valueOf(part.getLengthInKM()));
                     descriptionET.setText(part.getDescription());
                     equipmentET.setText(part.getEquipment());
-                    pictureIV.setImageBitmap(BitmapHelper.stringToBitmap(part.getPicture()));
+                    pictureIV.setImageBitmap(
+                            BitmapHelper.stringToBitmap(
+                                    part.getPicture()));
                     ((Add_trip) context).currentDialogImageView = pictureIV;
 
-                    String[] listActivityTypeAdjustments = context.getResources().getStringArray(R.array.activity_type_adjustment);;
-                    boolean[] checkedActivityTypeAdjustments = new boolean[listActivityTypeAdjustments.length];;
+                    String[] listActivityTypeAdjustments = context.
+                            getResources().
+                            getStringArray(
+                                    R.array.activity_type_adjustment);
+                    boolean[] checkedActivityTypeAdjustments = new boolean[listActivityTypeAdjustments.length];
                     ArrayList<Integer> userActivityTypeAdjustments = new ArrayList<>();
-                    activityTypeTV.setOnClickListener(new View.OnClickListener(){
+                    activityTypeTV.setOnClickListener(
+                            new View.OnClickListener(){
                         @Override
                         public void onClick(View v) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialog);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(
+                                    context,
+                                    R.style.AlertDialog);
                             builder.setTitle("בחר את סוג הפעילות ");
-                            builder.setMultiChoiceItems(listActivityTypeAdjustments, checkedActivityTypeAdjustments, new DialogInterface.OnMultiChoiceClickListener() {
+                            builder.setMultiChoiceItems(
+                                    listActivityTypeAdjustments,
+                                    checkedActivityTypeAdjustments,
+                                    new DialogInterface.OnMultiChoiceClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                                     if(isChecked){
@@ -168,20 +189,23 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                                 }
                             });
                             builder.setCancelable(false);
-                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            builder.setPositiveButton(
+                                    "OK",
+                                    new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String type = "";
                                     for(int i = 0; i < userActivityTypeAdjustments.size(); i++){
                                         type = type + listActivityTypeAdjustments[userActivityTypeAdjustments.get(i)];
-                                        if (i != userActivityTypeAdjustments.size() - 1){
+                                        if (i != userActivityTypeAdjustments.size() - 1)
                                             type = type + ", ";
-                                        }
                                     }
                                     activityTypeTV.setText(type);
                                 }
                             });
-                            builder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                            builder.setNegativeButton(
+                                    "Dismiss",
+                                    new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
@@ -192,13 +216,16 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                         }
                     });
 
-                    pictureIV.setOnClickListener(new View.OnClickListener() {
+                    pictureIV.setOnClickListener(
+                            new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
 
                             Dialog dialog = new Dialog(context);
                             dialog.setContentView(R.layout.dialog_add_pic);
-                            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            dialog.getWindow().setLayout(
+                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                    ViewGroup.LayoutParams.WRAP_CONTENT);
                             dialog.show();
 
                             Button galery = dialog.findViewById(R.id.galery);
@@ -210,14 +237,19 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                             /*
           מאזין ללחיצה בדיאלוג תמונה – מפעיל את המצלמה או הגלריה או מחיקה בהתאם ללחיצה.
          */
-                            delete.setOnClickListener(new View.OnClickListener() {
+                            delete.setOnClickListener(
+                                    new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     if (imagePickerListener != null) {
-                                        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.add_image); // טוען את התמונה
+                                        Bitmap bitmap = BitmapFactory.decodeResource(
+                                                context.getResources(),
+                                                R.drawable.add_image); // טוען את התמונה
                                         pictureIV.setImageBitmap(bitmap); // מציג אותה בתוך ה-ImageView
                                         dialog.dismiss();
-                                        imagePickerListener.onDeleteRequested(holder.getBindingAdapterPosition(),pictureIV);
+                                        imagePickerListener.onDeleteRequested(
+                                                holder.getBindingAdapterPosition(),
+                                                pictureIV);
                                     }
                                 }
                             });
@@ -227,27 +259,35 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                                 public void onClick(View v) {
                                     if (imagePickerListener != null) {
                                         dialog.dismiss();
-                                        imagePickerListener.onGalleryRequested(holder.getBindingAdapterPosition(),pictureIV);
+                                        imagePickerListener.onGalleryRequested(
+                                                holder.getBindingAdapterPosition(),
+                                                pictureIV);
                                     }
                                 }
                             });
-                            camera.setOnClickListener(new View.OnClickListener() {
+                            camera.setOnClickListener(
+                                    new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     if (imagePickerListener != null) {
                                         dialog.dismiss();
-                                        imagePickerListener.onCameraRequested(holder.getBindingAdapterPosition(),pictureIV);
+                                        imagePickerListener.onCameraRequested(
+                                                holder.getBindingAdapterPosition(),
+                                                pictureIV);
                                     }
                                 }
                             });
                         }
                     });
 
-                    savePartBTN.setOnClickListener(new View.OnClickListener() {
+                    savePartBTN.setOnClickListener(
+                            new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            int partLengthInMinuteInt = Integer.parseInt(lengthInMinuteET.getText().toString());
-                            double partLengthInKMInt = Double.parseDouble(lengthInKM_ET.getText().toString());
+                            int partLengthInMinuteInt = Integer.parseInt(
+                                    lengthInMinuteET.getText().toString());
+                            double partLengthInKMInt = Double.parseDouble(
+                                    lengthInKM_ET.getText().toString());
                             String activityTypeStr = activityTypeTV.getText().toString();
                             String descriptionStr = descriptionET.getText().toString();
                             String equipmentStr = equipmentET.getText().toString();
@@ -255,16 +295,27 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                                     ((BitmapDrawable)pictureIV.getDrawable())
                                             .getBitmap());
 
-                            Part editPart = new Part(activityTypeStr, partLengthInMinuteInt, partLengthInKMInt, descriptionStr, equipmentStr, pictureSTR, id);
+                            Part editPart = new Part(
+                                    activityTypeStr,
+                                    partLengthInMinuteInt,
+                                    partLengthInKMInt,
+                                    descriptionStr,
+                                    equipmentStr,
+                                    pictureSTR,
+                                    id);
 
                             partsArrayList.set(id, editPart);
 
                             holder.activityType.setText(editPart.getActivityType());
-                            holder.lengthInMinute.setText(String.valueOf(editPart.getLengthInMinute()));
-                            holder.lengthInKM.setText(String.valueOf(editPart.getLengthInKM()));
+                            holder.lengthInMinute.setText(String.valueOf(
+                                    editPart.getLengthInMinute()));
+                            holder.lengthInKM.setText(String.valueOf
+                                    (editPart.getLengthInKM()));
                             holder.description.setText(editPart.getDescription());
                             holder.equipment.setText(editPart.getEquipment());
-                            holder.picture.setImageBitmap(BitmapHelper.stringToBitmap(editPart.getPicture()));
+                            holder.picture.setImageBitmap(
+                                    BitmapHelper.stringToBitmap(
+                                            editPart.getPicture()));
 
                             if (listener != null)
                                 listener.onPartListChanged(partsArrayList);
