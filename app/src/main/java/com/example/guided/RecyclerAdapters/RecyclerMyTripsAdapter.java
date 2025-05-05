@@ -25,16 +25,25 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-
+/**
+ * Adapter עבור RecyclerView שמציג את רשימת הטיולים של המשתמש הנוכחי בלבד.
+ */
 public class RecyclerMyTripsAdapter extends RecyclerView.Adapter<RecyclerMyTripsAdapter.ViewHolder>{
 
-    private Context context;
-    private ArrayList<Trip> tripArrayList;
-    private User user;
+    private Context context; // ההקשר של האקטיביטי/פרגמנט הנוכחי של האפליקציה
+    private ArrayList<Trip> tripArrayList; //רשימת טיולים המסוננת כך שתכיל רק טיולים של המשתמש הנוכחי
+    private User user; //אובייקט שמכיל את פרטי המשתמש המחובר
 
-
-
-    public RecyclerMyTripsAdapter(ArrayList<Trip> trips, Context context, User user) {
+    /**
+     * בנאי - יוצר את המתאם ומסנן את הטיולים לפי שם המשתמש.
+     * @param context ההקשר של האקטיביטי/פרגמנט
+     * @param trips רשימת כל הטיולים
+     * @param user המשתמש הנוכחי
+     */
+    public RecyclerMyTripsAdapter(
+            ArrayList<Trip> trips,
+            Context context,
+            User user) {
         this.context = context;
         this.user = user;
         this.tripArrayList = new ArrayList<>();
@@ -46,18 +55,30 @@ public class RecyclerMyTripsAdapter extends RecyclerView.Adapter<RecyclerMyTrips
         }
     }
 
+    /**
+     * יוצר ViewHolder חדש - טוען את קובץ העיצוב של השורה
+     */
     @NonNull
     @Override
-    public RecyclerMyTripsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerMyTripsAdapter.ViewHolder onCreateViewHolder(
+            @NonNull ViewGroup parent,
+            int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.layout_1_my_trips, parent, false);
-        RecyclerMyTripsAdapter.ViewHolder viewHolder = new RecyclerMyTripsAdapter.ViewHolder(view);
-        return viewHolder;
+        View view = layoutInflater.inflate(
+                R.layout.layout_1_my_trips,
+                parent,
+                false);
+        return new ViewHolder(view);
     }
 
+    /**
+     * קושר את הנתונים של הטיול לממשק, כולל לחיצה ופעולות מחיקה
+     */
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull RecyclerMyTripsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(
+            @NonNull RecyclerMyTripsAdapter.ViewHolder holder,
+            int position) {
 
         Trip trip = tripArrayList.get(position);
         holder.topic.setText(trip.getNameOfTrip());
@@ -65,7 +86,10 @@ public class RecyclerMyTripsAdapter extends RecyclerView.Adapter<RecyclerMyTrips
         holder.age.setText(trip.getAge());
         holder.area.setText(trip.getArea());
         holder.place.setText(trip.getPlace());
-        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+
+        // לחיצה רגילה - מעבר לעריכה
+        holder.parentLayout.setOnClickListener(
+                new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, Add_trip.class);
@@ -75,14 +99,17 @@ public class RecyclerMyTripsAdapter extends RecyclerView.Adapter<RecyclerMyTrips
             }
         });
 
-        holder.parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
+        // לחיצה ארוכה - פתיחת דיאלוג מחיקה
+        holder.parentLayout.setOnLongClickListener(
+                new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
 
-
                 Dialog dialog = new Dialog(context);
                 dialog.setContentView(R.layout.dialog_delete_layout);
-                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                dialog.getWindow().setLayout(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
                 dialog.show();
 
                 TextView title = dialog.findViewById(R.id.titleDialog);
@@ -90,7 +117,8 @@ public class RecyclerMyTripsAdapter extends RecyclerView.Adapter<RecyclerMyTrips
                 Button delete = dialog.findViewById(R.id.delete);
 
                 title.setText("תרצו למחוק את הטיול?");
-                delete.setOnClickListener(new View.OnClickListener() {
+                delete.setOnClickListener(
+                        new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int position = holder.getBindingAdapterPosition();
@@ -101,20 +129,23 @@ public class RecyclerMyTripsAdapter extends RecyclerView.Adapter<RecyclerMyTrips
                                 .getReference("trips")
                                 .child(tripId)
                                 .removeValue()
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                .addOnSuccessListener(
+                                        new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
-                                        // Remove from RecyclerView
-
+                                        // מוחק מה RecyclerView
                                         tripArrayList.remove(position);
                                         notifyItemRemoved(position);
-                                        notifyItemRangeChanged(position, tripArrayList.size());
+                                        notifyItemRangeChanged(
+                                                position,
+                                                tripArrayList.size());
                                         dialog.dismiss();
                                     }
                                 });
                     }
                 });
-                save.setOnClickListener(new View.OnClickListener() {
+                save.setOnClickListener(
+                        new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
@@ -125,23 +156,27 @@ public class RecyclerMyTripsAdapter extends RecyclerView.Adapter<RecyclerMyTrips
         });
     }
 
+    /**
+     * מחזיר את מספר הפריטים ברשימה
+     */
     @Override
     public int getItemCount() {
-        if(tripArrayList == null){
+        if(tripArrayList == null)
             return 0;
-        }
-        else {
+        else
             return tripArrayList.size();
-        }
     }
 
+    /**
+     * מחלקה פנימית - מייצגת שורה ברשימת הטיולים
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView topic;
-        TextView length;
-        TextView age;
-        TextView area;
-        TextView place;
-        CardView parentLayout;
+        TextView topic; // שם הטיול
+        TextView length; // אורך הטיול בק"מ
+        TextView age; // גיל החניכים
+        TextView area; // אזור הטיול
+        TextView place; // מיקום מדוייק ש הטיול
+        CardView parentLayout; // פריסת השורה
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -156,23 +191,18 @@ public class RecyclerMyTripsAdapter extends RecyclerView.Adapter<RecyclerMyTrips
         public TextView getAge() {
             return age;
         }
-
         public TextView getArea() {
             return area;
         }
-
         public TextView getLength() {
             return length;
         }
-
         public CardView getParentLayout() {
             return parentLayout;
         }
-
         public TextView getPlace() {
             return place;
         }
-
         public TextView getTopic() {
             return topic;
         }
