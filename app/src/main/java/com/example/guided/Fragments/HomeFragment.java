@@ -26,11 +26,11 @@ import java.util.Random;
 
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
-    private View v;
-    private ConstraintLayout see_more_operation;
-    private ConstraintLayout see_more_trip;
-    private ArrayList<LayoutViewsOperation> operationLayouts;
-    private ArrayList<LayoutViewsTrip> tripLayouts;
+    private View v; // תצוגה (View) של ה-Fragment. משמשת לאחסון ה-View הראשי של ה-Fragment.
+    private ConstraintLayout see_more_operation; // פריסת ראה עוד של פעולות שלאחר לחיצה עליה נפתח מאגר כל הפעולות הציבוריות
+    private ConstraintLayout see_more_trip; // פריסת ראה עוד של טיולים שלאחר לחיצה עליה נפתח מאגר כל הטיולים הציבוריים
+    private ArrayList<LayoutViewsOperation> operationLayouts; // מערך תצוגות עבור פעולות
+    private ArrayList<LayoutViewsTrip> tripLayouts; // מערך תצוגות עבור טיולים
 
     /**
      * בנאי ברירת מחדל נדרש עבור Fragment.
@@ -39,14 +39,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public HomeFragment() {
     }
 
+    /**
+     * פעולה זו יוצרת את ה-View של הפרגמנט,
+     * קושרת את הרכיבים ב-XML, מאזינים ללחיצות,
+     * מציגה טיולים ופעולות ציבוריים שנשלפו מהdatabase.
+     *
+     * @param inflater           אינפלייטר ליצירת ה-View
+     * @param container          מיכל שמכיל את ה-Fragment
+     * @param savedInstanceState מידע שמור אם קיים
+     * @return View של הפרגמנט
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_home, container, false);
-
-        //  TODO: לנסות להוסיף את הצפייה הראשונית בפעולה\טיול באופן דינאמי
-
 
         operationLayouts = createOperationLayouts(v);
         tripLayouts = createTripLayouts(v);
@@ -72,7 +79,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         if(!tripArrayList.isEmpty()) {
                             ArrayList<Trip> trs = new ArrayList<>();
                             for (int i = 0; i < Math.min(4, tripArrayList.size()); i++) {
-                                trs.add(tripArrayList.get(new Random().nextInt(tripArrayList.size())));
+                                trs.add(tripArrayList.get(i));
                             }
                             for (int i = 0; i < trs.size(); i++) {
                                 displayTripInLayout(trs.get(i), tripLayouts.get(i));
@@ -110,7 +117,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         if(!operationArrayList.isEmpty()) {
                             ArrayList<Operation> ops = new ArrayList<>();
                             for (int i = 0; i < Math.min(4, operationArrayList.size()); i++) {
-                                ops.add(operationArrayList.get(new Random().nextInt(operationArrayList.size())));
+                                ops.add(operationArrayList.get(i));
                             }
                             for (int i = 0; i < ops.size(); i++) {
                                 displayOperationInLayout(ops.get(i), operationLayouts.get(i));
@@ -132,6 +139,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         return v;
     }
 
+    /**
+     * יוצרת רשימה של LayoutViewOp – אובייקטים שמייצגים את תצוגות הפעולות במסך הבית.
+     * כל LayoutViewOp מכיל הפניות ל־TextViewים ול־ConstraintLayout שמייצגים פעולה אחת.
+     * מחפש את ה־View-ים לפי מזהי ID דינמיים (topic1, ageOp1, goals1 וכו') עבור 4 פעולות.
+     *
+     * @param v תצוגת הפרגמנט שמכיל את כל רכיבי התצוגה
+     * @return רשימת LayoutViewOp המכילה 4 תצוגות פעולה
+     */
     private ArrayList<LayoutViewsOperation> createOperationLayouts(View v){
         ArrayList<LayoutViewsOperation> layoutViewOps = new ArrayList<>();
         for (int i = 1; i <= 4; i++) {
@@ -147,6 +162,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
         return layoutViewOps;
     }
+    /**
+     * יוצרת רשימה של LayoutViewsTr – אובייקטים שמייצגים את תצוגות הטיולים במסך הבית.
+     * כל LayoutViewsTr מכיל הפניות ל־TextViewים ול־ConstraintLayout שמייצגים טיול אחד.
+     * מחפש את ה־View-ים לפי מזהי ID דינמיים (title1, age1, area1 וכו') עבור 4 טיולים.
+     *
+     * @param v תצוגת הפרגמנט שמכיל את כל רכיבי התצוגה
+     * @return רשימת LayoutViewsTr המכילה 4 תצוגות טיול
+     */
     private ArrayList<LayoutViewsTrip> createTripLayouts(View v){
         ArrayList<LayoutViewsTrip> layoutViewTrs = new ArrayList<>();
         for (int i = 1; i <= 4; i++) {
@@ -163,11 +186,25 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         return layoutViewTrs;
     }
 
+    /**
+     * מחזיר את המזהה (ID) של רכיב תצוגה לפי שמו (name) מתוך קובץ ה־XML.
+     * מאפשר גישה דינמית למשאבים – לדוגמה topic1, topic2 וכו'.
+     *
+     * @param name שם המשאב (למשל "topic1", "age3")
+     * @return מזהה המשאב (int) כפי שמוגדר ב־R.id
+     */
     private int getResId(String name) {
         return v.getResources().getIdentifier(name, "id", requireContext().getPackageName());
     }
 
-
+    /**
+     * מציגה פעולה (Operation) ב־Layout ספציפי של פעולה במסך הבית.
+     * מעדכנת את שדות ה־TextView בהתאם לנתוני הפעולה, וקובעת האזנה ללחיצה.
+     * בעת לחיצה על התצוגה – תיפתח פעילות ההצגה View_operation עם מפתח הפעולה.
+     *
+     * @param randomOperation הפעולה שברצוננו להציג
+     * @param views     LayoutViewOp המכיל את הרכיבים הגרפיים להצגת הפעולה
+     */
     @SuppressLint("SetTextI18n")
     private void displayOperationInLayout(Operation randomOperation, LayoutViewsOperation views) {
         views.topic.setText(randomOperation.getNameOfOperation());
@@ -186,6 +223,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
+
+    /**
+     * מציגה טיול (Trip) ב־Layout ספציפי של טיול במסך הבית.
+     * מעדכנת את שדות ה־TextView בהתאם לנתוני הטיול, וקובעת האזנה ללחיצה.
+     * בעת לחיצה על התצוגה – תיפתח פעילות ההצגה View_trip עם מפתח הטיול.
+     *
+     * @param randomTrip  הטיול שברצוננו להציג
+     * @param views LayoutViewsTr המכיל את הרכיבים הגרפיים להצגת הטיול
+     */
     @SuppressLint("SetTextI18n")
     private void displayTripInLayout(Trip randomTrip, LayoutViewsTrip views) {
         views.title.setText(randomTrip.getNameOfTrip());
@@ -205,7 +251,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
     }
 
-
+    /**
+     * מאזין לאירועים מכלל כפתורי הלחיצה במסך הבית.
+     * כל לחיצה על כפתור מפעילה את הפעולה המתאימה:
+     * - מעבר למאגר הפעולות או הטיולים (Fragments)*
+     * @param view הרכיב שנלחץ
+     */
     @Override
     public void onClick(View view) {
         if (view == see_more_operation){
@@ -225,6 +276,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    /**
+     * מחלקה פנימית המייצגת תצוגת פעולה אחת במסך הבית.
+     * מכילה הפניות לרכיבי TextView ול־ConstraintLayout מתוך קובץ ה־XML,
+     * המאפשרים להציג פעולה ציבורית.
+     */
     private static class LayoutViewsOperation {
         TextView topic;
         TextView time;
@@ -273,6 +329,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * מחלקה פנימית המייצגת תצוגת טיול אחד במסך הבית.
+     * מכילה הפניות לרכיבי TextView ול־ConstraintLayout מתוך קובץ ה־XML,
+     * המאפשרים להציג טיול ציבורי.
+     */
     private static class LayoutViewsTrip {
         TextView title;
         TextView lengh;
