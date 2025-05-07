@@ -30,35 +30,42 @@ import java.util.ArrayList;
 
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
-    View v;
-    ImageView addOperationBTN;
-    ImageView addTripBTN;
-    ConstraintLayout see_more_operation;
-    ConstraintLayout see_more_trip;
-    TextView sumTr;
-    TextView sumOp;
-    ImageView profile;
-    TextView organization;
-    TextView nickName;
-    TextView userName;
-    ImageView editInfo;
+    private View v;
+    private ImageView addOperationBTN;
+    private ImageView addTripBTN;
+    private ConstraintLayout see_more_operation;
+    private ConstraintLayout see_more_trip;
+    private TextView sumTr;
+    private TextView sumOp;
+    private ImageView profile;
+    private TextView organization;
+    private TextView nickName;
+    private TextView userName;
+    private ImageView editInfo;
 
-    User user;
+    private ArrayList<LayoutViewOp> operationLayouts;
+    private ArrayList<LayoutViewsTr> tripLayouts;
+
+
+    private User user;
 
 //TODO: לעשות שאחרי הוספה של פעולות יעשה ריפרש ויראה ישר את הפעולה החדשה (כשיש פחות מ4)
 
     public ProfileFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-         v = inflater.inflate(R.layout.fragment_profile, container, false);
+         v = inflater.inflate(
+                 R.layout.fragment_profile,
+                 container,
+                 false);
 
         if ( v != null)
         {
+            operationLayouts = createOperationLayouts(v);
+            tripLayouts = createTripLayouts(v);
 
             sumOp = v.findViewById(R.id.sumOp);
             sumTr = v.findViewById(R.id.sumTr);
@@ -81,71 +88,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             addTripBTN = v.findViewById(R.id.add_trip);
             addTripBTN.setOnClickListener(this);
 
-
-            ProfileFragment.LayoutViewOp layout1Views = new LayoutViewOp(
-                    v.findViewById(R.id.topic1),
-                    v.findViewById(R.id.ageOp1),
-                    v.findViewById(R.id.goals1),
-                    v.findViewById(R.id.time1),
-                    v.findViewById(R.id.clOp1)
-            );
-            ProfileFragment.LayoutViewOp layout2Views = new LayoutViewOp(
-                    v.findViewById(R.id.topic2),
-                    v.findViewById(R.id.ageOp2),
-                    v.findViewById(R.id.goals2),
-                    v.findViewById(R.id.time2),
-                    v.findViewById(R.id.clOp2)
-            );
-            ProfileFragment.LayoutViewOp layout3Views = new LayoutViewOp(
-                    v.findViewById(R.id.topic3),
-                    v.findViewById(R.id.ageOp3),
-                    v.findViewById(R.id.goals3),
-                    v.findViewById(R.id.time3),
-                    v.findViewById(R.id.clOp3)
-            );
-            ProfileFragment.LayoutViewOp layout4Views = new LayoutViewOp(
-                    v.findViewById(R.id.topic4),
-                    v.findViewById(R.id.ageOp4),
-                    v.findViewById(R.id.goals4),
-                    v.findViewById(R.id.time4),
-                    v.findViewById(R.id.clOp4)
-            );
-
-
-            ProfileFragment.LayoutViewsTr layout1ViewsTrip = new LayoutViewsTr(
-                    v.findViewById(R.id.title1),
-                    v.findViewById(R.id.age1),
-                    v.findViewById(R.id.area1),
-                    v.findViewById(R.id.length1),
-                    v.findViewById(R.id.place1),
-                    v.findViewById(R.id.clTr1)
-            );
-            ProfileFragment.LayoutViewsTr layout2ViewsTrip = new LayoutViewsTr(
-                    v.findViewById(R.id.title2),
-                    v.findViewById(R.id.age2),
-                    v.findViewById(R.id.area2),
-                    v.findViewById(R.id.length2),
-                    v.findViewById(R.id.place2),
-                    v.findViewById(R.id.clTr2)
-            );
-            ProfileFragment.LayoutViewsTr layout3ViewsTrip = new LayoutViewsTr(
-                    v.findViewById(R.id.title3),
-                    v.findViewById(R.id.age3),
-                    v.findViewById(R.id.area3),
-                    v.findViewById(R.id.length3),
-                    v.findViewById(R.id.place3),
-                    v.findViewById(R.id.clTr3)
-            );
-            ProfileFragment.LayoutViewsTr layout4ViewsTrip = new LayoutViewsTr(
-                    v.findViewById(R.id.title4),
-                    v.findViewById(R.id.age4),
-                    v.findViewById(R.id.area4),
-                    v.findViewById(R.id.length4),
-                    v.findViewById(R.id.place4),
-                    v.findViewById(R.id.clTr4)
-            );
-
-
+            // שליפת נתוני המשתמש
             FirebaseUserHelper firebaseUserHelper = new FirebaseUserHelper();
             firebaseUserHelper.fetchUserData(new FirebaseUserHelper.UserDataCallback() {
                 @Override
@@ -164,57 +107,30 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                                 @Override
                                 public void onDataLoaded(ArrayList<Trip> trips) {
                                     ArrayList<Trip> tripArrayList =  new ArrayList<>();
-                                    for (int i = 0; i<trips.size(); i++){
+                                    for (int i = trips.size()-1; i >= 0; i--){
                                         Trip trip = trips.get(i);
                                         if (trip.getUserName().equals(user.getUserName())) {
                                             tripArrayList.add(trip);
                                         }
                                     }
-                                    int size = tripArrayList.size();
-
-                                    if (size == 0){
-                                        layout4ViewsTrip.getParentLayout().setVisibility(View.GONE);
-                                        layout3ViewsTrip.getParentLayout().setVisibility(View.GONE);
-                                        layout2ViewsTrip.getParentLayout().setVisibility(View.GONE);
-                                        layout1ViewsTrip.getParentLayout().setVisibility(View.GONE);
-
+                                    if(!tripArrayList.isEmpty()) {
+                                        ArrayList<Trip> trs = new ArrayList<>();
+                                        for (int i = 0; i < Math.min(4, tripArrayList.size()); i++) {
+                                            trs.add(tripArrayList.get(i));
+                                        }
+                                        for (int i = 0; i < trs.size(); i++) {
+                                            displayTrInLayout(trs.get(i), tripLayouts.get(i));
+                                        }
+                                        if(trs.size() < 4){
+                                            for (int j = (trs.size()) ; j < 4; j++){
+                                                tripLayouts.get(j).getParentLayout().setVisibility(View.GONE);
+                                            }
+                                        }
                                     }
-                                    else if (size == 1){
-                                        layout4ViewsTrip.getParentLayout().setVisibility(View.GONE);
-                                        layout3ViewsTrip.getParentLayout().setVisibility(View.GONE);
-                                        layout2ViewsTrip.getParentLayout().setVisibility(View.GONE);
-                                        Trip trip1 = tripArrayList.get(0);
-                                        displayTrInLayout(trip1, layout1ViewsTrip);
-                                    }
-                                    else if (size == 2){
-                                        layout4ViewsTrip.getParentLayout().setVisibility(View.GONE);
-                                        layout3ViewsTrip.getParentLayout().setVisibility(View.GONE);
-                                        Trip trip1 = tripArrayList.get(0);
-                                        Trip trip2 = tripArrayList.get(1);
-                                        displayTrInLayout(trip1, layout1ViewsTrip);
-                                        displayTrInLayout(trip2, layout2ViewsTrip);
-                                    }
-                                    else if (size == 3){
-                                        layout4ViewsTrip.getParentLayout().setVisibility(View.GONE);
-                                        Trip trip1 = tripArrayList.get(2);
-                                        Trip trip2 = tripArrayList.get(1);
-                                        Trip trip3 = tripArrayList.get(0);
-                                        displayTrInLayout(trip1, layout1ViewsTrip);
-                                        displayTrInLayout(trip2, layout2ViewsTrip);
-                                        displayTrInLayout(trip3, layout3ViewsTrip);
-                                    }
-
                                     else {
-                                        Trip trip1 = tripArrayList.get(size - 1);
-                                        Trip trip2 = tripArrayList.get(size - 2);
-                                        Trip trip3 = tripArrayList.get(size - 3);
-                                        Trip trip4 = tripArrayList.get(size - 4);
-
-                                        displayTrInLayout(trip1, layout1ViewsTrip);
-                                        displayTrInLayout(trip2, layout2ViewsTrip);
-                                        displayTrInLayout(trip3, layout3ViewsTrip);
-                                        displayTrInLayout(trip4, layout4ViewsTrip);
-
+                                        for (int i = 0; i < 4; i++){
+                                            tripLayouts.get(i).getParentLayout().setVisibility(View.GONE);
+                                        }
                                     }
                                     sumTr.setText( tripArrayList.size() + " טיולים ");
                                 }
@@ -229,58 +145,30 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                                 @Override
                                 public void onDataLoaded(ArrayList<Operation> operations) {
                                     ArrayList<Operation> operationArrayList =  new ArrayList<>();
-                                    for (int i = 0; i<operations.size(); i++){
+                                    for (int i = operations.size()-1 ; i>= 0 ; i--){
                                         Operation operation = operations.get(i);
-                                        if (operation.getUserName().equals(user.getUserName())) {
+                                        if (operation.getUserName().equals(user.getUserName()))
                                             operationArrayList.add(operation);
+                                    }
+
+                                    if(!operationArrayList.isEmpty()) {
+                                        ArrayList<Operation> ops = new ArrayList<>();
+                                        for (int i = 0; i < Math.min(4, operationArrayList.size()); i++) {
+                                            ops.add(operationArrayList.get(i));
+                                        }
+                                        for (int i = 0; i < ops.size(); i++) {
+                                            displayOpInLayout(ops.get(i), operationLayouts.get(i));
+                                        }
+                                        if(ops.size() < 4){
+                                            for (int j = (ops.size()) ; j < 4; j++){
+                                                operationLayouts.get(j).getParentLayout().setVisibility(View.GONE);
+                                            }
                                         }
                                     }
-                                    int size = operationArrayList.size();
-
-                                    if (size == 0){
-                                        layout4Views.getParentLayout().setVisibility(View.GONE);
-                                        layout3Views.getParentLayout().setVisibility(View.GONE);
-                                        layout2Views.getParentLayout().setVisibility(View.GONE);
-                                        layout1Views.getParentLayout().setVisibility(View.GONE);
-
-                                    }
-                                    else if (size == 1){
-                                        layout4Views.getParentLayout().setVisibility(View.GONE);
-                                        layout3Views.getParentLayout().setVisibility(View.GONE);
-                                        layout2Views.getParentLayout().setVisibility(View.GONE);
-                                        Operation operation1 = operationArrayList.get(0);
-                                        displayOpInLayout(operation1, layout1Views);
-                                    }
-                                    else if (size == 2){
-                                        layout4Views.getParentLayout().setVisibility(View.GONE);
-                                        layout3Views.getParentLayout().setVisibility(View.GONE);
-                                        Operation operation1 = operationArrayList.get(1);
-                                        Operation operation2 = operationArrayList.get(0);
-                                        displayOpInLayout(operation1, layout1Views);
-                                        displayOpInLayout(operation2, layout2Views);
-                                    }
-                                    else if (size == 3){
-                                        layout4Views.getParentLayout().setVisibility(View.GONE);
-                                        Operation operation1 = operationArrayList.get(2);
-                                        Operation operation2 = operationArrayList.get(1);
-                                        Operation operation3 = operationArrayList.get(0);
-                                        displayOpInLayout(operation1, layout1Views);
-                                        displayOpInLayout(operation2, layout2Views);
-                                        displayOpInLayout(operation3, layout3Views);
-                                    }
-
-                                    if (size >= 4){
-
-                                        Operation operation1 = operationArrayList.get(size - 1);
-                                        Operation operation2 = operationArrayList.get(size - 2);
-                                        Operation operation3 = operationArrayList.get(size - 3);
-                                        Operation operation4 = operationArrayList.get(size - 4);
-
-                                        displayOpInLayout(operation1, layout1Views);
-                                        displayOpInLayout(operation2, layout2Views);
-                                        displayOpInLayout(operation3, layout3Views);
-                                        displayOpInLayout(operation4, layout4Views);
-
+                                    else {
+                                        for (int i = 0; i < 4; i++){
+                                            operationLayouts.get(i).getParentLayout().setVisibility(View.GONE);
+                                        }
                                     }
                                     sumOp.setText(operationArrayList.size() + " פעולות ");
                                 }
@@ -290,12 +178,43 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
                 @Override
                 public void onError(String errorMessage) {
-
                 }
             });
 
         }
         return v;
+    }
+
+    private ArrayList<LayoutViewOp> createOperationLayouts(View v){
+        ArrayList<LayoutViewOp> layoutViewOps = new ArrayList<>();
+        for (int i = 1; i <= 4; i++) {
+            layoutViewOps.add(new LayoutViewOp(
+                    v.findViewById(getResId("topic" + i)),
+                    v.findViewById(getResId("ageOp" + i)),
+                    v.findViewById(getResId("goals" + i)),
+                    v.findViewById(getResId("time" + i)),
+                    v.findViewById(getResId("clOp" + i))
+            ));
+        }
+        return layoutViewOps;
+    }
+    private ArrayList<LayoutViewsTr> createTripLayouts(View v){
+        ArrayList<LayoutViewsTr> layoutViewTrs = new ArrayList<>();
+        for (int i = 1; i <= 4; i++) {
+            layoutViewTrs.add(new LayoutViewsTr(
+                    v.findViewById(getResId("title" + i)),
+                    v.findViewById(getResId("age" + i)),
+                    v.findViewById(getResId("area" + i)),
+                    v.findViewById(getResId("length" + i)),
+                    v.findViewById(getResId("place" + i)),
+                    v.findViewById(getResId("clTr" + i))
+            ));
+        }
+        return layoutViewTrs;
+    }
+
+    private int getResId(String name) {
+        return v.getResources().getIdentifier(name, "id", requireContext().getPackageName());
     }
 
     @SuppressLint("SetTextI18n")
@@ -310,7 +229,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 Intent intent = new Intent(v.getContext(), Add_operation.class);
                 intent.putExtra("operationKey", operation.getKey());
                 startActivity(intent);
-
             }
         });
     }
@@ -328,11 +246,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 Intent intent = new Intent(v.getContext(), Add_trip.class);
                 intent.putExtra("tripKey", trip.getKey());
                 startActivity(intent);
-
             }
         });
     }
-
 
     @Override
     public void onClick(View view) {
@@ -368,7 +284,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             intent = new Intent(v.getContext(), Add_trip.class);
             startActivity(intent);
         }
-
     }
 
     private static class LayoutViewOp{
