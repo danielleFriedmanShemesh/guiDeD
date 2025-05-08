@@ -1,6 +1,5 @@
 package com.example.guided.Helpers;
 
-
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -42,7 +41,6 @@ import java.util.regex.Pattern;
  * RegisteretionHelper היא מחלקת עזר שמספקת פונקציות סטטיות שונות
  * עבור תהליך ההרשמה של משתמש חדש, כולל בחירת תאריך לידה, תנועת נוער,
  * העלאת תמונת פרופיל ובדיקת תקינות של שדות קלט כמו שם משתמש, סיסמה, מייל ועוד.
- *
  * המחלקה מכילה גם ממשקים פנימיים לקריאה חוזרת (Callbacks) לצורך קבלת ערכים ממשתמש,
  * ומטפלת בדיאלוגים של בחירה בצורה ידידותית למשתמש.
  */
@@ -135,9 +133,7 @@ public class RegisteretionHelper extends AppCompatActivity {
      * @param context הקשר האקטיביטי
      * @param callback קריאה חוזרת עם תנועת הנוער שנבחרה
      */
-    public static void setOrganization(
-            Context context,
-            OrganizationCallback callback){
+    public static void setOrganization(Context context, OrganizationCallback callback){
         String[] listOrganizations = context
                 .getResources()
                 .getStringArray(
@@ -159,18 +155,10 @@ public class RegisteretionHelper extends AppCompatActivity {
         editText.addTextChangedListener(
                 new TextWatcher() {
             @Override
-            public void beforeTextChanged(
-                    CharSequence s,
-                    int start,
-                    int count,
-                    int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(
-                    CharSequence s,
-                    int start,
-                    int before,
-                    int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 adapter.getFilter().filter(s);
             }
 
@@ -180,11 +168,7 @@ public class RegisteretionHelper extends AppCompatActivity {
         listView.setOnItemClickListener(
                 new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(
-                    AdapterView<?> parent,
-                    View view,
-                    int position,
-                    long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String organization = adapter.getItem(position);
 
                 dialog.dismiss();
@@ -200,9 +184,7 @@ public class RegisteretionHelper extends AppCompatActivity {
      * @param context ההקשר של האקטיביטי
      * @param callback קריאה חוזרת עם תאריך הלידה שנבחר
      */
-    public static void setBirthdate(
-            Context context,
-            BirthdayCallback callback){
+    public static void setBirthdate(Context context, BirthdayCallback callback){
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
@@ -215,17 +197,9 @@ public class RegisteretionHelper extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             //הצגת התאריך שהמשתמש בחר edit text יום ההולדת
-            public void onDateSet(
-                    DatePicker view,
-                    int year,
-                    int monthOfYear,
-                    int dayOfMonth) {
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 // הגדרת התאריך שיהיה מוצג בedit text
-                String date = dayOfMonth
-                        + "/"
-                        + (monthOfYear + 1)
-                        + "/"
-                        + year;
+                String date = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
                 callback.onBirthdaySelected(date);
             }
         }, year, month, day);
@@ -238,9 +212,7 @@ public class RegisteretionHelper extends AppCompatActivity {
      * @param bitmap התמונה לשמירה
      * @param context ההקשר של האקטיביטי
      */
-    public static void saveImageToGallery(
-            Bitmap bitmap,
-            Context context) {
+    public static void saveImageToGallery(Bitmap bitmap, Context context) {
         ContentValues values = new ContentValues(); //משתנה(values) ששומר בתוכו מידע(metadata) על התמונה כגון שם התמונה, סוגה, ומיקומה
 
         values.put(
@@ -271,16 +243,10 @@ public class RegisteretionHelper extends AppCompatActivity {
                     Bitmap.CompressFormat.JPEG,
                     100,
                     outputStream); // שומר את התמונה כJPEG באיכות 100%
-            Toast.makeText(context,
-                            "נשמר בהצלחה בגלריה!",
-                            Toast.LENGTH_SHORT).
-                    show();
+            Toast.makeText(context, "נשמר בהצלחה בגלריה!", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context,
-                            "שמירה בגלריה נכשלה!",
-                            Toast.LENGTH_SHORT).
-                    show();
+            Toast.makeText(context, "שמירה בגלריה נכשלה!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -294,6 +260,7 @@ public class RegisteretionHelper extends AppCompatActivity {
         String alartForOrganization = "";
         if (organization.isEmpty())
             alartForOrganization = "* שדה חובה! בחר תנועת נוער";
+
         return alartForOrganization;
     }
 
@@ -306,15 +273,11 @@ public class RegisteretionHelper extends AppCompatActivity {
     public static String checkAlertsForBirthday(String birthday){
         String alartForBirthday = "";
         if(birthday.isEmpty())
-            alartForBirthday = "* שדה חובה! הכנס תאריך לידה"
-                    + '\n'
-                    + alartForBirthday;
+            alartForBirthday = "* שדה חובה! הכנס תאריך לידה" + '\n' + alartForBirthday;
 
-        if (!checkBirthday(birthday)) {
-            alartForBirthday = "* התאריך שהוכנס לא תקין! נסה שנית" +
-                    '\n' +
-                    alartForBirthday;
-        }
+        if (!checkBirthday(birthday))
+            alartForBirthday = "* התאריך שהוכנס לא תקין! נסה שנית" + '\n' + alartForBirthday;
+
         return alartForBirthday;
     }
 
@@ -329,28 +292,17 @@ public class RegisteretionHelper extends AppCompatActivity {
     public static String checkAlertsForUserName(String userName){
         String alartForUserName = "";
         if(userName.isEmpty())
-        {
-            alartForUserName = "* שדה חובה! הכנס שם משתמש" +
-                    '\n' +
-                    alartForUserName;
-        }
-        else if(userName.length() < 6){
-            alartForUserName = " * שם משתמש קצר מדי נסה שנית. " +
-                    '\n' +
-                    alartForUserName;
-        }
-        else if(userName.length() > 15){
-            alartForUserName = "* שם משתמש ארוך מדי נסה שנית." +
-                    '\n' +
-                    alartForUserName;
-        }
+            alartForUserName = "* שדה חובה! הכנס שם משתמש" + '\n' + alartForUserName;
+
+        else if(userName.length() < 6)
+            alartForUserName = " * שם משתמש קצר מדי נסה שנית. " + '\n' + alartForUserName;
+
+        else if(userName.length() > 15)
+            alartForUserName = "* שם משתמש ארוך מדי נסה שנית." + '\n' + alartForUserName;
 
         if(!input_Validation(userName))
-        {
-            alartForUserName = "* שם המשתמש חייב להכיל ספרות, אותיות באנגלית ותווים מיוחדים." +
-                    '\n' +
-                    alartForUserName;
-        }
+            alartForUserName = "* שם המשתמש חייב להכיל ספרות, אותיות באנגלית ותווים מיוחדים." + '\n' + alartForUserName;
+
         return (alartForUserName);
     }
 
@@ -363,17 +315,14 @@ public class RegisteretionHelper extends AppCompatActivity {
     public static String checkAlertForNickName(String nickName) {
         String alartForNickName = "";
         if (nickName.isEmpty())
-            alartForNickName = "* שדה חובה! הכנס כינוי"
-                    + '\n'
-                    + alartForNickName;
+            alartForNickName = "* שדה חובה! הכנס כינוי" + '\n' + alartForNickName;
+
         else if (nickName.length() < 2)
-            alartForNickName = " * כינוי קצר מדי נסה שנית. "
-                    + '\n'
-                    + alartForNickName;
+            alartForNickName = " * כינוי קצר מדי נסה שנית. " + '\n' + alartForNickName;
+
         else if (nickName.length() > 15)
-            alartForNickName = "* כינוי ארוך מדי נסה שנית."
-                    + '\n'
-                    + alartForNickName;
+            alartForNickName = "* כינוי ארוך מדי נסה שנית." + '\n' + alartForNickName;
+
         return alartForNickName;
     }
 
@@ -386,21 +335,14 @@ public class RegisteretionHelper extends AppCompatActivity {
     public static String checkAlertsForPassword(String password){
         String alartForPassword = "";
         if(password.isEmpty())
-        {
-            alartForPassword = "* שדה חובה! הכנס סיסמה" +
-                    '\n' +
-                    alartForPassword;
-        }
-        else if(password.length() < 6){
-            alartForPassword = "* סיסמה קצרה מדי נסה שנית" +
-                    '\n' +
-                    alartForPassword;
-        }
-        else if(password.length() > 10){
-            alartForPassword = "* סיסמה ארוכה מדי נסה שנית" +
-                    '\n' +
-                    alartForPassword;
-        }
+            alartForPassword = "* שדה חובה! הכנס סיסמה" + '\n' + alartForPassword;
+
+        else if(password.length() < 6)
+            alartForPassword = "* סיסמה קצרה מדי נסה שנית" + '\n' + alartForPassword;
+
+        else if(password.length() > 10)
+            alartForPassword = "* סיסמה ארוכה מדי נסה שנית" + '\n' + alartForPassword;
+
         return alartForPassword;
     }
 
@@ -413,17 +355,11 @@ public class RegisteretionHelper extends AppCompatActivity {
     public static String checkAlertsForEmail(String email){
         String alartForEmail = "";
         if(email.isEmpty())
-        {
-            alartForEmail = "* שדה חובה! הכנס מייל" +
-                    '\n' +
-                    alartForEmail;
-        }
+            alartForEmail = "* שדה חובה! הכנס מייל" + '\n' + alartForEmail;
+
         else if(!checkEmail(email))
-        {
-            alartForEmail = "* המייל שהכנסת אינו תקין, נסה שנית" +
-                    '\n' +
-                    alartForEmail;
-        }
+            alartForEmail = "* המייל שהכנסת אינו תקין, נסה שנית" + '\n' + alartForEmail;
+
         return alartForEmail;
     }
 
@@ -512,7 +448,6 @@ public class RegisteretionHelper extends AppCompatActivity {
      * @param email כתובת מייל
      * @return true אם תקין, אחרת false
      */
-    // TODO: המייל לא מקבל מסיבה כלשהי מספרים ותויים מיוחדים
     public static boolean checkEmail(String email){
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         return (email.matches(emailPattern) &&
