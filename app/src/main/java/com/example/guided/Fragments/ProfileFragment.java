@@ -396,11 +396,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     /**
      * מחלקה פנימית המייצגת תצוגת פעולה אחת במסך הפרופיל.
      * מכילה הפניות לרכיבי TextView ול־ConstraintLayout מתוך קובץ ה־XML,
