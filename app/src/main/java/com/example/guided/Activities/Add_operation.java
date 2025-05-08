@@ -445,7 +445,6 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
     /**
      * מאתחלת את ה־RecyclerView עם מתאם מסוג {@link RecyclerAdapterOperation}
      * עבור רשימת המטודות (metodotArr).
-     *
      * בנוסף, מגדירה מאזין לשינויים ברשימת המטודות כדי לעדכן את הסכום הכולל של הדקות
      * ולהציגו ב־TextView.
      */
