@@ -17,8 +17,7 @@
         android:layout_width="200dp"
         android:layout_height="120dp"
         android:layoutDirection="ltr"
-        android:layout_gravity="center"
->
+        android:layout_gravity="center">
         <TextView
             android:id="@+id/title1"
             android:layout_width="125dp"
@@ -28,7 +27,6 @@
             android:fontFamily="@font/yardenboldalefalefalef"
             android:text="כותרת"
             android:textDirection="rtl"
-
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -40,7 +38,6 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-
             android:fontFamily="@font/yardenregularalefalefalef"
             android:text="גיל"
             android:textSize="20dp"
@@ -54,7 +51,6 @@
             android:layout_height="45dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-
             android:fontFamily="@font/yardenregularalefalefalef"
             android:text="אזור"
             android:textSize="20dp"
@@ -75,14 +71,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/title1" />
 
-
-
         <TextView
             android:id="@+id/place1"
             android:layout_width="56dp"
             android:layout_height="45dp"
             android:layout_marginStart="10dp"
-
             android:fontFamily="@font/yardenregularalefalefalef"
             android:text=" מיקום ספציפי"
             android:textSize="19dp"
@@ -90,5 +83,4 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/age1" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.cardview.widget.CardView>

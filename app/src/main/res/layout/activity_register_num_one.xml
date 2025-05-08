@@ -7,9 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".Activities.Register_num_one"
     android:orientation="vertical"
-    android:background="@drawable/background"
-    >
-
+    android:background="@drawable/background">
 
     <ImageView
         android:id="@+id/logo"
@@ -82,8 +80,6 @@
         android:fontFamily="@font/yardenboldalefalefalef"
         />
 
-
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -106,7 +102,6 @@
         android:textColor="#FF0000"
         android:textSize="15dp"
         android:fontFamily="@font/yardenboldalefalefalef"
-
         />
 
     <TextView
@@ -117,9 +112,7 @@
         android:textColor="#FF0000"
         android:textSize="15dp"
         android:fontFamily="@font/yardenboldalefalefalef"
-
         />
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -145,5 +138,4 @@
             app:srcCompat="@drawable/better_sign_continue" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </LinearLayout>

@@ -7,13 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".Activities.Add_trip"
     android:orientation="vertical"
-    android:background="@color/grayeen1"
-    >
+    android:background="@color/grayeen1">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        >
+        android:layout_marginTop="10dp">
         <Button
             android:id="@+id/save"
             android:layout_width="wrap_content"
@@ -112,6 +110,7 @@
                 android:id="@+id/picture"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
+                android:background="@color/transparent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/picName"
                 app:layout_constraintStart_toStartOf="@+id/picName"

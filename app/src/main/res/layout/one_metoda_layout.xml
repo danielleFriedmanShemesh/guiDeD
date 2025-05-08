@@ -5,8 +5,7 @@
     android:id="@+id/oneMetodaLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/grayeen1"
-    >
+    android:background="@color/grayeen1">
 
     <TextView
         android:id="@+id/title"

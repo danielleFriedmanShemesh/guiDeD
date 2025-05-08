@@ -24,12 +24,9 @@ public class Metoda {
     public void setTitle(String title) {
         this.title = title;
     }
-
-
     public int getLength() {
         return length;
     }
-
     public void setLength(int length) {
         this.length = length;
     }
@@ -37,22 +34,18 @@ public class Metoda {
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
-
     public String getEquipment() {
         return equipment;
     }
-
     public void setEquipment(String equipment) {
         this.equipment = equipment;
     }
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }

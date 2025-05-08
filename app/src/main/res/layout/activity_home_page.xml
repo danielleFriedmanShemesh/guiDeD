@@ -9,7 +9,6 @@
     android:orientation="vertical"
     tools:context=".Activities.Home_page">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl"
         android:layout_width="match_parent"
@@ -20,7 +19,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-
             android:id="@+id/option_btn"
             android:layout_width="70dp"
             android:layout_height="70dp"
@@ -40,7 +38,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/logo_new" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
@@ -68,6 +65,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/toolbar_menu"
         tools:visibility="visible" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

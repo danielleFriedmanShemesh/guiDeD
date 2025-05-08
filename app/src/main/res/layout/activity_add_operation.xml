@@ -7,16 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".Activities.Add_operation"
     android:orientation="vertical"
-    android:background="@color/grayeen1"
-    >
-
-
-
+    android:background="@color/grayeen1">
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    >
+    android:layout_marginTop="10dp">
 
     <Button
         android:id="@+id/save"
@@ -26,7 +21,7 @@
         android:fontFamily="@font/yardenboldalefalefalef"
         android:text="שמור"
         android:textColor="@color/black"
-        android:textSize="25dp"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -38,7 +33,7 @@
         android:layout_gravity="center"
         android:fontFamily="@font/yardenboldalefalefalef"
         android:text="הוספת פעולה"
-        android:textSize="40dp"
+        android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,8 +42,8 @@
 
     <ImageButton
         android:id="@+id/exit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:backgroundTint="@color/grayeen1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,11 +54,11 @@
         android:id="@+id/topic"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
+        android:textSize="25sp"
         android:layout_marginEnd="10dp"
         android:hint="שם הפעולה"
         android:fontFamily="@font/yardenboldalefalefalef"
-        android:layout_gravity="right"
+        android:layout_gravity="end"
         />
 <LinearLayout
     android:layout_width="match_parent"
@@ -81,11 +76,12 @@
             android:layout_width="120dp"
             android:layout_height="50dp"
             android:background="@android:drawable/editbox_background"
-            android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
             android:gravity="center_vertical"
             android:hint="גיל החניכים"
+            android:textSize="15sp"
             android:backgroundTint="@color/grayeen1.5"
             android:padding="12dp"
+            app:drawableEndCompat="@drawable/baseline_arrow_drop_down_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -97,7 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="אורך הפעולה"
-            android:textSize="15dp"
+            android:textSize="15sp"
             app:layout_constraintEnd_toStartOf="@+id/age"
             app:layout_constraintStart_toEndOf="@+id/publicORpivate"
             app:layout_constraintTop_toTopOf="parent"
@@ -109,7 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0 דקות"
-            android:textSize="20dp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/lengthName"
             app:layout_constraintStart_toStartOf="@+id/lengthName"
@@ -121,9 +117,9 @@
         <Switch
             android:id="@+id/publicORpivate"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:fontFamily="@font/yardenboldalefalefalef"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:checked="false"
             android:thumb="@drawable/baseline_person_24"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -139,19 +135,18 @@
             android:id="@+id/equipments"
             android:layout_width="170dp"
             android:fontFamily="@font/yardenboldalefalefalef"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:layout_height="150dp"
             android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
             android:hint="עזרים"
             android:gravity="center"/>
 
-
         <EditText
             android:id="@+id/goals"
             android:layout_width="170dp"
             android:layout_height="150dp"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
             android:hint="מטרות"
@@ -167,17 +162,15 @@
         android:layout_marginTop="15dp"
         android:fontFamily="@font/yardenboldalefalefalef"
         android:backgroundTint="@color/grayeen1"
-        android:layout_gravity="right"
+        android:layout_gravity="end"
         android:text="+ הוספת מתודה חדשה"
         android:textColor="@color/black"
-        android:textSize="25dp" />
+        android:textSize="25sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="15dp"
-        android:fontFamily="@font/yardenboldalefalefalef"></androidx.recyclerview.widget.RecyclerView>
-
-
+        android:fontFamily="@font/yardenboldalefalefalef" />
 </LinearLayout>

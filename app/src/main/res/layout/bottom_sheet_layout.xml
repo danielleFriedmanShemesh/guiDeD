@@ -13,9 +13,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
-        android:id="@+id/trLl"
-        >
-
+        android:id="@+id/trLl">
         <TextView
             android:id="@+id/tr"
             android:layout_width="wrap_content"
@@ -56,6 +54,4 @@
             android:src="@drawable/plus"
             />
     </LinearLayout>
-
-
 </LinearLayout>

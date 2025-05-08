@@ -7,8 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".Activities.MainActivity"
     android:orientation="vertical"
-    android:background="@drawable/background"
-    >
+    android:background="@drawable/background">
 
     <TextView
         android:id="@+id/textView3"
@@ -54,29 +53,4 @@
         android:backgroundTint="@color/blue"
         android:fontFamily="@font/yardenboldalefalefalef"
         />
-
-   <!-- <Button
-        android:id="@+id/add_operation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="הוספת פעולה"
-        android:textSize="25dp"
-        android:fontFamily="@font/yardenboldalefalefalef"
-        />
-    <Button
-        android:id="@+id/add_trip"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="הוספת טיול"
-        android:textSize="25dp"
-        android:fontFamily="@font/yardenboldalefalefalef"
-        />
-
-
-     <Button
-         android:id="@+id/home"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:text="home" />-->
-
 </LinearLayout>

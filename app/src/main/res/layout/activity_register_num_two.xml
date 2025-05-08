@@ -73,7 +73,6 @@
         android:textColor="#FF0000"
         android:textSize="15dp"
         android:fontFamily="@font/yardenboldalefalefalef"
-
         />
 
     <EditText
@@ -86,7 +85,6 @@
         android:id="@+id/birthday"
         android:inputType="date"
         android:fontFamily="@font/yardenboldalefalefalef"
-
         />
 
 
@@ -117,7 +115,6 @@
         android:padding="12dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/yardenboldalefalefalef"
-
         />
     <TextView
         android:id="@+id/alartOrganization"
@@ -179,6 +176,4 @@
             app:layout_constraintTop_toTopOf="@+id/save"
             app:srcCompat="@drawable/better_sign_back" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </LinearLayout>

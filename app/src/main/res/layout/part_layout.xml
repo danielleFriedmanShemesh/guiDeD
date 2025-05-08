@@ -14,19 +14,20 @@
         android:layout_marginEnd="30dp"
         android:fontFamily="@font/yardenboldalefalefalef"
         android:hint="סוג הפעילות"
-        android:textSize="25dp"
+        android:textSize="25sp"
         android:padding="12dp"
         android:backgroundTint="@color/grayeen2"
         android:background="@android:drawable/editbox_background"
-        android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
         android:drawablePadding="5dp"
         android:gravity="center_vertical"
+        app:drawableEndCompat="@drawable/baseline_arrow_drop_down_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/picture"
         android:layout_width="55dp"
+        android:background="@color/transparent"
         android:layout_height="55dp"
         android:layout_marginStart="30dp"
         app:layout_constraintBottom_toBottomOf="@+id/activity"
@@ -39,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginEnd="30dp"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:hint="מרחק(בקמ)"
         app:layout_constraintBottom_toBottomOf="@+id/lengthInMinutes"
         android:fontFamily="@font/yardenregularalefalefalef"
@@ -50,7 +51,7 @@
         android:id="@+id/lengthInMinutes"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:layout_marginTop="16dp"
         android:hint="זמן המקטע(בדקות)"
         android:inputType="number"
@@ -66,7 +67,7 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/yardenregularalefalefalef"
         android:hint="תיאור"
-        android:textSize="25dp"
+        android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="@+id/activity"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lengthInMinutes" />
@@ -74,28 +75,25 @@
     <EditText
         android:id="@+id/equipment"
         android:layout_width="298dp"
-        android:layout_height="47dp"
+        android:layout_height="50dp"
         android:layout_marginTop="16dp"
         android:hint="הוספת עזרים"
-        android:textSize="25dp"
+        android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="@+id/description"
         app:layout_constraintTop_toBottomOf="@+id/description"
-        android:fontFamily="@font/yardenregularalefalefalef"
-        />
+        android:fontFamily="@font/yardenregularalefalefalef" />
 
     <Button
         android:id="@+id/savePart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:backgroundTint="@color/grayeen1.5"
+        android:backgroundTint="@color/transparent"
         android:fontFamily="@font/yardenboldalefalefalef"
         android:text="שמור"
         android:textColor="@color/black"
-        android:textSize="25dp"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/description"
         app:layout_constraintTop_toBottomOf="@+id/equipment" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

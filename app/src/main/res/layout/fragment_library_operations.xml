@@ -6,10 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.LibraryOperationsFragment"
     android:orientation="vertical"
-    android:background="@color/grayeen1"
-    >
-
-
+    android:background="@color/grayeen1">
 
     <TextView
         android:id="@+id/title"
@@ -37,9 +34,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <!--android:closeIcon="@drawable/x"
-            android:goIcon="@drawable/search"
-            android:searchHintIcon="@drawable/search"-->
+
     <ImageView
         android:id="@+id/filter"
         android:layout_width="24pt"
@@ -62,6 +57,5 @@
         android:layout_weight="1"
         android:scrollbars="vertical"
         android:layout_marginTop="10dp" />
-
 </FrameLayout>
 </LinearLayout>

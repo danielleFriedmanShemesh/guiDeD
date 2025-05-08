@@ -13,4 +13,5 @@
     <color name="beige2">#b79c8d</color>
     <color name="brown">#6b2719</color>
     <color name="blue">#052d3c</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>

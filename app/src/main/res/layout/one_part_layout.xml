@@ -4,8 +4,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/onePartLayout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/grayeen1"
-    >
+    android:background="@color/grayeen1">
     <TextView
         android:id="@+id/activity"
         android:layout_width="wrap_content"
@@ -14,7 +13,7 @@
         android:layout_marginEnd="30dp"
         android:fontFamily="@font/yardenboldalefalefalef"
         android:hint="סוג הפעילות"
-        android:textSize="25dp"
+        android:textSize="25sp"
         android:gravity="center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,8 +22,8 @@
         android:id="@+id/picture"
         android:layout_width="70dp"
         android:layout_height="70dp"
-
         android:layout_marginStart="30dp"
+        android:background="@color/transparent"
         app:layout_constraintBottom_toBottomOf="@+id/activity"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/activity"
@@ -35,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:gravity="center_vertical"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:layout_marginEnd="30dp"
         android:text="אורך המקטע(בקמ)"
         app:layout_constraintBottom_toBottomOf="@+id/lengthInMinutes"
@@ -48,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:text="זמן המקטע(בדקות)"
         android:gravity="center_vertical"
         app:layout_constraintEnd_toEndOf="@+id/activity"
@@ -63,7 +62,7 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/yardenregularalefalefalef"
         android:hint="תיאור"
-        android:textSize="25dp"
+        android:textSize="25sp"
         android:gravity="center_vertical"
         app:layout_constraintEnd_toEndOf="@+id/activity"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,7 +74,7 @@
         android:layout_height="47dp"
         android:layout_marginTop="16dp"
         android:hint="עזרים"
-        android:textSize="25dp"
+        android:textSize="25sp"
         android:gravity="center_vertical"
         app:layout_constraintEnd_toEndOf="@+id/description"
         app:layout_constraintTop_toBottomOf="@+id/description"
@@ -90,6 +89,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/equipment" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,8 +13,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layoutDirection="ltr"
-    >
+    android:layoutDirection="ltr">
 
     <TextView
         android:id="@+id/title"
@@ -61,8 +60,6 @@
         android:fontFamily="@font/yardenboldalefalefalef"
 
         />
-
-
 
     <TextView
         android:layout_width="wrap_content"
@@ -155,7 +152,6 @@
 
         />
 
-
     <TextView
         android:id="@+id/alartBirthday"
         android:layout_width="match_parent"
@@ -225,5 +221,4 @@
             app:srcCompat="@drawable/better_sign_finish" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </LinearLayout>

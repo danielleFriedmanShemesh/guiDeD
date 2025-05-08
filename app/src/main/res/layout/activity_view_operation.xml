@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".Activities.View_operation"
     android:background="@color/grayeen1"
-
     >
 
     <ImageButton
@@ -107,8 +106,6 @@
         android:fontFamily="@font/yardenregularalefalefalef"
         android:textSize="15dp"/>
 
-
-
     <TextView
         android:id="@+id/lengthOp"
         android:layout_width="wrap_content"
@@ -193,6 +190,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/goalsOp" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

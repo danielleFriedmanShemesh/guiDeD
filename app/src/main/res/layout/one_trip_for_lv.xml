@@ -11,16 +11,15 @@
     app:cornerRadius="25dp"
     app:strokeWidth="10dp">
 
-
     <TextView
         android:id="@+id/topic"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
         android:fontFamily="@font/yardenboldalefalefalef"
         android:text="שם הטיול"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:background="@color/grayeen3"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
@@ -42,7 +41,7 @@
         android:layout_marginEnd="10dp"
         android:fontFamily="@font/yardenboldalefalefalef"
         android:text="גיל"
-        android:textSize="15dp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/organization"
         app:layout_constraintEnd_toStartOf="@+id/organization"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,7 +62,7 @@
         android:layout_marginEnd="10dp"
         android:fontFamily="@font/yardenboldalefalefalef"
         android:text="אורך המסלול"
-        android:textSize="15dp"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -74,7 +73,7 @@
         android:layout_marginEnd="10dp"
         android:fontFamily="@font/yardenboldalefalefalef"
         android:text="אזור"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:background="@color/grayeen3"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
@@ -95,7 +94,7 @@
         android:paddingEnd="7dp"
         android:paddingBottom="5dp"
         android:text="מיקום ספציפי"
-        android:textSize="15dp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/name"
         app:layout_constraintEnd_toEndOf="@+id/topic"
         app:layout_constraintTop_toBottomOf="@+id/topic" />
@@ -107,7 +106,7 @@
         android:layout_marginEnd="10dp"
         android:fontFamily="@font/yardenboldalefalefalef"
         android:text="מסגרת הדרכה"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:background="@color/grayeen3"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
@@ -126,7 +125,7 @@
         android:layout_marginBottom="5dp"
         android:fontFamily="@font/yardenboldalefalefalef"
         android:text="נכתב ע''י: "
-        android:textSize="15dp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/organization" />
@@ -138,7 +137,7 @@
         android:layout_marginEnd="10dp"
         android:fontFamily="@font/yardenboldalefalefalef"
         android:text="userName"
-        android:textSize="15dp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/name"
         app:layout_constraintEnd_toStartOf="@+id/name"
         app:layout_constraintTop_toTopOf="@+id/name" />

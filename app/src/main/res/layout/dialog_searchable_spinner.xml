@@ -4,8 +4,7 @@
     android:layout_height="305dp"
     android:orientation="vertical"
     android:layoutDirection="rtl"
-    android:background="@color/grayeen1.5"
-    >
+    android:background="@color/grayeen1.5">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,7 +15,6 @@
         android:textStyle="bold"
         android:fontFamily="@font/yardenboldalefalefalef"
         />
-
 
     <EditText
         android:layout_width="match_parent"
@@ -31,7 +29,6 @@
         android:backgroundTint="@color/grayeen2"
         android:background="@android:drawable/editbox_background"
         android:fontFamily="@font/yardenboldalefalefalef"
-
         />
 
     <ListView
