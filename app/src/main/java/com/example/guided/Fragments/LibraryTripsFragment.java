@@ -1,20 +1,16 @@
 package com.example.guided.Fragments;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.example.guided.Helpers.FireBaseTripHelper;
 import com.example.guided.R;
 import com.example.guided.RecyclerAdapters.RecyclerAdapterLibraryTrip;
 import com.example.guided.Classes.Trip;
-
 import java.util.ArrayList;
 
 /**

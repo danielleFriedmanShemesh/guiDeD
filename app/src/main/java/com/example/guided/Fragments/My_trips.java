@@ -1,23 +1,19 @@
 package com.example.guided.Fragments;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import com.example.guided.Helpers.FireBaseTripHelper;
 import com.example.guided.Helpers.FirebaseUserHelper;
 import com.example.guided.R;
 import com.example.guided.RecyclerAdapters.RecyclerMyTripsAdapter;
 import com.example.guided.Classes.Trip;
 import com.example.guided.Classes.User;
-
 import java.util.ArrayList;
 
 /**
@@ -25,7 +21,6 @@ import java.util.ArrayList;
  */
 public class My_trips extends Fragment implements View.OnClickListener {
     private View v; // תצוגה (View) של ה-Fragment. משמשת לאחסון ה-View הראשי של ה-Fragment.
-
     private ImageView backBTN; // כפתור החרה למסך הקודם
     /**
      * RecyclerView להצגת רשימת הטיולים (Trips).

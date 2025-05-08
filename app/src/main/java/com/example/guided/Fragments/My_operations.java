@@ -90,11 +90,9 @@ public class My_operations extends Fragment implements View.OnClickListener {
                 }
                 @Override
                 public void onError(String errorMessage) {
-
                 }
             });
         }
-
         return v;
     }
 

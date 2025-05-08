@@ -3,17 +3,14 @@ package com.example.guided.Fragments;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.guided.Activities.Add_operation;
 import com.example.guided.Activities.Add_trip;
 import com.example.guided.Helpers.BitmapHelper;
@@ -25,7 +22,6 @@ import com.example.guided.Classes.Operation;
 import com.example.guided.R;
 import com.example.guided.Classes.Trip;
 import com.example.guided.Classes.User;
-
 import java.util.ArrayList;
 
 /**

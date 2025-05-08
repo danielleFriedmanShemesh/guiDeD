@@ -22,7 +22,6 @@ import com.example.guided.Activities.View_operation;
 import com.example.guided.Activities.View_trip;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
