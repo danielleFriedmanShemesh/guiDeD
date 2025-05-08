@@ -24,7 +24,6 @@ public class MetodotListViewAdapter extends ArrayAdapter<Metoda> {
     private Context context; //ההקשר שבו מופעל האדפטר(ACTIVITY)
     private List<Metoda> metodaList; // רשימת מטודות בפעולה (Metoda) להצגה ב-ListView.
 
-
     /**
      * בנאי של המחלקה. מקבל את ההקשר והרשימה להצגה.
      *

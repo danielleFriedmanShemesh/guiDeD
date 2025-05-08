@@ -95,4 +95,5 @@ public class PartsListViewAdapter extends ArrayAdapter<Part> {
 
         return view;
     }
+
 }
