@@ -26,13 +26,11 @@ public class CheckInternet {
                 connectivityManager.
                         getActiveNetworkInfo();
 
-        if (networkInfo!=null){
+        if (networkInfo!=null)
             status = "connected";
-            return status;
-        }
-        else {
+        else
             status = "disconnected";
-            return status;
-        }
+
+        return status;
     }
 }

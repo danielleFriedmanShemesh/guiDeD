@@ -29,10 +29,7 @@ public class InternetReceiver extends BroadcastReceiver {
             Intent intent) {
         String status = CheckInternet.
                 getNetworkInfo(context);
-        if (status.equals("connected")){
-            // אין צורך להציג דיאלוג
-        }
-        else if (status.equals("disconnected")){
+        if (status.equals("disconnected")){
             // מציגים דיאלוג רק אם זה Activity תקף
             new Handler(Looper.getMainLooper())
                     .post(new Runnable() {
@@ -79,9 +76,7 @@ public class InternetReceiver extends BroadcastReceiver {
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
-                        onReceive(
-                                context,
-                                intent); // ניסיון נוסף לבדוק חיבור
+                        onReceive(context, intent); // ניסיון נוסף לבדוק חיבור
                     }
                 });
             }
