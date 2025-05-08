@@ -3,8 +3,8 @@ package com.example.guided.Activities;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -14,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -157,7 +156,10 @@ public class View_trip extends BaseActivity implements View.OnClickListener {
                     dialog.dismiss();
                 }
             });
-            if(image != null){
+            if(image != null || !image.equals(BitmapHelper.bitmapToString(BitmapFactory.
+                    decodeResource(
+                            getResources(),
+                            R.drawable.add_image)))){
                 tripPic.setImageBitmap(
                         BitmapHelper.stringToBitmap(image));
                 noPic.setVisibility(View.GONE);
