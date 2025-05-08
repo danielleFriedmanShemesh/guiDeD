@@ -1,18 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="BottomNavActive" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">15dp</item> <!-- Change the size -->
-        <item name="android:fontFamily">yardenregularalefalefalef</item>
-        <item name="android:textColor">#000000</item>
-        <item name="android:layout_marginTop">5dp</item>
+    <style name="PopupMenu" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@color/grayeen1.5</item>
+    </style>
+    <style name="PopupMenuTextAppearanceLarge" parent="TextAppearance.AppCompat.Widget.PopupMenu.Large">
+        <item name="android:fontFamily">@font/yardenboldalefalefalef</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="PopupMenuTextAppearanceSmall" parent="TextAppearance.AppCompat.Widget.PopupMenu.Small">
+        <item name="android:fontFamily">@font/yardenboldalefalefalef</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="BottomNavInactive" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">15dp</item> <!-- Change the size -->
-        <item name="android:fontFamily">yardenregularalefalefalef</item>
-        <item name="android:textColor">#000000</item>
-        <item name="android:layout_marginTop">5dp</item>
+    <style name="AlertDialog" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
+        <item name="android:backgroundTint"> @color/grayeen1.5</item>
+        <item name="android:colorBackground">@color/grayeen1.5</item>
+        <item name="alertDialogCenterButtons">true</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/yardenregularalefalefalef</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textAppearance">@style/CustomDialogMessageTextAppearance</item>
+        <item name="android:layout_gravity">center</item>
     </style>
-
+    <style name="CustomDialogMessageTextAppearance" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/yardenregularalefalefalef</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_gravity">right</item>
+    </style>
 
 </resources>
