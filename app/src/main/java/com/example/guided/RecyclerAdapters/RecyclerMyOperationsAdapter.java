@@ -182,7 +182,6 @@ public class RecyclerMyOperationsAdapter extends RecyclerView.Adapter<RecyclerMy
             goals = itemView.findViewById(R.id.goals1);
             parentLayout = itemView.findViewById(R.id.layout_1_my_operations);
         }
-
         public TextView getAge() {
             return age;
         }

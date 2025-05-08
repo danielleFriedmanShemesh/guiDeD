@@ -11,12 +11,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.guided.Activities.Add_trip;
-import com.example.guided.Classes.Operation;
 import com.example.guided.R;
 import com.example.guided.Classes.Trip;
 import com.example.guided.Classes.User;

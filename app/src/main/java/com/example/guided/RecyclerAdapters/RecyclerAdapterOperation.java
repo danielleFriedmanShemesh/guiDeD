@@ -189,6 +189,7 @@ public class RecyclerAdapterOperation extends RecyclerView.Adapter<RecyclerAdapt
             equipment = itemView.findViewById(R.id.equipment);
             parentLayout = itemView.findViewById(R.id.oneMetodaLayout);
         }
+
         public TextView getTitle() {
             return title;
         }

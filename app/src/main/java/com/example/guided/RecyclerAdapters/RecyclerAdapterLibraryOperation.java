@@ -106,6 +106,7 @@ public class RecyclerAdapterLibraryOperation extends RecyclerView.Adapter<Recycl
         filteredList.clear();
         if (query.isEmpty())
             filteredList.addAll(originalList);
+
         else {
             query = query.toLowerCase(); // It converts the search query (user input) to lowercase letters.
 

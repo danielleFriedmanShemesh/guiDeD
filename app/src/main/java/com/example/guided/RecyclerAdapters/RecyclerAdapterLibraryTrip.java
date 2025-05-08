@@ -25,7 +25,6 @@ import java.util.ArrayList;
 public class RecyclerAdapterLibraryTrip  extends RecyclerView.Adapter<RecyclerAdapterLibraryTrip.ViewHolder>{
 
     private Context context; // הקשר של המסך שממנו נוצר האדפטר
-
     private ArrayList<Trip> originalList;  // רשימת כל הטיולים הציבוריים המקוריות (לפני סינון)
     private ArrayList<Trip> filteredList;  // רשימת הטיולים המסוננות שתוצג בפועל ב-RecyclerView
 
@@ -126,10 +125,6 @@ public class RecyclerAdapterLibraryTrip  extends RecyclerView.Adapter<RecyclerAd
         }
         notifyDataSetChanged();
     }
-//    public void filters(){
-//        //TODO:  כשיהיה לי זמן להוסיף את הסינון לפי קריטריון מסויים
-//
-//    }
 
     /**
      * מחלקת ViewHolder פנימית - מחזיקה את רכיבי התצוגה של כל פריט טיול.

@@ -1,7 +1,5 @@
 package com.example.guided.RecyclerAdapters;
 
-//import static androidx.appcompat.graphics.drawable.DrawableContainerCompat.Api21Impl.getResources;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -180,7 +178,7 @@ public class RecyclerAdapterTrip  extends RecyclerView.Adapter<RecyclerAdapterTr
                                     if(isChecked){
                                         if(! userActivityTypeAdjustments.contains(which)){
                                             userActivityTypeAdjustments.add(which);
-                                            if (listActivityTypeAdjustments.equals("אחר")){
+                                            if (listActivityTypeAdjustments[which].equals("אחר")){
                                             }
                                         }
                                     }
