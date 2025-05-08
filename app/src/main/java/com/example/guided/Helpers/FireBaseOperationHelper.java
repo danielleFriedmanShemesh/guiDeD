@@ -59,16 +59,13 @@ public class FireBaseOperationHelper {
      * @param dataStatus הממשק דרכו מחזירים את הפעולות שנטענו
      * @param userName שם המשתמש שאליו שייכים הפעולות
      */
-    public void fetchMyOperations(
-            DataStatus dataStatus,
-            String userName){
+    public void fetchMyOperations(DataStatus dataStatus, String userName){
         myRef.orderByChild("userName")
                 .equalTo(userName)
                 .addValueEventListener(
                         new ValueEventListener() {
             @Override
-            public void onDataChange(
-                    @NonNull DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 operationArrayList.clear();
                 for (DataSnapshot data : snapshot.getChildren()) {
                     Operation operation = data.getValue(Operation.class);
@@ -80,8 +77,7 @@ public class FireBaseOperationHelper {
                     dataStatus.onDataLoaded(operationArrayList);
             }
             @Override
-            public void onCancelled(
-                    @NonNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
             }
         });
     }
@@ -94,8 +90,7 @@ public class FireBaseOperationHelper {
         myRef.addValueEventListener(
                 new ValueEventListener() {
             @Override
-            public void onDataChange(
-                    @NonNull DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 operationArrayList.clear();
                 for (DataSnapshot data : snapshot.getChildren()) {
                     Operation operation = data.getValue(Operation.class);
@@ -106,8 +101,7 @@ public class FireBaseOperationHelper {
                 dataStatus.onDataLoaded(operationArrayList);
             }
             @Override
-            public void onCancelled(
-                    @NonNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
             }
         });
     }
@@ -123,8 +117,7 @@ public class FireBaseOperationHelper {
         myRef.addValueEventListener(
                 new ValueEventListener() {
             @Override
-            public void onDataChange(
-                    @NonNull DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     if(dataSnapshot.getKey().equals(id))
                         operation = dataSnapshot.getValue(Operation.class);
@@ -132,8 +125,7 @@ public class FireBaseOperationHelper {
                dataStatusM.onDataLoaded(operation);
             }
             @Override
-            public void onCancelled(
-                    @NonNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
             }
         });
     }

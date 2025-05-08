@@ -34,7 +34,6 @@ public class FirebaseUserHelper {
                 .getReference(
                         "users");
         userArrayList = new ArrayList<>();
-
     }
 
     /**
@@ -65,7 +64,6 @@ public class FirebaseUserHelper {
         void onError(String errorMessage);
     }
 
-
     /**
      * שולף את כל המשתמשים מהענף "users" במסד הנתונים.
      * מעדכן את הרשימה ומפעיל את הקולבק כאשר הנתונים מוכנים.
@@ -78,23 +76,18 @@ public class FirebaseUserHelper {
         userRef.addValueEventListener(
                 new ValueEventListener() {
             @Override
-            public void onDataChange(
-                    @NonNull DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userArrayList.clear();
                 for (DataSnapshot data : snapshot.getChildren()) {
                     User user = data.getValue(User.class);
-                    if (user != null) {
+                    if (user != null)
                         userArrayList.add(user);
-                    }
                 }
                 // מודיע שהנתונים נטענו
                 dataStatus.onDataLoaded(userArrayList);
-
             }
-
             @Override
-            public void onCancelled(
-                    @NonNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
                 // אין טיפול בשגיאה כאן
             }
         });
@@ -115,29 +108,21 @@ public class FirebaseUserHelper {
             userRef.addListenerForSingleValueEvent(
                     new ValueEventListener() {
                 @Override
-                public void onDataChange(
-                        @NonNull DataSnapshot snapshot) {
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
                     User user = snapshot
                             .getValue(User.class);
-                    if (user != null) {
+                    if (user != null)
                         callback.onUserDataLoaded(user);
-                    } else {
-                        callback.onError(
-                                "נתוני המשתמש לא נמצאו");
-                    }
+                    else
+                        callback.onError("נתוני המשתמש לא נמצאו");
                 }
-
                 @Override
-                public void onCancelled(
-                        @NonNull DatabaseError error) {
+                public void onCancelled(@NonNull DatabaseError error) {
                     callback.onError(error.getMessage());
                 }
             });
         }
-
-        else if (userRef == null) {
-            callback.onError(
-                    "משתמש לא מחובר");
-        }
+        else if (userRef == null)
+            callback.onError("משתמש לא מחובר");
     }
 }

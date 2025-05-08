@@ -1,7 +1,5 @@
 package com.example.guided.Helpers;
 
-
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -104,19 +102,19 @@ public class OperationsAndTripsHelper {
      * @param callback פונקציה חוזרת עם התמונה שנבחרה
      */
     public void showTripPic(
-                ActivityResultLauncher< Intent > cameraLauncher,
-                ActivityResultLauncher<Intent> galleryLauncher,
-                PicDialogCallback callback){
+            ActivityResultLauncher< Intent > cameraLauncher,
+            ActivityResultLauncher<Intent> galleryLauncher,
+            PicDialogCallback callback){
 
-            Dialog dialog = new Dialog(context);
-            dialog.setContentView(R.layout.dialog_add_pic);
-            dialog.getWindow().setLayout(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            dialog.show();
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_add_pic);
+        dialog.getWindow().setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.show();
 
-            Button galery = dialog.findViewById(R.id.galery);
-            Button camera = dialog.findViewById(R.id.camera);
+        Button galery = dialog.findViewById(R.id.galery);
+        Button camera = dialog.findViewById(R.id.camera);
         Button delete = dialog.findViewById(R.id.delete);
         TextView title = dialog.findViewById(R.id.titleDialog);
         title.setText("העלאת תמונה");
@@ -176,10 +174,7 @@ public class OperationsAndTripsHelper {
                     checkedAgeAdjustments,
                     new DialogInterface.OnMultiChoiceClickListener() {
                 @Override
-                public void onClick(
-                        DialogInterface dialog,
-                        int which,
-                        boolean isChecked) {
+                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                     if(isChecked){
                         if(! userAgeAdjustments.contains(which)){
                             userAgeAdjustments.add(which);
@@ -225,8 +220,7 @@ public class OperationsAndTripsHelper {
      * מציג דיאלוג רב-בחירה לבחירת סוגי פעילות.
      * @param callback פונקציה חוזרת עם סוגי הפעילויות שנבחרו כמחרוזת
      */
-    public void showActivityDialog(
-            ActivityTypeDialogCallback callback){
+    public void showActivityDialog(ActivityTypeDialogCallback callback){
         AlertDialog.Builder builder = new AlertDialog.Builder(
                 context,
                 R.style.AlertDialog);
@@ -236,14 +230,11 @@ public class OperationsAndTripsHelper {
                 checkedActivityTypeAdjustments,
                 new DialogInterface.OnMultiChoiceClickListener() {
             @Override
-            public void onClick(
-                    DialogInterface dialog,
-                    int which,
-                    boolean isChecked) {
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                 if(isChecked){
                     if(! userActivityTypeAdjustments.contains(which)){
                         userActivityTypeAdjustments.add(which);
-                        if (listActivityTypeAdjustments.equals("אחר")){
+                        if (listActivityTypeAdjustments[which].equals("אחר")){
                             // TODO: לתת אפשרות לכתוב משהו שלא מופיע כאחד מהאופציות
                         }
                     }
@@ -257,9 +248,7 @@ public class OperationsAndTripsHelper {
                 "OK",
                 new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(
-                    DialogInterface dialog,
-                    int which) {
+            public void onClick(DialogInterface dialog, int which) {
                 String type = "";
                 for(int i = 0; i < userActivityTypeAdjustments.size(); i++){
                     type = type + listActivityTypeAdjustments[userActivityTypeAdjustments.get(i)];
@@ -273,13 +262,10 @@ public class OperationsAndTripsHelper {
                 "Dismiss",
                 new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(
-                    DialogInterface dialog,
-                    int which) {
+            public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
-
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -316,9 +302,7 @@ public class OperationsAndTripsHelper {
                 "OK",
                 new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(
-                    DialogInterface dialog,
-                    int which) {
+            public void onClick(DialogInterface dialog, int which) {
                 String a = "";
                 for(int i = 0; i < userArea.size(); i++){
                     a = a + listArea[userArea.get(i)];
@@ -332,9 +316,7 @@ public class OperationsAndTripsHelper {
                 "Dismiss",
                 new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(
-                    DialogInterface dialog,
-                    int which) {
+            public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
@@ -346,8 +328,7 @@ public class OperationsAndTripsHelper {
      * מציג דיאלוג לשאלה האם לצאת מהמסך תוך שמירה או בלי שמירה.
      * @param callback פונקציה חוזרת עם התשובה (true = לצאת ולשמור)
      */
-    public void showExitDialog(
-            ExitDialogCallback callback){
+    public void showExitDialog(ExitDialogCallback callback){
 
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.exit_activity_dialog_layout);
@@ -377,7 +358,6 @@ public class OperationsAndTripsHelper {
         });
     }
 
-
     /**
      * שומר טיול במסד הנתונים Firebase. אם לא ניתן מפתח, נוצר חדש.
      * @param t אובייקט הטיול לשמירה
@@ -401,16 +381,15 @@ public class OperationsAndTripsHelper {
      * @param operation אובייקט הפעולה לשמירה
      * @param operationKey המפתח של הפעולה (יכול להיות null)
      */
-    public void saveOperation(
-            Operation operation,
-            String operationKey){
+    public void saveOperation(Operation operation, String operationKey){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("operations");
 
         String key;
         if(operationKey == null)
             key = myRef.push().getKey();
-        else key = operationKey;
+        else
+            key = operationKey;
         operation.setKey(key);
         myRef.child(key).setValue(operation);
     }

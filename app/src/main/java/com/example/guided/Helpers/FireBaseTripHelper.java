@@ -67,8 +67,7 @@ public class FireBaseTripHelper {
                 .addValueEventListener(
                         new ValueEventListener() {
             @Override
-            public void onDataChange(
-                    @NonNull DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 tripsArrayList.clear();
                 for (DataSnapshot data : snapshot.getChildren()) {
                     Trip trip = data.getValue(Trip.class);
@@ -80,8 +79,7 @@ public class FireBaseTripHelper {
                     dataStatus.onDataLoaded(tripsArrayList);
             }
             @Override
-            public void onCancelled(
-                    @NonNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
             }
         });
     }
@@ -95,8 +93,7 @@ public class FireBaseTripHelper {
         myRef.addValueEventListener(
                 new ValueEventListener() {
             @Override
-            public void onDataChange(
-                    @NonNull DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 tripsArrayList.clear();
                 for (DataSnapshot data : snapshot.getChildren()) {
                     Trip trip = data.getValue(Trip.class);
@@ -108,8 +105,7 @@ public class FireBaseTripHelper {
                     dataStatus.onDataLoaded(tripsArrayList);
             }
             @Override
-            public void onCancelled(
-                    @NonNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
             }
         });
     }
@@ -125,8 +121,7 @@ public class FireBaseTripHelper {
         myRef.addValueEventListener(
                 new ValueEventListener() {
             @Override
-            public void onDataChange(
-                    @NonNull DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     if(dataSnapshot.getKey().equals(id))
                         showTrip = dataSnapshot.getValue(Trip.class);
@@ -135,8 +130,7 @@ public class FireBaseTripHelper {
             }
 
             @Override
-            public void onCancelled(
-                    @NonNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
             }
         });
     }

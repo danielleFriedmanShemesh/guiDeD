@@ -17,7 +17,6 @@ public class DateConverter {
      * @param birthday מחרוזת תאריך (למשל "25/04/2005")
      * @return אובייקט Date המייצג את התאריך שהוזן
      * @throws RuntimeException אם הפורמט של המחרוזת שגוי או לא ניתן לפענוח
-     *
      * דוגמה:
      * {@code Date d = DateConverter.convertStringToDate("01/01/2020");}
      */
@@ -43,7 +42,6 @@ public class DateConverter {
      *
      * @param inputDateString מחרוזת תאריך בפורמט מלא לדוגמה: "Tue Apr 25 00:00:00 GMT+03:00 2023"
      * @return מחרוזת תאריך בפורמט "dd/MM/yyyy" (למשל "25/04/2023"), או null במקרה של שגיאת עיבוד
-     *
      * דוגמה:
      * {@code String formatted = DateConverter.convertFullFormatToDate("Tue Apr 25 00:00:00 GMT+03:00 2023");}
      */
