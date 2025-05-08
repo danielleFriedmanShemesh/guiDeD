@@ -44,7 +44,6 @@ public class View_trip extends BaseActivity implements View.OnClickListener {
 
     private ListView parts; //ListView להצגת מקטעי הטיול
     private PartsListViewAdapter partsListViewAdapter; // מתאם להצגת המקטעים ב-ListView
-    private FireBaseTripHelper fireBaseTripHelper; //עוזר לשליפת נתוני טיול מ-Firebase
 
     private ArrayList<Part> partArrayList; //רשימת מקטעי הטיול
 
@@ -89,7 +88,8 @@ public class View_trip extends BaseActivity implements View.OnClickListener {
         Intent intent = getIntent();
         String tripKey = intent.getStringExtra("tripKey");
 
-        fireBaseTripHelper = new FireBaseTripHelper();
+        //עוזר לשליפת נתוני טיול מ-Firebase
+        FireBaseTripHelper fireBaseTripHelper = new FireBaseTripHelper();
         fireBaseTripHelper.fetchOneTrip(
                 new FireBaseTripHelper.DataStatusT() {
             /**

@@ -3,7 +3,6 @@ package com.example.guided.Activities;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import static com.example.guided.Helpers.RegisteretionHelper.*;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;

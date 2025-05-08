@@ -66,7 +66,6 @@ public class Register_num_two extends BaseActivity implements View.OnClickListen
     private User newUser; // אובייקט User שעובר מהמסך הקודם
     private String password; // סיסמה מהמסך הקודם
     private String email; //אימייל מהשלב הקודם
-
     private FirebaseAuth mAuth; // מופע Firebase Authentication
     private ProgressBar progressBar; //  תצוגת עיגול טעינה
 

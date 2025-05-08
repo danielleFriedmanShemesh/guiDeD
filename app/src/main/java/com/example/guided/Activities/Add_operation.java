@@ -83,7 +83,6 @@ public class Add_operation extends BaseActivity implements View.OnClickListener 
     private String operationKey = ""; //מפתח הפעולה (אם מדובר בעריכה)
     private OperationsAndTripsHelper operationsAndTripsHelper; //אובייקט עזר לדיאלוגים ופעולות הקשורות לטיולים ולפעולות.
 
-
     /**
      * מופעל בעת יצירת הפעולה.
      * מאתחל את כל רכיבי הממשק, מקבל פעולה קיימת במידת הצורך ומציב מאזינים.

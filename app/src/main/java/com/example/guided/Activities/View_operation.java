@@ -7,18 +7,15 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import androidx.activity.EdgeToEdge;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 import com.example.guided.Classes.Metoda;
 import com.example.guided.Classes.Operation;
 import com.example.guided.Helpers.FireBaseOperationHelper;
 import com.example.guided.ListAdapters.MetodotListViewAdapter;
 import com.example.guided.R;
-
 import java.util.ArrayList;
 
 public class View_operation extends BaseActivity implements View.OnClickListener {

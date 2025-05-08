@@ -120,13 +120,10 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
         goals = findViewById(R.id.goals);
         equipments = findViewById(R.id.equipments);
         place = findViewById(R.id.place);
-        // TODO: לעשות שהמיקום הספציפי מתחבר לגוגל מאפ
         privateORpublic = findViewById(R.id.publicORpivate);
         tripPicture = findViewById(R.id.picture);
         area = findViewById(R.id.area);
         ageAdjustments = findViewById(R.id.age);
-
-
 
         exitBTN = findViewById(R.id.exit);
         saveTrip = findViewById(R.id.save);
@@ -242,18 +239,11 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
                         equipments.setText(trip.getEquipments());
                         area.setText(trip.getArea());
                         place.setText(trip.getNameOfTrip());
-//                        if (trip.getPicture() == null)
-  //                          tripPicture.setImageResource(R.drawable.add_image);
-//                            tripPicture.setImageBitmap(
-//                                            BitmapFactory.
-//                                                    decodeResource(
-//                                                            getResources(),
-//                                                            R.drawable.add_image));
- //                       else
-                            tripPicture.setImageBitmap(
-                                    BitmapHelper.
-                                            stringToBitmap(
-                                                    trip.getPicture()));
+
+                        tripPicture.setImageBitmap(
+                                BitmapHelper.
+                                        stringToBitmap(
+                                                trip.getPicture()));
                         if (trip.getPublicORprivate().equals("isPublic")) {
                             privateORpublic.setChecked(true);
                             privateORpublic.setThumbDrawable(
@@ -269,7 +259,6 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
                         }
                         partsArr = trip.getPartsArr();
                         id = partsArr.size();
-                        //TODO: לשנות את הגיל למערך?
                         setAdapter();
                     }
                 }, tripKey);
@@ -485,21 +474,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
                 ((BitmapDrawable)tripPicture.getDrawable())
                         .getBitmap());
 
-
-        /*String picSTR = "";
-
-        if(!BitmapHelper.bitmapToString(
-                ((BitmapDrawable)tripPicture.getDrawable())
-                        .getBitmap()).isEmpty()){
-            picSTR = BitmapHelper.
-                    bitmapToString(
-                            ((BitmapDrawable)tripPicture.
-                                    getDrawable())
-                                    .getBitmap());
-        }*/
-
         FirebaseUserHelper firebaseUserHelper = new FirebaseUserHelper();
-        String finalPicSTR = picSTR;
         firebaseUserHelper.fetchUserData(
                 new FirebaseUserHelper.UserDataCallback() {
                     @Override
@@ -518,7 +493,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
                                 partsArr,
                                 userNameSTR,
                                 organizationSTR,
-                                finalPicSTR);
+                                picSTR);
                         operationsAndTripsHelper.saveTrip(
                                 trip,
                                 tripKey);
@@ -564,31 +539,31 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
                 int direction) {
             int position = viewHolder.getAdapterPosition();
 
-            switch (direction){
-                case ItemTouchHelper.LEFT:
-                    deletedPart = partsArr.get(position);
-                    partsArr.remove(position);
-                    recyclerAdapter.notifyItemRemoved(position);
+            if (direction == ItemTouchHelper.LEFT) {
+                deletedPart = partsArr.get(position);
+                partsArr.remove(position);
+                recyclerAdapter.notifyItemRemoved(position);
 
-                    lengthCount = lengthCount - deletedPart.getLengthInKM();;
-                    length.setText(lengthCount + " ק''מ ");
+                lengthCount = lengthCount - deletedPart.getLengthInKM();
+                ;
+                length.setText(lengthCount + " ק''מ ");
 
-                    Snackbar.make(
-                            recyclerView,
-                            deletedPart.toString(),
-                            Snackbar.LENGTH_LONG).setAction(
-                                    "undo",
-                            new View.OnClickListener(){
-                        @Override
-                        public void onClick(View v) {
-                            partsArr.add(position, deletedPart);
-                            recyclerAdapter.notifyItemInserted(position);
+                Snackbar.make(
+                        recyclerView,
+                        deletedPart.toString(),
+                        Snackbar.LENGTH_LONG).setAction(
+                        "undo",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                partsArr.add(position, deletedPart);
+                                recyclerAdapter.notifyItemInserted(position);
 
-                            lengthCount = lengthCount + deletedPart.getLengthInKM();;
-                            length.setText(lengthCount + " ק''מ ");
-                        }
-                    }).show();
-                    break;
+                                lengthCount = lengthCount + deletedPart.getLengthInKM();
+                                ;
+                                length.setText(lengthCount + " ק''מ ");
+                            }
+                        }).show();
             }
         }
 
@@ -602,14 +577,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
                 int actionState,
                 boolean isCurrentlyActive) {
 
-            new RecyclerViewSwipeDecorator.Builder(
-                    c,
-                    recyclerView,
-                    viewHolder,
-                    dX,
-                    dY,
-                    actionState,
-                    isCurrentlyActive)
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                     .addSwipeLeftBackgroundColor(
                             ContextCompat.getColor(
                                     Add_trip.this,
@@ -618,14 +586,7 @@ public class Add_trip extends BaseActivity implements View.OnClickListener {
                     .create()
                     .decorate();
 
-            super.onChildDraw(
-                    c,
-                    recyclerView,
-                    viewHolder,
-                    dX,
-                    dY,
-                    actionState,
-                    isCurrentlyActive);
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
 

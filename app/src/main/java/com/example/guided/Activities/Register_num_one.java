@@ -31,7 +31,6 @@ public class Register_num_one extends BaseActivity implements View.OnClickListen
     private TextView alartForUserName; // תיבת טקסט להתרעה על שגיאה בשם המשתמש
     private TextView alartForPassword; //תיבת טקסט להתרעה על שגיאה בסיסמה
     private TextView alartForEmail; //תיבת טקסט להתרעה על שגיאה באימייל
-
     private User newUser=new User(); //אובייקט User המייצג את המשתמש החדש בתהליך ההרשמה
 
     /**
