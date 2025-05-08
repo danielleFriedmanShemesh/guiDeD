@@ -162,4 +162,5 @@ public class Trip {
     public void setPartsArr(ArrayList<Part> partsArr) {
         this.partsArr = partsArr;
     }
+
 }

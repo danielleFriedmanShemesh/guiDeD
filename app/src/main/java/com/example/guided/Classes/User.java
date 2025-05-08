@@ -1,9 +1,5 @@
 package com.example.guided.Classes;
 
-
-import androidx.annotation.NonNull;
-
-
 import java.util.Date;
 import java.io.Serializable;
 
@@ -25,7 +21,6 @@ public class User implements Serializable {
         this.birthday = new Date();
         this.organization = "";
         this.profileImage = "";
-
     }
 
     public User(String userName, String password, String email, String nickName, String organization, Date birthday, String image){
@@ -36,7 +31,6 @@ public class User implements Serializable {
         this.organization=organization;
         this.birthday=birthday;
         this.profileImage= image;
-
     }
 
     public User(){
@@ -47,12 +41,7 @@ public class User implements Serializable {
         this.birthday=new Date();
         this.organization="";
         this.profileImage="";
-
     }
-
-
-
-
 
     public Date getBirthday(){
         return this.birthday;
@@ -109,21 +98,4 @@ public class User implements Serializable {
     public void setOrganization(String organization){
         this.organization=organization;
     }
-
-
-    @NonNull
-    @Override
-    public String toString() {
-        return "User{" +
-                "userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", nickName='" + nickName + '\'' +
-                ", profileImage=" + profileImage +
-                ", birthday=" + birthday +
-                ", organization='" + organization + '\'' +
-                '}';
-    }
-
-
 }

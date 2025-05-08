@@ -75,6 +75,4 @@ public class Part {
     public void setLengthInKM(int lengthInKM) {
         this.lengthInKM = lengthInKM;
     }
-
-
 }

@@ -116,4 +116,5 @@ public class Operation {
     public void setEquipment(String equipment) {
         this.equipment = equipment;
     }
+
 }

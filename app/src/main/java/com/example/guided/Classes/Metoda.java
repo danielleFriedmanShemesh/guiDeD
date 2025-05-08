@@ -49,4 +49,5 @@ public class Metoda {
     public void setId(int id) {
         this.id = id;
     }
+
 }
