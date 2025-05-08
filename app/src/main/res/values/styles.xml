@@ -30,5 +30,4 @@
         <item name="android:textSize">20sp</item>
         <item name="android:layout_gravity">right</item>
     </style>
-
 </resources>
